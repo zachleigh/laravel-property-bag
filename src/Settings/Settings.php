@@ -91,11 +91,27 @@ abstract class Settings
      */
     public function getDefault($key)
     {
-        if ($this->isInRegistered($key)) {
+        if ($this->isRegistered($key)) {
             return $this->registered[$key]['default'];
         }
 
         return;
+    }
+
+    /**
+     * Update or add multiple values to the settings table.
+     *
+     * @param array $attributes
+     *
+     * @return this
+     */
+    public function set(array $attributes)
+    {
+        collect($attributes)->each(function ($value, $key) {
+            $this->setKeyValue($key, $value, false);
+        });
+
+        return $this->sync();
     }
 
     /**
@@ -106,37 +122,15 @@ abstract class Settings
      *
      * @return this
      */
-    public function set($key, $value, $sync = true)
+    protected function setKeyValue($key, $value)
     {
         if ($this->isValid($key, $value)) {
-            $syncType = ($this->isInSettings($key) ? 'update' : 'new');
+            $syncType = ($this->hasSetting($key) ? 'update' : 'new');
 
             $this->settings[$key] = $value;
 
-            if ($sync) {
-                return $this->flagAsChanged($key, $syncType)->sync();
-            }
-
             return $this->flagAsChanged($key, $syncType);
         }
-    }
-
-    /**
-     * Update or add multiple values to the settings table.
-     *
-     * @param array $attributes
-     *
-     * @return this
-     */
-    public function setMany(array $attributes)
-    {
-        $attributes = collect($attributes);
-
-        $attributes->each(function ($value, $key) {
-            $this->set($key, $value, false);
-        });
-
-        return $this->sync();
     }
 
     /**
@@ -156,7 +150,7 @@ abstract class Settings
      *
      * @return bool
      */
-    public function isInSettings($key)
+    public function hasSetting($key)
     {
         return $this->settings->has($key);
     }
@@ -168,7 +162,7 @@ abstract class Settings
      *
      * @return bool
      */
-    public function isInRegistered($key)
+    public function isRegistered($key)
     {
         return $this->registered->has($key);
     }

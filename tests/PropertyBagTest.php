@@ -3,7 +3,7 @@
 namespace LaravelPropertyBag\tests;
 
 use Illuminate\Support\Collection;
-use LaravelPropertyBag\Settings\UserSettings;
+use LaravelPropertyBag\User\UserSettings;
 
 class SettingsTest extends TestCase
 {
@@ -94,7 +94,7 @@ class SettingsTest extends TestCase
 
         $this->assertEmpty($settings->all());
 
-        $settings->set('test_settings2', true);
+        $settings->set(['test_settings2' => true]);
 
         $this->assertContains('test_settings2', $settings->all());
 
@@ -118,9 +118,9 @@ class SettingsTest extends TestCase
 
         $settings = $user->settings($this->registered);
 
-        $settings->set('test_settings2', true);
+        $settings->set(['test_settings2' => true]);
 
-        $settings->set('test_settings2', false);
+        $settings->set(['test_settings2' => false]);
 
         $this->assertEquals($settings->get('test_settings2'), false);
 
@@ -144,7 +144,7 @@ class SettingsTest extends TestCase
 
         $this->assertEmpty($settings->all());
 
-        $settings->setMany([
+        $settings->set([
             'test_settings1' => 'grapes',
             'test_settings2' => true,
         ]);
@@ -179,7 +179,7 @@ class SettingsTest extends TestCase
 
         $this->actingAs($user);
 
-        $user->settings($this->registered)->set('test_settings2', true);
+        $user->settings($this->registered)->set(['test_settings2' => true]);
 
         $result = $user->settings()->get('test_settings2');
 
@@ -195,7 +195,7 @@ class SettingsTest extends TestCase
 
         $this->actingAs($user);
 
-        $user->settings($this->registered)->set('test_settings2', true);
+        $user->settings($this->registered)->set(['test_settings2' => true]);
 
         $result = settings()->get('test_settings2');
 
@@ -241,12 +241,12 @@ class SettingsTest extends TestCase
 
         $this->assertEmpty($settings->all());
 
-        $settings->setMany([
+        $settings->set([
             'test_settings1' => 'monkeys',
             'test_settings2' => false,
         ]);
 
-        $settings->setMany([
+        $settings->set([
             'test_settings1' => 'grapes',
             'test_settings2' => true,
         ]);

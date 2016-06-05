@@ -9,25 +9,25 @@
   - Can be adapted to give other resources setting capability
 
 ### Install
-1. Install through composer
+###### Install through composer
 ```
 composer require zachleigh/laravel-property-bag
 ```
-2. Register the service provider
+###### Register the service provider
 In Laravel's config/app.php file, add the service provider to the array with the 'providers' key.
 ```
 LaravelPropertyBag\ServiceProvider::class
 ```
-3. Export the config file and migration
+###### Export the config file and migration
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
-4. Run the migration
+###### Run the migration
 ```
 php artisan migrate
 ```
 ### Usage
-1. Use the trait in the User model
+###### Use the trait in the User model
 ```php
 ...
 use LaravelPropertyBag\Settings\HasSettings;
@@ -39,8 +39,8 @@ class User extends Model
     ...
 }
 ```
-2. Register your settings plus their allowed values and defaults.
-In /config/laravel-property-bag.php
+###### Register your settings plus their allowed values and defaults
+In /config/laravel-property-bag.php, register settings under the registered_user_settings key.
 ```php
 'registered_user_settings' => collect([
     'example_setting' => [
@@ -49,13 +49,20 @@ In /config/laravel-property-bag.php
     ]
 ])
 ```
-3. Set the setting from the user model or from the global settings() helper
+###### Set the setting from the user model or from the global settings() helper
 ```php
 $user->settings()->set('example_setting', false);
 // or
 settings()->set('example_setting', false);
 ```
-4. Get the set value from the user model or from the global settings() helper
+###### Set multiple values using the setMany method
+```
+$user->settings()->setMany([
+    'example_setting' => false,
+    'another_setting' => 'grey'
+]);
+```
+###### Get the set value from the user model or from the global settings() helper
 ```php
 $user->settings()->get('example_setting');
 // or

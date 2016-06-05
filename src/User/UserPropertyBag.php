@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelPropertyBag;
+namespace LaravelPropertyBag\User;
 
 use Illuminate\Database\Eloquent\Model;
 

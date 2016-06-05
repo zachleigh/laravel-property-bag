@@ -1,6 +1,8 @@
 <?php
 
-namespace LaravelPropertyBag\Settings;
+namespace LaravelPropertyBag\User;
+
+use LaravelPropertyBag\Settings\Settings;
 
 class UserSettings extends Settings
 {
