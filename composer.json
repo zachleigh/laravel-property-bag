@@ -1,0 +1,41 @@
+{
+    "name": "zachleigh/laravel-property-bag",
+    "description": "Easy Laravel user settings using a property bag",
+    "type": "project",
+    "keywords": ["laravel", "user", "settings", "property", "user settings", "propety bag"],
+    "homepage": "https://github.com/zachlegih/laravel-property-bag",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zach Leigh",
+            "email": "zachleigh@fastmail.jp"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.5.9"
+    },
+
+    "require-dev": {
+        "laravel/laravel": "5.2.*",
+        "phpunit/phpunit": "~4.0"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "LaravelPropertyBag\\": "src/"
+        },        
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelPropertyBag\\tests\\": "tests/"
+        }
+    },
+
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
