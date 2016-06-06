@@ -119,15 +119,15 @@ abstract class Settings
      *
      * @param string $key
      * @param mixed  $value
-     *
-     * @return this
      */
     protected function setKeyValue($key, $value)
     {
         if ($this->isValid($key, $value)) {
-            $method = $this->getSyncType($key, $value).'Record';
+            $method = $this->getSyncType($key, $value);
 
-            $this->{$method}($key, $value);
+            if ($method !== 'pass') {
+                $this->{$method}($key, $value);
+            }
         }
     }
 
@@ -141,13 +141,15 @@ abstract class Settings
      */
     protected function getSyncType($key, $value)
     {
-        if ($this->isDefault($key, $value)) {
-            return 'delete';
+        if ($this->isDefault($key, $value) && !$this->hasSetting($key)) {
+            return 'pass';
+        } elseif ($this->isDefault($key, $value)) {
+            return 'deleteRecord';
         } elseif ($this->hasSetting($key)) {
-            return 'update';
+            return 'updateRecord';
         }
 
-        return 'new';
+        return 'newRecord';
     }
 
     /**
@@ -185,7 +187,7 @@ abstract class Settings
     }
 
     /**
-     * Value is default value for key.
+     * Return true if value is default value for key.
      *
      * @param string $key
      * @param mixed  $value
@@ -198,7 +200,7 @@ abstract class Settings
     }
 
     /**
-     * Key and value are registered values.
+     * Return true if key and value are registered values.
      *
      * @param string $key
      * @param mixed  $value
@@ -236,7 +238,7 @@ abstract class Settings
         $model = $this->resource->getPropertyBagClass();
 
         return $model::create([
-            $this->primaryKey => $this->resource->id(),
+            $this->primaryKey => $this->resource->resourceId(),
             'key' => $key,
             'value' => json_encode([$value]),
         ]);
@@ -253,15 +255,19 @@ abstract class Settings
     {
         $model = $this->resource->getPropertyBagClass();
 
-        $record = $model::where($this->primaryKey, '=', $this->resource->id())
-            ->where('key', '=', $key)
-            ->first();
+        $record = $model::where(
+            $this->primaryKey,
+            '=',
+            $this->resource->resourceId()
+        )->where('key', '=', $key)->first();
 
-        $record->value = json_encode([$value]);
+        if (!is_null($record)) {
+            $record->value = json_encode([$value]);
 
-        $record->save();
+            $record->save();
 
-        return $record;
+            return $record;
+        }
     }
 
     /**
@@ -276,14 +282,14 @@ abstract class Settings
     {
         $model = $this->resource->getPropertyBagClass();
 
-        $record = $model::where($this->primaryKey, '=', $this->resource->id())
-            ->where('key', '=', $key)
-            ->first();
+        $record = $model::where(
+            $this->primaryKey,
+            '=',
+            $this->resource->resourceId()
+        )->where('key', '=', $key)->first();
 
         if (!is_null($record)) {
             return $record->delete();
         }
-
-        return false;
     }
 }

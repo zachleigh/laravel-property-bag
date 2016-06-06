@@ -3,10 +3,13 @@
 namespace LaravelPropertyBag;
 
 use Auth;
+use LaravelPropertyBag\Traits\NameResolver;
 use Illuminate\Support\ServiceProvider as BaseProvider;
 
 class ServiceProvider extends BaseProvider
 {
+    use NameResolver;
+
     /**
      * Register bindings in the container.
      *
@@ -14,15 +17,13 @@ class ServiceProvider extends BaseProvider
      */
     public function register()
     {
-        $this->app->singleton('LaravelPropertyBag\Settings\UserSettings', function () {
+        $namespace = $this->getUserSettingsNamespace();
+
+        $this->app->singleton($namespace, function () {
             return Auth::user()->settings();
         });
 
-        $this->app->singleton('command.lpb.user', function ($app) {
-            return $app['LaravelPropertyBag\Commands\PublishUserSettings'];
-        });
-
-        $this->commands('command.lpb.user');
+        $this->registerCommands();
     }
 
     /**
@@ -39,5 +40,17 @@ class ServiceProvider extends BaseProvider
         $this->publishes([
             __DIR__.'/Migrations/' => database_path('migrations')
         ], 'migrations');
+    }
+
+    /**
+     * Register Artisan commands.
+     */
+    protected function registerCommands()
+    {
+        $this->app->singleton('command.lpb.user', function ($app) {
+            return $app['LaravelPropertyBag\Commands\PublishUserSettings'];
+        });
+
+        $this->commands('command.lpb.user');
     }
 }

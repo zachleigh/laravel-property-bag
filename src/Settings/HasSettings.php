@@ -22,7 +22,7 @@ trait HasSettings
      *
      * @return int
      */
-    public function id()
+    public function resourceId()
     {
         return $this->id;
     }
@@ -36,11 +36,11 @@ trait HasSettings
      */
     public function settings($allowed = null)
     {
-        $settingsClass = $this->getSettingsClass();
-
         if ($this->settingsInstance) {
             return $this->settingsInstance;
         }
+
+        $settingsClass = $this->getSettingsClass();
 
         return $this->settingsInstance = new $settingsClass($this, $allowed);
     }

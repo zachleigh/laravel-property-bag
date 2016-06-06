@@ -101,7 +101,7 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->get('test_settings3'), true);
 
         $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->id(),
+            'user_id' => $user->resourceId(),
             'key' => 'test_settings3',
             'value' => json_encode('[true]')
         ]);
@@ -125,7 +125,7 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->get('test_settings2'), false);
 
         $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->id(),
+            'user_id' => $user->resourceId(),
             'key' => 'test_settings2',
             'value' => json_encode('[false]')
         ]);
@@ -154,7 +154,7 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->get('test_settings1'), 'grapes');
 
         $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->id(),
+            'user_id' => $user->resourceId(),
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
@@ -164,7 +164,7 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->get('test_settings2'), false);
 
         $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->id(),
+            'user_id' => $user->resourceId(),
             'key' => 'test_settings2',
             'value' => json_encode('[false]')
         ]);
@@ -272,7 +272,7 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->get('test_settings1'), 'grapes');
 
         $this->seeInDatabase('group_settings', [
-            'group_id' => $group->id(),
+            'group_id' => $group->resourceId(),
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
@@ -282,7 +282,7 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->get('test_settings2'), false);
 
         $this->seeInDatabase('group_settings', [
-            'group_id' => $group->id(),
+            'group_id' => $group->resourceId(),
             'key' => 'test_settings2',
             'value' => json_encode('[false]')
         ]);
@@ -384,7 +384,7 @@ class PropertyBagTest extends TestCase
         ]);
 
         $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->id(),
+            'user_id' => $user->resourceId(),
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
@@ -394,7 +394,7 @@ class PropertyBagTest extends TestCase
         ]);
 
         $this->dontSeeInDatabase('user_property_bag', [
-            'user_id' => $user->id(),
+            'user_id' => $user->resourceId(),
             'key' => 'test_settings1',
             'value' => json_encode('["monkey"]')
         ]);
