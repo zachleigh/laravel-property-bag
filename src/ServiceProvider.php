@@ -17,6 +17,12 @@ class ServiceProvider extends BaseProvider
         $this->app->singleton('LaravelPropertyBag\Settings\UserSettings', function () {
             return Auth::user()->settings();
         });
+
+        $this->app->singleton('command.lpb.user', function ($app) {
+            return $app['LaravelPropertyBag\Commands\PublishUserSettings'];
+        });
+
+        $this->commands('command.lpb.user');
     }
 
     /**
@@ -33,9 +39,5 @@ class ServiceProvider extends BaseProvider
         $this->publishes([
             __DIR__.'/Migrations/' => database_path('migrations')
         ], 'migrations');
-
-        $this->publishes([
-            __DIR__.'/UserSettings/' => app_path('UserSettings')
-        ]);
     }
 }
