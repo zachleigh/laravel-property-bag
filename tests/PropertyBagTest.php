@@ -173,6 +173,14 @@ class SettingsTest extends TestCase
     /**
      * @test
      */
+    public function only_changed_settings_are_updated()
+    {
+        // TODO
+    }
+
+    /**
+     * @test
+     */
     public function a_user_can_get_a_setting()
     {
         $user = $this->makeUser();
@@ -270,5 +278,95 @@ class SettingsTest extends TestCase
             'key' => 'test_settings2',
             'value' => 1
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_distinguishes_between_bool_and_int_types()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $user->settings($this->registered)->set(['test_settings3' => true]);
+
+        settings()->refreshSettings();
+
+        $result = settings()->get('test_settings3');
+
+        $this->assertTrue($result === true);
+
+        $this->assertTrue($result !== 1);
+
+        $user->settings($this->registered)->set(['test_settings3' => 1]);
+
+        settings()->refreshSettings();
+
+        $result = settings()->get('test_settings3');
+
+        $this->assertTrue($result === 1);
+
+        $this->assertTrue($result !== true);
+    }
+
+    /**
+     * @test
+     */
+    public function it_distinguishes_between_bool_and_string_types()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $user->settings($this->registered)->set(['test_settings3' => 'true']);
+
+        settings()->refreshSettings();
+
+        $result = settings()->get('test_settings3');
+
+        $this->assertTrue($result === 'true');
+
+        $this->assertTrue($result !== true);
+
+        $user->settings($this->registered)->set(['test_settings3' => false]);
+
+        settings()->refreshSettings();
+
+        $result = settings()->get('test_settings3');
+
+        $this->assertTrue($result === false);
+
+        $this->assertTrue($result !== 'false');
+    }
+
+    /**
+     * @test
+     */
+    public function it_distinguishes_between_int_and_string_types()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $user->settings($this->registered)->set(['test_settings3' => 1]);
+
+        settings()->refreshSettings();
+
+        $result = settings()->get('test_settings3');
+
+        $this->assertTrue($result === 1);
+
+        $this->assertTrue($result !== '1');
+
+        $user->settings($this->registered)->set(['test_settings3' => '0']);
+
+        settings()->refreshSettings();
+
+        $result = settings()->get('test_settings3');
+
+        $this->assertTrue($result === '0');
+
+        $this->assertTrue($result !== 0);
     }
 }

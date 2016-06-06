@@ -54,7 +54,7 @@ abstract class Settings
     {
         $this->resource = $resource;
 
-        $this->settings = $resource->allSettings();
+        $this->refreshSettings();
 
         $this->registered = $this->getRegistered($registered);
     }
@@ -197,6 +197,14 @@ abstract class Settings
         $this->changed[$key] = $syncType;
 
         return $this;
+    }
+
+    /**
+     * Get settings from the resource relationship.
+     */
+    public function refreshSettings()
+    {
+        $this->settings = $this->resource->allSettings();
     }
 
     /**

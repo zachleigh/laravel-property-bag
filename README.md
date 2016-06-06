@@ -9,25 +9,29 @@
   - Can be adapted to give other resources setting capability
 
 ### Install
-###### Install through composer
+##### Install through composer
 ```
 composer require zachleigh/laravel-property-bag
 ```
-###### Register the service provider
+
+##### Register the service provider
 In Laravel's config/app.php file, add the service provider to the array with the 'providers' key.
 ```
 LaravelPropertyBag\ServiceProvider::class
 ```
-###### Export the config file and migration
+
+##### Export the config file and migration
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
-###### Run the migration
+
+##### Run the migration
 ```
 php artisan migrate
 ```
+
 ### Usage
-###### Use the trait in the User model
+##### Use the trait in the User model
 ```php
 ...
 use LaravelPropertyBag\Settings\HasSettings;
@@ -39,7 +43,8 @@ class User extends Model
     ...
 }
 ```
-###### Register your settings plus their allowed values and defaults
+
+##### Register your settings plus their allowed values and defaults
 In /config/laravel-property-bag.php, register settings under the registered_user_settings key.
 ```php
 'registered_user_settings' => collect([
@@ -49,23 +54,26 @@ In /config/laravel-property-bag.php, register settings under the registered_user
     ]
 ])
 ```
-###### Set the setting from the user model or from the global settings() helper
+
+##### Set the setting from the user model or from the global settings() helper
 ```php
-$user->settings()->set('example_setting', false);
+$user->settings()->set(['example_setting' => false]);
 // or
-settings()->set('example_setting', false);
+settings()->set(['example_setting' => false]);
 ```
-###### Set multiple values using the setMany method
+
+##### Set multiple values at a time
 ```
-$user->settings()->setMany([
+$user->settings()->set([
     'example_setting' => false,
     'another_setting' => 'grey'
 ]);
 ```
-###### Get the set value from the user model or from the global settings() helper
+
+##### Get the set value from the user model or from the global settings() helper
 ```php
-$user->settings()->get('example_setting');
+$value = $user->settings()->get('example_setting');
 // or
-settings('example_setting');
+$value = settings('example_setting');
 ```
 If the value has not been set, the registered default value will be returned.
