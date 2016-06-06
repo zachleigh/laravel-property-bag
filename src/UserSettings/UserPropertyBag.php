@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelPropertyBag\User;
+namespace LaravelPropertyBag\UserSettings;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,7 @@ class UserPropertyBag extends Model
      *
      * @var string
      */
-    protected $table = 'user_settings';
+    protected $table = 'user_property_bag';
 
     /**
      * A setting belongs to a user.
@@ -32,15 +32,5 @@ class UserPropertyBag extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get settings id.
-     *
-     * @return int
-     */
-    public function id()
-    {
-        return $this->id;
     }
 }

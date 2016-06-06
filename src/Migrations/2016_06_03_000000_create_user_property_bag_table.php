@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserSettingsTable extends Migration
+class CreateUserPropertyBagTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateUserSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_settings', function (Blueprint $table) {
+        Schema::create('user_property_bag', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->string('key');
@@ -30,6 +30,6 @@ class CreateUserSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('user_settings');
+        Schema::drop('user_property_bag');
     }
 }

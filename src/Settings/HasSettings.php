@@ -2,8 +2,8 @@
 
 namespace LaravelPropertyBag\Settings;
 
-use LaravelPropertyBag\User\UserSettings;
-use LaravelPropertyBag\User\UserPropertyBag;
+use LaravelPropertyBag\UserSettings\UserSettings;
+use LaravelPropertyBag\UserSettings\UserPropertyBag;
 
 trait HasSettings
 {

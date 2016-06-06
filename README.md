@@ -63,7 +63,7 @@ settings()->set(['example_setting' => false]);
 ```
 
 ##### Set multiple values at a time
-```
+```php
 $user->settings()->set([
     'example_setting' => false,
     'another_setting' => 'grey'

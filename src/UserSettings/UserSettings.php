@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelPropertyBag\User;
+namespace LaravelPropertyBag\UserSettings;
 
 use LaravelPropertyBag\Settings\Settings;
 

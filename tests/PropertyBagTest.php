@@ -3,7 +3,7 @@
 namespace LaravelPropertyBag\tests;
 
 use Illuminate\Support\Collection;
-use LaravelPropertyBag\User\UserSettings;
+use LaravelPropertyBag\UserSettings\UserSettings;
 
 class SettingsTest extends TestCase
 {
@@ -100,7 +100,7 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($settings->get('test_settings2'), true);
 
-        $this->seeInDatabase('user_settings', [
+        $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings2',
             'value' => 1
@@ -124,7 +124,7 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($settings->get('test_settings2'), false);
 
-        $this->seeInDatabase('user_settings', [
+        $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings2',
             'value' => 0
@@ -153,7 +153,7 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($settings->get('test_settings1'), 'grapes');
 
-        $this->seeInDatabase('user_settings', [
+        $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings1',
             'value' => 'grapes'
@@ -163,7 +163,7 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($settings->get('test_settings2'), true);
 
-        $this->seeInDatabase('user_settings', [
+        $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings2',
             'value' => 1
