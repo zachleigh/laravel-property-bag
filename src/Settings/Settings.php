@@ -141,7 +141,7 @@ abstract class Settings
      */
     protected function getSyncType($key, $value)
     {
-        if ($this->hasSetting($key) && $this->isDefault($key, $value)) {
+        if ($this->isDefault($key, $value)) {
             return 'delete';
         } elseif ($this->hasSetting($key)) {
             return 'update';
@@ -280,6 +280,10 @@ abstract class Settings
             ->where('key', '=', $key)
             ->first();
 
-        return $record->delete();
+        if (!is_null($record)) {
+            return $record->delete();
+        }
+
+        return false;
     }
 }
