@@ -115,7 +115,7 @@ abstract class Settings
     }
 
     /**
-     * Set a value in local and db settings.
+     * Set a value to a key in local and database settings.
      *
      * @param string $key
      * @param mixed  $value
@@ -125,12 +125,29 @@ abstract class Settings
     protected function setKeyValue($key, $value)
     {
         if ($this->isValid($key, $value)) {
-            $syncType = ($this->hasSetting($key) ? 'update' : 'new');
-
-            $method = $syncType.'Record';
+            $method = $this->getSyncType($key, $value).'Record';
 
             $this->{$method}($key, $value);
         }
+    }
+
+    /**
+     * Get the type of database operation to perform for the sync.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return string
+     */
+    protected function getSyncType($key, $value)
+    {
+        if ($this->hasSetting($key) && $this->isDefault($key, $value)) {
+            return 'delete';
+        } elseif ($this->hasSetting($key)) {
+            return 'update';
+        }
+
+        return 'new';
     }
 
     /**
@@ -165,6 +182,19 @@ abstract class Settings
     public function isRegistered($key)
     {
         return $this->registered->has($key);
+    }
+
+    /**
+     * Value is default value for key.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return bool
+     */
+    public function isDefault($key, $value)
+    {
+        return $this->getDefault($key) === $value;
     }
 
     /**
@@ -232,5 +262,24 @@ abstract class Settings
         $record->save();
 
         return $record;
+    }
+
+    /**
+     * Delete a UserSettings record.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return bool
+     */
+    protected function deleteRecord($key, $value)
+    {
+        $model = $this->resource->getPropertyBagClass();
+
+        $record = $model::where($this->primaryKey, '=', $this->resource->id())
+            ->where('key', '=', $key)
+            ->first();
+
+        return $record->delete();
     }
 }

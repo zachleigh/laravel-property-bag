@@ -259,15 +259,15 @@ class PropertyBagTest extends TestCase
 
         $settings->set([
             'test_settings1' => 'monkey',
-            'test_settings2' => false,
+            'test_settings2' => true,
         ]);
 
         $settings->set([
             'test_settings1' => 'grapes',
-            'test_settings2' => true,
+            'test_settings2' => false,
         ]);
 
-        $this->assertContains('test_settings1', $settings->all());
+        $this->assertContains('grapes', $settings->all());
 
         $this->assertEquals($settings->get('test_settings1'), 'grapes');
 
@@ -277,14 +277,14 @@ class PropertyBagTest extends TestCase
             'value' => json_encode('["grapes"]')
         ]);
 
-        $this->assertContains('test_settings2', $settings->all());
+        $this->assertContains(false, $settings->all());
 
-        $this->assertEquals($settings->get('test_settings2'), true);
+        $this->assertEquals($settings->get('test_settings2'), false);
 
         $this->seeInDatabase('group_settings', [
             'group_id' => $group->id(),
             'key' => 'test_settings2',
-            'value' => json_encode('[true]')
+            'value' => json_encode('[false]')
         ]);
     }
 
@@ -357,8 +357,8 @@ class PropertyBagTest extends TestCase
 
         $test3 = [
             'test_settings3' => 0,
-            'test_settings1' => 'monkey',
-            'test_settings2' => true
+            'test_settings1' => 8,
+            'test_settings2' => false
         ];
 
         $settings->set($test3);
@@ -366,5 +366,37 @@ class PropertyBagTest extends TestCase
         $this->assertEquals($settings->all(), $test3);
 
         $this->assertEquals($user->allSettingsFlat()->all(), $test3);
+    }
+
+    /**
+     * @test
+     */
+    public function if_default_value_is_set_database_entry_is_deleted()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $settings = $user->settings($this->registered);
+
+        $settings->set([
+            'test_settings1' => 'grapes'
+        ]);
+
+        $this->seeInDatabase('user_property_bag', [
+            'user_id' => $user->id(),
+            'key' => 'test_settings1',
+            'value' => json_encode('["grapes"]')
+        ]);
+
+        $settings->set([
+            'test_settings1' => 'monkey'
+        ]);
+
+        $this->dontSeeInDatabase('user_property_bag', [
+            'user_id' => $user->id(),
+            'key' => 'test_settings1',
+            'value' => json_encode('["monkey"]')
+        ]);
     }
 }
