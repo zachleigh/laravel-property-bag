@@ -18,7 +18,7 @@ trait HasSettings
     protected $settingsInstance = null;
 
     /**
-     * Get user id.
+     * Get resource id.
      *
      * @return int
      */
@@ -65,6 +65,18 @@ trait HasSettings
     public function allSettings()
     {
         return $this->propertyBag;
+    }
+
+    /**
+     * Get all settings as a flat collection.
+     *
+     * @return Collection
+     */
+    public function allSettingsFlat()
+    {
+        return $this->allSettings()->flatMap(function ($model) {
+            return [$model->key => json_decode($model->value)[0]];
+        });
     }
 
     /**

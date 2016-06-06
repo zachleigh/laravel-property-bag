@@ -18,8 +18,6 @@ class TypeTest extends TestCase
 
         $user->settings($this->registered)->set(['test_settings3' => true]);
 
-        settings()->refreshSettings();
-
         $result = settings()->get('test_settings3');
 
         $this->assertTrue($result === true);
@@ -27,8 +25,6 @@ class TypeTest extends TestCase
         $this->assertTrue($result !== 1);
 
         $user->settings($this->registered)->set(['test_settings3' => 1]);
-
-        settings()->refreshSettings();
 
         $result = settings()->get('test_settings3');
 
@@ -48,8 +44,6 @@ class TypeTest extends TestCase
 
         $user->settings($this->registered)->set(['test_settings3' => 'true']);
 
-        settings()->refreshSettings();
-
         $result = settings()->get('test_settings3');
 
         $this->assertTrue($result === 'true');
@@ -57,8 +51,6 @@ class TypeTest extends TestCase
         $this->assertTrue($result !== true);
 
         $user->settings($this->registered)->set(['test_settings3' => false]);
-
-        settings()->refreshSettings();
 
         $result = settings()->get('test_settings3');
 
@@ -78,8 +70,6 @@ class TypeTest extends TestCase
 
         $user->settings($this->registered)->set(['test_settings3' => 1]);
 
-        settings()->refreshSettings();
-
         $result = settings()->get('test_settings3');
 
         $this->assertTrue($result === 1);
@@ -87,8 +77,6 @@ class TypeTest extends TestCase
         $this->assertTrue($result !== '1');
 
         $user->settings($this->registered)->set(['test_settings3' => '0']);
-
-        settings()->refreshSettings();
 
         $result = settings()->get('test_settings3');
 

@@ -21,13 +21,6 @@ abstract class Settings
     protected $settings;
 
     /**
-     * Settings values that have been changed since last sync.
-     *
-     * @var array
-     */
-    protected $changed = [];
-
-    /**
      * Registered keys, values, and defaults.
      * 'key' => ['allowed' => $value, 'default' => $value].
      *
@@ -50,19 +43,19 @@ abstract class Settings
      * @param Model      $resource
      * @param Collection $registered
      */
-    public function __construct($resource, $registered = null)
+    public function __construct(Model $resource, $registered = null)
     {
         $this->resource = $resource;
 
-        $this->refreshSettings();
+        $this->sync();
 
         $this->registered = $this->setRegistered($registered);
     }
 
     /**
-     * Get the registered and default values from config or given Collection.
+     * Get the registered and default values from config or given array.
      *
-     * @param array|null $config
+     * @param array|null $registered
      *
      * @return Collection
      */
@@ -134,20 +127,20 @@ abstract class Settings
         if ($this->isValid($key, $value)) {
             $syncType = ($this->hasSetting($key) ? 'update' : 'new');
 
-            $this->settings[$key] = $value;
+            $method = $syncType.'Record';
 
-            return $this->flagAsChanged($key, $syncType);
+            $this->{$method}($key, $value);
         }
     }
 
     /**
-     * Return all resource settings.
+     * Return all resource settings as array.
      *
-     * @return Collection
+     * @return array
      */
     public function all()
     {
-        return $this->settings;
+        return $this->settings->all();
     }
 
     /**
@@ -192,47 +185,13 @@ abstract class Settings
     }
 
     /**
-     * Add key to changed array.
-     *
-     * @param string $key
-     * @param string $syncType ['new', 'update']
-     *
-     * @return this
-     */
-    public function flagAsChanged($key, $syncType)
-    {
-        $this->changed[$key] = $syncType;
-
-        return $this;
-    }
-
-    /**
      * Get settings from the resource relationship.
-     */
-    public function refreshSettings()
-    {
-        $this->resource->load('propertyBag');
-
-        $this->settings = $this->resource->allSettings()
-            ->flatMap(function ($model) {
-                return [$model->key => json_decode($model->value)[0]];
-            });
-    }
-
-    /**
-     * Sync local settings collection with database.
-     *
-     * @return this
      */
     public function sync()
     {
-        collect($this->changed)->each(function ($syncType, $key) {
-            $method = $syncType.'Record';
+        $this->resource->load('propertyBag');
 
-            $this->{$method}($key);
-        });
-
-        return $this->clearChanged();
+        $this->settings = $this->resource->allSettingsFlat();
     }
 
     /**
@@ -242,14 +201,14 @@ abstract class Settings
      *
      * @return UserSettings
      */
-    protected function newRecord($key)
+    protected function newRecord($key, $value)
     {
         $model = $this->resource->getPropertyBagClass();
 
         return $model::create([
             $this->primaryKey => $this->resource->id(),
             'key' => $key,
-            'value' => json_encode([$this->get($key)]),
+            'value' => json_encode([$value]),
         ]);
     }
 
@@ -260,7 +219,7 @@ abstract class Settings
      *
      * @return UserSettings
      */
-    protected function updateRecord($key)
+    protected function updateRecord($key, $value)
     {
         $model = $this->resource->getPropertyBagClass();
 
@@ -268,22 +227,10 @@ abstract class Settings
             ->where('key', '=', $key)
             ->first();
 
-        $record->value = json_encode([$this->get($key)]);
+        $record->value = json_encode([$value]);
 
         $record->save();
 
         return $record;
-    }
-
-    /**
-     * Clear changed records.
-     *
-     * @return this
-     */
-    protected function clearChanged()
-    {
-        $this->changed = [];
-
-        return $this;
     }
 }
