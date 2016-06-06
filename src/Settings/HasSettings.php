@@ -7,6 +7,8 @@ use LaravelPropertyBag\User\UserPropertyBag;
 
 trait HasSettings
 {
+    protected $settingsInstance = null;
+
     /**
      * Get user id.
      *
@@ -28,7 +30,11 @@ trait HasSettings
     {
         $settingsClass = $this->getSettingsClass();
 
-        return new $settingsClass($this, $allowed);
+        if ($this->settingsInstance) {
+            return $this->settingsInstance;
+        }
+
+        return $this->settingsInstance = new $settingsClass($this, $allowed);
     }
 
     /**

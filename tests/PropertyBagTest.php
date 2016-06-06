@@ -369,4 +369,20 @@ class SettingsTest extends TestCase
 
         $this->assertTrue($result !== 0);
     }
+
+    /**
+     * @test
+     */
+    public function settings_intsance_is_persisted_on_resource_model()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $result = $user->settings($this->registered)->get('test_settings1');
+
+        $result = $user->settings()->get('test_settings1');
+
+        $this->assertEquals('monkey', $result);
+    }
 }
