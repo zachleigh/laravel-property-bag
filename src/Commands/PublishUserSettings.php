@@ -4,11 +4,11 @@ namespace LaravelPropertyBag\Commands;
 
 use File;
 use Illuminate\Console\Command;
-use \Illuminate\Console\AppNamespaceDetectorTrait;
+use LaravelPropertyBag\Traits\NameResolver;
 
 class PublishUserSettings extends Command
 {
-    use AppNamespaceDetectorTrait;
+    use NameResolver;
 
     /**
      * The name and signature of the console command.

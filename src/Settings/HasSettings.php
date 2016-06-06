@@ -2,13 +2,13 @@
 
 namespace LaravelPropertyBag\Settings;
 
+use LaravelPropertyBag\Traits\NameResolver;
 use LaravelPropertyBag\UserSettings\UserSettings;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use LaravelPropertyBag\UserSettings\UserPropertyBag;
 
 trait HasSettings
 {
-    use AppNamespaceDetectorTrait;
+    use NameResolver;
 
     /**
      * Saved settings.
