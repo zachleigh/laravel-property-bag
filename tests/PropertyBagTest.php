@@ -5,7 +5,7 @@ namespace LaravelPropertyBag\tests;
 use Illuminate\Support\Collection;
 use LaravelPropertyBag\UserSettings\UserSettings;
 
-class SettingsTest extends TestCase
+class PropertyBagTest extends TestCase
 {
     /**
      * @test
@@ -103,7 +103,7 @@ class SettingsTest extends TestCase
         $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings2',
-            'value' => 1
+            'value' => json_encode('[true]')
         ]);
     }
 
@@ -127,7 +127,7 @@ class SettingsTest extends TestCase
         $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings2',
-            'value' => 0
+            'value' => json_encode('[false]')
         ]);
     }
 
@@ -156,7 +156,7 @@ class SettingsTest extends TestCase
         $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings1',
-            'value' => 'grapes'
+            'value' => json_encode('["grapes"]')
         ]);
 
         $this->assertContains('test_settings2', $settings->all());
@@ -166,7 +166,7 @@ class SettingsTest extends TestCase
         $this->seeInDatabase('user_property_bag', [
             'user_id' => $user->id(),
             'key' => 'test_settings2',
-            'value' => 1
+            'value' => json_encode('[true]')
         ]);
     }
 
@@ -174,6 +174,14 @@ class SettingsTest extends TestCase
      * @test
      */
     public function only_changed_settings_are_updated()
+    {
+        // TODO
+    }
+
+    /**
+     * @test
+     */
+    public function settings_on_the_object_match_the_settings_in_the_database()
     {
         // TODO
     }
@@ -266,7 +274,7 @@ class SettingsTest extends TestCase
         $this->seeInDatabase('group_settings', [
             'group_id' => $group->id(),
             'key' => 'test_settings1',
-            'value' => 'grapes'
+            'value' => json_encode('["grapes"]')
         ]);
 
         $this->assertContains('test_settings2', $settings->all());
@@ -276,7 +284,7 @@ class SettingsTest extends TestCase
         $this->seeInDatabase('group_settings', [
             'group_id' => $group->id(),
             'key' => 'test_settings2',
-            'value' => 1
+            'value' => json_encode('[true]')
         ]);
     }
 
@@ -290,96 +298,6 @@ class SettingsTest extends TestCase
         $settings = $group->settings();
 
         $this->assertTrue($settings->isRegistered('test_settings1'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_distinguishes_between_bool_and_int_types()
-    {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $user->settings($this->registered)->set(['test_settings3' => true]);
-
-        settings()->refreshSettings();
-
-        $result = settings()->get('test_settings3');
-
-        $this->assertTrue($result === true);
-
-        $this->assertTrue($result !== 1);
-
-        $user->settings($this->registered)->set(['test_settings3' => 1]);
-
-        settings()->refreshSettings();
-
-        $result = settings()->get('test_settings3');
-
-        $this->assertTrue($result === 1);
-
-        $this->assertTrue($result !== true);
-    }
-
-    /**
-     * @test
-     */
-    public function it_distinguishes_between_bool_and_string_types()
-    {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $user->settings($this->registered)->set(['test_settings3' => 'true']);
-
-        settings()->refreshSettings();
-
-        $result = settings()->get('test_settings3');
-
-        $this->assertTrue($result === 'true');
-
-        $this->assertTrue($result !== true);
-
-        $user->settings($this->registered)->set(['test_settings3' => false]);
-
-        settings()->refreshSettings();
-
-        $result = settings()->get('test_settings3');
-
-        $this->assertTrue($result === false);
-
-        $this->assertTrue($result !== 'false');
-    }
-
-    /**
-     * @test
-     */
-    public function it_distinguishes_between_int_and_string_types()
-    {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $user->settings($this->registered)->set(['test_settings3' => 1]);
-
-        settings()->refreshSettings();
-
-        $result = settings()->get('test_settings3');
-
-        $this->assertTrue($result === 1);
-
-        $this->assertTrue($result !== '1');
-
-        $user->settings($this->registered)->set(['test_settings3' => '0']);
-
-        settings()->refreshSettings();
-
-        $result = settings()->get('test_settings3');
-
-        $this->assertTrue($result === '0');
-
-        $this->assertTrue($result !== 0);
     }
 
     /**

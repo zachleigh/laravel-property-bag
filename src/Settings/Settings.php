@@ -211,7 +211,12 @@ abstract class Settings
      */
     public function refreshSettings()
     {
-        $this->settings = $this->resource->allSettings();
+        $this->resource->load('propertyBag');
+
+        $this->settings = $this->resource->allSettings()
+            ->flatMap(function ($model) {
+                return [$model->key => json_decode($model->value)[0]];
+            });
     }
 
     /**
@@ -244,7 +249,7 @@ abstract class Settings
         return $model::create([
             $this->primaryKey => $this->resource->id(),
             'key' => $key,
-            'value' => $this->get($key),
+            'value' => json_encode([$this->get($key)]),
         ]);
     }
 
@@ -259,9 +264,15 @@ abstract class Settings
     {
         $model = $this->resource->getPropertyBagClass();
 
-        return $model::where($this->primaryKey, '=', $this->resource->id())
+        $record = $model::where($this->primaryKey, '=', $this->resource->id())
             ->where('key', '=', $key)
-            ->update(['value' => $this->get($key)]);
+            ->first();
+
+        $record->value = json_encode([$this->get($key)]);
+
+        $record->save();
+
+        return $record;
     }
 
     /**
