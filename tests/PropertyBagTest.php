@@ -245,7 +245,7 @@ class SettingsTest extends TestCase
     {
         $group = $this->makeGroup();
 
-        $settings = $group->settings($this->registered);
+        $settings = $group->settings();
 
         $this->assertEmpty($settings->all());
 
@@ -278,6 +278,18 @@ class SettingsTest extends TestCase
             'key' => 'test_settings2',
             'value' => 1
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function settings_can_be_registered_on_settings_class()
+    {
+        $group = $this->makeGroup();
+
+        $settings = $group->settings();
+
+        $this->assertTrue($settings->isRegistered('test_settings1'));
     }
 
     /**

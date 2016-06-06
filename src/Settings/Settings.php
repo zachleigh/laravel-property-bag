@@ -56,17 +56,24 @@ abstract class Settings
 
         $this->refreshSettings();
 
-        $this->registered = $this->getRegistered($registered);
+        $this->registered = $this->setRegistered($registered);
     }
 
     /**
      * Get the registered and default values from config or given Collection.
      *
-     * @param Collection|null $config
+     * @param array|null $config
      *
      * @return Collection
      */
-    abstract protected function getRegistered($registered);
+    protected function setRegistered($registered)
+    {
+        if (is_null($registered)) {
+            return collect($this->registeredSettings);
+        }
+
+        return collect($registered);
+    }
 
     /**
      * Get value from settings by key. Get registered default if not set.

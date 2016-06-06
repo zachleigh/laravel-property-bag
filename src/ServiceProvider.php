@@ -33,5 +33,9 @@ class ServiceProvider extends BaseProvider
         $this->publishes([
             __DIR__.'/Migrations/' => database_path('migrations')
         ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/UserSettings/' => app_path('UserSettings')
+        ]);
     }
 }

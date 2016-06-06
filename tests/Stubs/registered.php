@@ -1,6 +1,6 @@
 <?php
 
-return collect([
+return [
     'test_settings1' => [
         'allowed' => ['bananas', 'grapes', 8, 'monkey'],
         'default' => 'monkey'
@@ -15,4 +15,4 @@ return collect([
         'allowed' => [true, false, 'true', 'false', 0, 1, '0', '1'],
         'default' => false
     ]
-]);
+];

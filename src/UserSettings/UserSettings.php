@@ -7,25 +7,25 @@ use LaravelPropertyBag\Settings\Settings;
 class UserSettings extends Settings
 {
     /**
-     * Primary key for the resource settings table.
+     * Primary key for the resource property bag table.
      *
      * @var string
      */
     protected $primaryKey = 'user_id';
 
     /**
-     * Get the registered and default values from config or given Collection.
+     * Registered settings for the user. Register settings by setting name. Each
+     * setting must have an associative array set as its value that contains an
+     * array of 'allowed' values and a single 'default' value.
      *
-     * @param array|null $config
-     *
-     * @return  Collection
+     * @var array
      */
-    protected function getRegistered($registered)
-    {
-        if (is_null($registered)) {
-            return config('laravel-property-bag.registered_user_settings');
-        }
+    protected $registeredSettings = [
 
-        return $registered;
-    }
+        // 'example_setting' => [
+        //     'allowed' => [true, false],
+        //     'default' => true
+        // ]
+
+    ];
 }

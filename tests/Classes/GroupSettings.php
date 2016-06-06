@@ -14,18 +14,26 @@ class GroupSettings extends Settings
     protected $primaryKey = 'group_id';
 
     /**
-     * Get the registered and default values from config or given Collection.
+     * Registered settings for the user. Register settings by setting name. Each
+     * setting must have an associative array set as its value that contains an
+     * array of 'allowed' values and a single 'default' value.
      *
-     * @param array|null $config
-     *
-     * @return  Collection
+     * @var array
      */
-    protected function getRegistered($registered)
-    {
-        if (is_null($registered)) {
-            return config('laravel-property-bag.allowed_group_settings');
-        }
+    protected $registeredSettings = [
+        'test_settings1' => [
+            'allowed' => ['bananas', 'grapes', 8, 'monkey'],
+            'default' => 'monkey'
+        ],
 
-        return $registered;
-    }
+        'test_settings2' => [
+            'allowed' => [true, false],
+            'default' => true
+        ],
+        
+        'test_settings3' => [
+            'allowed' => [true, false, 'true', 'false', 0, 1, '0', '1'],
+            'default' => false
+        ]
+    ];
 }
