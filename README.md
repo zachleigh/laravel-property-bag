@@ -20,10 +20,16 @@ In Laravel's config/app.php file, add the service provider to the array with the
 LaravelPropertyBag\ServiceProvider::class
 ```
 
-##### Export the config file and migration
+##### Publish the migration
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
+
+##### Publish the UserSettings directory to your app/ directory
+```
+php artisan lpb:publish-user
+```
+This will create a UserSettings directory containing a UserPropertyBag model and a UserSettings class where you can configure how the package works.
 
 ##### Run the migration
 ```
@@ -45,15 +51,16 @@ class User extends Model
 ```
 
 ##### Register your settings plus their allowed values and defaults
-In /config/laravel-property-bag.php, register settings under the registered_user_settings key.
+After publishing the UserSettings directory (hopefully you did this above), register settings in the UserSettings class.
 ```php
-'registered_user_settings' => collect([
+protected $registeredSettings = [
     'example_setting' => [
         'allowed' => [true, false],
-        'default' => true
+        'default' => false
     ]
-])
+];
 ```
+Each setting must contain an array of allowed values and a default value.
 
 ##### Set the setting from the user model or from the global settings() helper
 ```php

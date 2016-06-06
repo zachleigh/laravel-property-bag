@@ -3,7 +3,7 @@
 namespace LaravelPropertyBag\Settings;
 
 use LaravelPropertyBag\UserSettings\UserSettings;
-use \Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use LaravelPropertyBag\UserSettings\UserPropertyBag;
 
 trait HasSettings
@@ -74,39 +74,29 @@ trait HasSettings
      */
     protected function getSettingsClass()
     {
-        $settingsName = $this->getSettingsName();
-
-        $appNamespace = $this->getAppNamespace();
-
-        $classNamespace = $appNamespace.$settingsName.'\\'.$settingsName;
+        $classNamespace = $this->makeNamespace([$this, 'getSettingsName']);
 
         if (isset($this->settingsClass)) {
             return $this->settingsClass;
-        } else if (class_exists($classNamespace)) {
+        } elseif (class_exists($classNamespace)) {
             return $classNamespace;
         }
-        
+
         return UserSettings::class;
     }
 
     /**
-     * Get the settings class name.
+     * Get the property bag class name.
      *
      * @return string
      */
     public function getPropertyBagClass()
     {
-        $settingsName = $this->getSettingsName();
-
-        $propertyBagName = $this->getPropertyBagName();
-
-        $appNamespace = $this->getAppNamespace();
-
-        $classNamespace = $appNamespace.$settingsName.'\\'.$propertyBagName;
+        $classNamespace = $this->makeNamespace([$this, 'getPropertyBagName']);
 
         if (isset($this->propertyBagClass)) {
             return $this->propertyBagClass;
-        } else if (class_exists($classNamespace)) {
+        } elseif (class_exists($classNamespace)) {
             return $classNamespace;
         }
 
@@ -131,6 +121,22 @@ trait HasSettings
     protected function getPropertyBagName()
     {
         return $this->getShortClassName().'PropertyBag';
+    }
+
+    /**
+     * Make class namespace.
+     *
+     * @param callable $callback
+     *
+     * @return string
+     */
+    protected function makeNamespace(callable $callback)
+    {
+        $settingsName = $this->getSettingsName();
+
+        $appNamespace = $this->getAppNamespace();
+
+        return $appNamespace.$settingsName.'\\'.$callback();
     }
 
     /**

@@ -25,18 +25,6 @@ class PublishUserSettings extends Command
     protected $description = 'Publish the user settings files to the app';
 
     /**
-     * Create a new command instance.
-     *
-     * @param  DripEmailer  $drip
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
