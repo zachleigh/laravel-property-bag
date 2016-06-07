@@ -22,35 +22,35 @@ Laravel Property Bag gives your application resources savable, secure settings b
 The benefit of using this kind of settings table, as opposed to say a json blob column on the user table, is that if in the future you decide to change a setting value, a simple database query can easily take care of it. In the previous example, if weekly emails are too much trouble and you want to change to bi-weekly, a single query could simply find all instances of 'email_frequency' that have a value of 'weekly' and change the value to 'bi-weekly'. 
 
 ### Install
-  1. **Install through composer**     
+##### 1. Install through composer     
 ```
 composer require zachleigh/laravel-property-bag
 ```
 
-  2. **Register the service provider**        
+##### 2. Register the service provider        
 In Laravel's config/app.php file, add the service provider to the array with the 'providers' key.
 ```
 LaravelPropertyBag\ServiceProvider::class
 ```
 
-  3. **Publish the migration**      
+##### 3. Publish the migration      
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
 
-  4. **Publish the UserSettings directory to your app/ directory**       
+##### 4. Publish the UserSettings directory to your app/ directory       
 ```
 php artisan lpb:publish-user
 ```
 This will create a UserSettings directory containing a UserPropertyBag model and a UserSettings class where you can configure how the package works.
 
-  5. **Run the migration**      
+##### 5. Run the migration      
 ```
 php artisan migrate
 ```
 
 ### Usage
-  1. **Use the trait in the User model**      
+##### 1. Use the trait in the User model      
 ```php
 ...
 use LaravelPropertyBag\Settings\HasSettings;
@@ -63,7 +63,7 @@ class User extends Model
 }
 ```
 
-  2. **Register your settings plus their allowed values and defaults**      
+##### 2. Register your settings plus their allowed values and defaults     
 After publishing the UserSettings directory (hopefully you did this above), register settings in the UserSettings class.
 ```php
 protected $registeredSettings = [
@@ -75,7 +75,7 @@ protected $registeredSettings = [
 ```
 Each setting must contain an array of allowed values and a default value.
 
-  3. **Set the setting from the user model or from the global settings() helper**      
+##### 3. Set the setting from the user model or from the global settings() helper     
 ```php
 $user->settings()->set(['example_setting' => false]);
 // or
@@ -90,7 +90,7 @@ $user->settings()->set([
 ]);
 ```
 
-  4. **Get the set value from the user model or from the global settings() helper**     
+##### 4. Get the set value from the user model or from the global settings() helper     
 ```php
 $value = $user->settings()->get('example_setting');
 // or
@@ -138,4 +138,4 @@ protected $table = 'my_table_name';
 ```
 
 ### Contributing
-Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement, or other, please create an [issue](https://github.com/zachleigh/laravel-property-bag/issues).
+Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/laravel-property-bag/issues).
