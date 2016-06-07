@@ -2,14 +2,12 @@
 
 namespace LaravelPropertyBag\Settings;
 
-use LaravelPropertyBag\Traits\NameResolver;
+use LaravelPropertyBag\Helpers\NameResolver;
 use LaravelPropertyBag\UserSettings\UserSettings;
 use LaravelPropertyBag\UserSettings\UserPropertyBag;
 
 trait HasSettings
 {
-    use NameResolver;
-
     /**
      * Saved settings.
      *
@@ -146,7 +144,7 @@ trait HasSettings
     {
         $settingsName = $this->getSettingsName();
 
-        $appNamespace = $this->getAppNamespace();
+        $appNamespace = NameResolver::getAppNamespace();
 
         return $appNamespace.$settingsName.'\\'.$callback();
     }

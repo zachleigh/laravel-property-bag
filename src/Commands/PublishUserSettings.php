@@ -4,12 +4,10 @@ namespace LaravelPropertyBag\Commands;
 
 use File;
 use Illuminate\Console\Command;
-use LaravelPropertyBag\Traits\NameResolver;
+use LaravelPropertyBag\Helpers\NameResolver;
 
 class PublishUserSettings extends Command
 {
-    use NameResolver;
-
     /**
      * The name and signature of the console command.
      *
@@ -39,7 +37,7 @@ class PublishUserSettings extends Command
             return;
         }
 
-        $namespace = $this->getAppNamespace().'UserSettings';
+        $namespace = NameResolver::getAppNamespace().'UserSettings';
 
         $this->writePropertyBag($namespace);
 

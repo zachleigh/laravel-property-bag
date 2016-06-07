@@ -3,13 +3,11 @@
 namespace LaravelPropertyBag;
 
 use Auth;
-use LaravelPropertyBag\Traits\NameResolver;
+use LaravelPropertyBag\Helpers\NameResolver;
 use Illuminate\Support\ServiceProvider as BaseProvider;
 
 class ServiceProvider extends BaseProvider
 {
-    use NameResolver;
-
     /**
      * Register bindings in the container.
      *
@@ -17,7 +15,7 @@ class ServiceProvider extends BaseProvider
      */
     public function register()
     {
-        $namespace = $this->getUserSettingsNamespace();
+        $namespace = NameResolver::getUserSettingsNamespace();
 
         $this->app->singleton($namespace, function () {
             return Auth::user()->settings();
