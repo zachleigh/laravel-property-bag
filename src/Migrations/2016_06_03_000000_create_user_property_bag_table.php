@@ -16,7 +16,7 @@ class CreateUserPropertyBagTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->string('key');
-            $table->json('value');
+            $table->text('value');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

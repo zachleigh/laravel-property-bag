@@ -126,6 +126,58 @@ In this method, do whatever you want and return a collection of items that has t
 ]
 ```
 
+###### I want to use dynamic allowed and default values.
+No problem. Like in the above section, create your own setRegistered method in UserSettings.php and return a collection of registered settings.
+```
+/**
+ * Get the registered and default values from config or given array.
+ *
+ * @param array|null $registered
+ *
+ * @return Collection
+ */
+protected function setRegistered($registered)
+{
+    $allGroups = Auth::user()->allGroupNames();
+
+    return collect([
+        'default_group' => [
+            'allowed' => $allGroups,
+            'default' => $allGroups[0]
+        ]
+    ]);
+}
+```
+The allGroupNames function simply returns an array of group names:
+```
+/**
+ * Get array of all group names.
+ *
+ * @return array
+ */
+public function allgroupNames()
+{
+    return $this->groups->pluck('name')->all();
+}
+```
+You can then use the returned settings value to sort the items.
+```
+/**
+ * Get array of all group names with default group first.
+ *
+ * @return array
+ */
+public function sortedGroupNames()
+{
+    $defaultName = settings('default_group');
+
+    return $this->groups
+        ->sortByDesc(function ($group) use ($defaultName) {
+            return $group->name === $defaultName;
+        })->pluck('name')->all();
+}
+```
+
 ###### I don't want to call my table 'user_property_bag'
 Before migrating, alter the migration and in UserPropertyBag.php, change the $table variable.
 ```php

@@ -19,7 +19,7 @@ class CreateGroupSettingsTable extends Migration
             $table->increments('id');
             $table->integer('group_id')->unsigned()->index();
             $table->string('key');
-            $table->json('value');
+            $table->text('value');
             $table->timestamps();
 
             $table->foreign('group_id')->references('id')->on('users');

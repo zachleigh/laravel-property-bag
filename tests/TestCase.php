@@ -8,7 +8,6 @@ use Illuminate\Contracts\Console\Kernel;
 use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use LaravelPropertyBag\LaravelPropertyBagServiceProvider;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
@@ -57,7 +56,7 @@ abstract class TestCase extends IlluminateTestCase
 
         $this->migrate();
 
-        $this->registered = require(__DIR__.'/Stubs/registered.php');
+        $this->registered = require __DIR__.'/Stubs/registered.php';
     }
 
     /**
@@ -65,33 +64,36 @@ abstract class TestCase extends IlluminateTestCase
      */
     protected function migrate()
     {
-        (new CreateUsersTable)->up();
+        (new CreateUsersTable())->up();
 
-        (new CreateGroupsTable)->up();
+        (new CreateGroupsTable())->up();
 
-        (new CreateGroupSettingsTable)->up();
+        (new CreateGroupSettingsTable())->up();
 
-        require_once(
-            __DIR__.
-            '/../src/Migrations/2016_06_03_000000_create_user_property_bag_table.php'
-        );
+        require_once __DIR__.
+            '/../src/Migrations/2016_06_03_000000_create_user_property_bag_table.php';
 
         $userSettingsTable = 'CreateUserPropertyBagTable';
 
-        (new $userSettingsTable)->up();
+        (new $userSettingsTable())->up();
     }
 
     /**
      * Make a user.
      *
+     * @param string $name
+     * @param string $password
+     *
      * @return User
      */
-    protected function makeUser()
-    {
+    protected function makeUser(
+        $name = 'Sam Wilson',
+        $email = 'samwilson@example.com'
+    ) {
         return User::create([
-            'name' => 'Sam Wilson',
-            'email' => 'samwilson@example.com',
-            'password' => Hash::make('randomstring')
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make('randomstring'),
         ]);
     }
 
@@ -105,7 +107,7 @@ abstract class TestCase extends IlluminateTestCase
         return Group::create([
             'name' => 'Laravel User Group',
             'type' => 'tech',
-            'max_members' => 20
+            'max_members' => 20,
         ]);
     }
 }

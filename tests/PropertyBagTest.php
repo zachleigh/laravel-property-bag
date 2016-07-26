@@ -100,4 +100,64 @@ class PropertyBagTest extends TestCase
 
         $this->assertEquals($user->allSettingsFlat()->all(), $test3);
     }
+
+    /**
+     * @test
+     */
+    public function settings_are_set_per_user()
+    {
+        $user1 = $this->makeUser();
+
+        $user2 = $this->makeUser('Bob Sanchez', 'bob@example.com');
+
+        $user3 = $this->makeUser('Sally Smith', 'sally@example.com');
+
+        $this->actingAs($user1);
+
+        $settings = $user1->settings($this->registered);
+
+        $settings->set([
+            'test_settings1' => 'grapes'
+        ]);
+
+        $this->assertEquals($settings->all(), ['test_settings1' => 'grapes']);
+
+        $this->seeInDatabase('user_property_bag', [
+            'user_id' => $user1->resourceId(),
+            'key' => 'test_settings1',
+            'value' => json_encode('["grapes"]')
+        ]);
+
+        $this->actingAs($user2);
+
+        $settings = $user2->settings($this->registered);
+
+        $settings->set([
+            'test_settings1' => 8
+        ]);
+
+        $this->assertEquals($settings->all(), ['test_settings1' => 8]);
+
+        $this->seeInDatabase('user_property_bag', [
+            'user_id' => $user2->resourceId(),
+            'key' => 'test_settings1',
+            'value' => json_encode('[8]')
+        ]);
+
+        $this->actingAs($user3);
+
+        $settings = $user3->settings($this->registered);
+
+        $settings->set([
+            'test_settings1' => 'bananas'
+        ]);
+
+        $this->assertEquals($settings->all(), ['test_settings1' => 'bananas']);
+
+        $this->seeInDatabase('user_property_bag', [
+            'user_id' => $user3->resourceId(),
+            'key' => 'test_settings1',
+            'value' => json_encode('["bananas"]')
+        ]);
+    }
 }
