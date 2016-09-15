@@ -3,6 +3,7 @@
 namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
 abstract class Settings
 {
@@ -168,6 +169,8 @@ abstract class Settings
             if ($method !== 'pass') {
                 $this->{$method}($key, $value);
             }
+        } else {
+            throw InvalidSettingsValue::settingNotAllowed($key, $value);
         }
     }
 

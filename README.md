@@ -107,7 +107,8 @@ $value = settings()->get($key);
 ```
 
 ##### set($array)
-Set array keys to associated values. Values may be of any type. Returns Settings.
+Set array keys to associated values. Values may be of any type. Returns Settings.     
+If a value is not registered in the allowed values array, a LaravelPropertyBag\Exceptions\InvalidSettingsValue will be thrown.
 ```
 settings()->set([
   'key1' => 'value1',

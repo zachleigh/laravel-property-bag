@@ -337,4 +337,23 @@ class UnitTest extends TestCase
             'test_settings3' => false
         ], $user->settings()->allSettings()->all());
     }
+
+    /**
+     * @test
+     *
+     * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
+     * @expectedExceptionMessage invalid is not a registered allowed value for test_settings1.
+     */
+    public function setting_an_unallowed_setting_value_throws_exception()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $settings = $user->settings($this->registered);
+
+        $settings->set([
+            'test_settings1' => 'invalid'
+        ]);
+    }
 }
