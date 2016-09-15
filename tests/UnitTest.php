@@ -310,7 +310,7 @@ class UnitTest extends TestCase
         $this->actingAs($user);
 
         $user->settings($this->registered);
-dd($user->settings()->all());
+
         $allowed = $user->settings()->getAllowed('test_settings1');
 
         $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed);

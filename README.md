@@ -98,6 +98,53 @@ $value = settings('example_setting');
 ```
 If the value has not been set, the registered default value will be returned.
 
+### Methods
+
+##### get($key)
+Get value for given key.
+```
+$value = settings()->get($key);
+```
+
+##### set($array)
+Set array keys to associated values. Values may be of any type.
+```
+settings()->set([
+  'key1' => 'value1',
+  'key2' => 'value2'
+]);
+```
+
+##### getDefault($key)
+Get default value for given key.
+```
+$default = settings()->getDefault($key);
+```
+
+##### getAllowed($key)
+Get allowed values for given key.
+```
+$allowed = settings()->getAllowed($key);
+```
+
+##### isDefault($key, $value)
+Return true if given value is the default value for given key.
+```
+$boolean = settings()->isDefault($key, $value);
+```
+
+##### isValid($key, $value)
+Return true if given value is allowed for given key.
+```
+$boolean = settings()->isValid($key, $value);
+```
+
+##### all()
+Return all registered settings. If user uses default value, it will not be included in output.
+```
+$allExceptDefault = settings()->all();
+```
+
 ### Advanced Configuration
 Laravel Property Bag gives you several ways to configure the package to fit your needs and wants.
 
