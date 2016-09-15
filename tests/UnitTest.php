@@ -283,4 +283,36 @@ class UnitTest extends TestCase
             'value' => json_encode('["monkey"]')
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_the_default_value()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $user->settings($this->registered);
+
+        $default = $user->settings()->getDefault('test_settings1');
+
+        $this->assertEquals('monkey', $default);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_the_allowed_values()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $user->settings($this->registered);
+dd($user->settings()->all());
+        $allowed = $user->settings()->getAllowed('test_settings1');
+
+        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed);
+    }
 }

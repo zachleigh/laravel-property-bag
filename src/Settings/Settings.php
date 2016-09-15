@@ -95,7 +95,23 @@ abstract class Settings
             return $this->registered[$key]['default'];
         }
 
-        return;
+        return null;
+    }
+
+    /**
+     * Get the allowed settings for key.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getAllowed($key)
+    {
+        if ($this->isRegistered($key)) {
+            return $this->registered[$key]['allowed'];
+        }
+
+        return null;
     }
 
     /**
