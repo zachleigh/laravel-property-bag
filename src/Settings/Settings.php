@@ -99,6 +99,18 @@ abstract class Settings
     }
 
     /**
+     * Get all defaults for settings.
+     *
+     * @return Collection
+     */
+    public function allDefaults()
+    {
+        return $this->registered->map(function ($value, $key) {
+            return $value['default'];
+        });
+    }
+
+    /**
      * Get the allowed settings for key.
      *
      * @param string $key
@@ -112,6 +124,18 @@ abstract class Settings
         }
 
         return null;
+    }
+
+    /**
+     * Get all allowed values for settings.
+     *
+     * @return Collection
+     */
+    public function allAllowed()
+    {
+        return $this->registered->map(function ($value, $key) {
+            return $value['allowed'];
+        });
     }
 
     /**
@@ -176,6 +200,24 @@ abstract class Settings
     public function all()
     {
         return $this->settings->all();
+    }
+
+    /**
+     * Return all settings used by resource, including defaults.
+     *
+     * @return Collection
+     */
+    public function allSettings()
+    {
+        $set = collect($this->all());
+
+        return $this->allDefaults()->map(function ($value, $key) use ($set) {
+            if ($set->has($key)) {
+                return $set->get($key);
+            }
+
+            return $value;
+        });
     }
 
     /**

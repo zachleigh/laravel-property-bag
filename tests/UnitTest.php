@@ -315,4 +315,26 @@ class UnitTest extends TestCase
 
         $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed);
     }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_all_the_settings_being_used()
+    {
+        $user = $this->makeUser();
+
+        $this->actingAs($user);
+
+        $settings = $user->settings($this->registered);
+
+        $settings->set([
+            'test_settings1' => 'bananas'
+        ]);
+
+        $this->assertEquals([
+            'test_settings1' => 'bananas',
+            'test_settings2' => true,
+            'test_settings3' => false
+        ], $user->settings()->allSettings()->all());
+    }
 }

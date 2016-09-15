@@ -107,7 +107,7 @@ $value = settings()->get($key);
 ```
 
 ##### set($array)
-Set array keys to associated values. Values may be of any type.
+Set array keys to associated values. Values may be of any type. Returns Settings.
 ```
 settings()->set([
   'key1' => 'value1',
@@ -121,10 +121,22 @@ Get default value for given key.
 $default = settings()->getDefault($key);
 ```
 
+##### allDefaults()
+Get all the default values for registered settings.  Returns collection.
+```
+$defaults = settings()->allDefaults();
+```
+
 ##### getAllowed($key)
 Get allowed values for given key.
 ```
 $allowed = settings()->getAllowed($key);
+```
+
+##### allAllowed()
+Get all allowed values for registered settings. Returns collection.
+```
+$allowed = settings()->allAllowed();
 ```
 
 ##### isDefault($key, $value)
@@ -140,9 +152,15 @@ $boolean = settings()->isValid($key, $value);
 ```
 
 ##### all()
-Return all registered settings. If user uses default value, it will not be included in output.
+Return all registered settings. If user uses default value, it will not be included in output. Returns array.
 ```
 $allExceptDefault = settings()->all();
+```
+
+##### allSettings()
+Returns all settings used by user, including defaults. Returns collection.
+```
+$allSettings = settings()->allSettings();
 ```
 
 ### Advanced Configuration
