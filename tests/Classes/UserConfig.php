@@ -1,17 +1,17 @@
 <?php
 
-namespace LaravelPropertyBag\UserSettings;
+namespace LaravelPropertyBag\tests\Classes;
 
 use LaravelPropertyBag\Settings\Settings;
 
-class UserSettings extends Settings
+class UserConfig
 {
     /**
-     * Primary key for the resource property bag table.
+     * Namespace of resource.
      *
      * @var string
      */
-    protected $primaryKey = 'user_id';
+    protected $namespace = '';
 
     /**
      * Registered settings for the user. Register settings by setting name. Each

@@ -3,7 +3,7 @@
 namespace LaravelPropertyBag\tests;
 
 use Illuminate\Support\Collection;
-use LaravelPropertyBag\UserSettings\UserSettings;
+use LaravelPropertyBag\Settings\Settings;
 
 class UnitTest extends TestCase
 {
@@ -16,22 +16,30 @@ class UnitTest extends TestCase
 
         $settings = $user->settings();
 
-        $this->assertInstanceOf(UserSettings::class, $settings);
+        $this->assertInstanceOf(Settings::class, $settings);
     }
 
     /**
      * @test
      */
-    public function settings_can_be_accessed_from_the_helper_function()
+    public function exception_is_thrown_when_config_file_not_found()
     {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $settings = settings();
-
-        $this->assertInstanceOf(UserSettings::class, $settings);
+        
     }
+
+    // /**
+    //  * @test
+    //  */
+    // public function settings_can_be_accessed_from_the_helper_function()
+    // {
+    //     $user = $this->makeUser();
+
+    //     $this->actingAs($user);
+
+    //     $settings = settings();
+
+    //     $this->assertInstanceOf(UserSettings::class, $settings);
+    // }
 
     /**
      * @test

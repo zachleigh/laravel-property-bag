@@ -15,4 +15,11 @@ class User extends BaseUser
      * @var string
      */
     protected $table = 'users';
+
+    /**
+     * Settings config class.
+     *
+     * @var string
+     */
+    protected $settingsConfig = 'LaravelPropertyBag\tests\Classes\UserConfig';
 }

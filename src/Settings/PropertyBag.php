@@ -1,11 +1,19 @@
 <?php
 
-namespace LaravelPropertyBag\UserSettings;
+namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
-class UserPropertyBag extends Model
+class PropertyBag extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'property_bag';
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -13,6 +21,8 @@ class UserPropertyBag extends Model
      */
     protected $fillable = [
         'user_id',
+        'resource_type',
+        'resource_id',
         'key',
         'value'
     ];
@@ -25,21 +35,4 @@ class UserPropertyBag extends Model
     protected $casts = [
         'value' => 'array'
     ];
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'user_property_bag';
-
-    /**
-     * A setting belongs to a user.
-     *
-     * @return BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

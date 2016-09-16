@@ -5,7 +5,7 @@ namespace LaravelPropertyBag\Settings;
 use Illuminate\Database\Eloquent\Model;
 use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
-abstract class Settings
+class Settings
 {
     /**
      * Resource that has settings.
@@ -41,16 +41,15 @@ abstract class Settings
     /**
      * Construct.
      *
-     * @param Model      $resource
-     * @param Collection $registered
+     * @param Class $settingsConfig
+     * @param Model $resource
      */
-    public function __construct(Model $resource, $registered = null)
+    public function __construct($settingsConfig, Model $resource)
     {
+        $this->settingsConfig = $settingsConfig;
         $this->resource = $resource;
 
-        $this->sync();
-
-        $this->registered = $this->setRegistered($registered);
+        // Set registered settings on class
     }
 
     /**
@@ -200,10 +199,10 @@ abstract class Settings
      *
      * @return array
      */
-    public function all()
-    {
-        return $this->settings->all();
-    }
+    // public function all()
+    // {
+    //     return $this->settings->all();
+    // }
 
     /**
      * Return all settings used by resource, including defaults.
