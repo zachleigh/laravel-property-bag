@@ -10,49 +10,40 @@ class UnitTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_access_the_settings_object()
+    public function a_resource_can_access_the_settings_object()
     {
-        $user = $this->makeUser();
+        $this->assertInstanceOf(Settings::class, $this->user->settings());
+    }
 
-        $settings = $user->settings();
-
-        $this->assertInstanceOf(Settings::class, $settings);
+    /**
+     * @test
+     *
+     * @expectedException LaravelPropertyBag\Exceptions\ResourceNotFound
+     * @expectedExceptionMessage Class App\Settings\AdminSettings not found.
+     */
+    public function exception_is_thrown_when_config_file_not_found()
+    {
+        $this->makeAdmin()->settings();
     }
 
     /**
      * @test
      */
-    public function exception_is_thrown_when_config_file_not_found()
+    public function settings_class_has_registered_settings()
     {
-        
+        $registered = $this->user->settings()->getRegistered();
+
+        $this->assertInstanceOf(Collection::class, $registered);
+
+        $this->assertCount(17, $registered->flatten());
     }
-
-    // /**
-    //  * @test
-    //  */
-    // public function settings_can_be_accessed_from_the_helper_function()
-    // {
-    //     $user = $this->makeUser();
-
-    //     $this->actingAs($user);
-
-    //     $settings = settings();
-
-    //     $this->assertInstanceOf(UserSettings::class, $settings);
-    // }
 
     /**
      * @test
      */
     public function a_valid_setting_key_value_pair_passes_validation()
     {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $settings = $user->settings($this->registered);
-
-        $result = $settings->isValid('test_settings1', 'bananas');
+        $result = $this->user->settings()->isValid('test_settings1', 'bananas');
 
         $this->assertTrue($result);
     }
@@ -62,13 +53,7 @@ class UnitTest extends TestCase
      */
     public function an_invalid_setting_key_fails_validation()
     {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $settings = $user->settings($this->registered);
-
-        $result = $settings->isValid('fake', true);
+        $result = $this->user->settings()->isValid('fake', true);
 
         $this->assertFalse($result);
     }
@@ -78,13 +63,7 @@ class UnitTest extends TestCase
      */
     public function an_invalid_setting_value_fails_validation()
     {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $settings = $user->settings($this->registered);
-
-        $result = $settings->isValid('test_settings2', 'ok');
+        $result = $this->user->settings()->isValid('test_settings2', 'ok');
 
         $this->assertFalse($result);
     }
@@ -92,23 +71,78 @@ class UnitTest extends TestCase
     /**
      * @test
      */
+    public function a_default_value_can_de_detected()
+    {
+        $result = $this->user->settings()->isDefault('test_settings3', false);
+
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function a_non_default_value_can_de_detected()
+    {
+        $result = $this->user->settings()->isDefault('test_settings3', true);
+
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function a_resource_can_get_the_default_value()
+    {
+        $default = $this->user->settings()->getDefault('test_settings1');
+
+        $this->assertEquals('monkey', $default);
+    }
+
+    /**
+     * @test
+     */
+    public function a_resource_can_get_all_the_default_values()
+    {
+        $defaults = $this->user->settings()->allDefaults();
+
+        $this->assertEquals([
+            "test_settings1" => "monkey",
+            "test_settings2" => true,
+            "test_settings3" => false
+        ], $defaults->all());
+    }
+
+    /**
+     * @test
+     */
+    public function a_resource_can_get_the_allowed_values()
+    {
+        $allowed = $this->user->settings()->getAllowed('test_settings1');
+
+        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed);
+    }
+
+    /**
+     * @test
+     */
+    public function a_resource_can_get_all_allowed_values()
+    {
+        $allowed = $this->user->settings()->allAllowed()->flatten();
+
+        $this->assertCount(14, $allowed);
+    }
+
+    /**
+     * @test
+     */
     public function adding_a_new_setting_creates_a_new_user_setting_record()
     {
-        $user = $this->makeUser();
+        $this->actingAs($this->user);
 
-        $this->actingAs($user);
+        $this->user->settings()->set(['test_settings3' => true]);
 
-        $settings = $user->settings($this->registered);
-
-        $this->assertEmpty($settings->all());
-
-        $settings->set(['test_settings3' => true]);
-
-        $this->assertEquals(['test_settings3' => true], $settings->all());
-
-        $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->resourceId(),
-            'key' => 'test_settings3',
+        $this->seeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
             'value' => json_encode('[true]')
         ]);
     }
@@ -116,24 +150,53 @@ class UnitTest extends TestCase
     /**
      * @test
      */
-    public function updating_a_setting_updates_the_setting()
+    public function adding_a_new_setting_refreshes_settings_on_object()
     {
-        $user = $this->makeUser();
+        $this->assertEmpty($this->user->settings()->allSaved());
 
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
-        $settings = $user->settings($this->registered);
+        $this->user->settings()->set(['test_settings3' => true]);
+        
+        $this->assertEquals(
+            ['test_settings3' => true],
+            $this->user->settings()->allSaved()->all()
+        );
+    }
 
-        $settings->set(['test_settings2' => true]);
+    /**
+     * @test
+     */
+    public function updating_a_setting_updates_the_setting_record()
+    {
+        $this->actingAs($this->user);
 
-        $settings->set(['test_settings2' => false]);
+        $settings = $this->user->settings();
 
-        $this->assertEquals(['test_settings2' => false], $settings->all());
+        $settings->set(['test_settings1' => 'bananas']);
 
-        $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->resourceId(),
-            'key' => 'test_settings2',
-            'value' => json_encode('[false]')
+        $this->assertEquals(
+            ['test_settings1' => 'bananas'],
+            $settings->allSaved()->all()
+        );
+
+        $this->seeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
+            'key' => 'test_settings1',
+            'value' => json_encode('["bananas"]')
+        ]);
+
+        $settings->set(['test_settings1' => 'grapes']);
+
+        $this->assertEquals(
+            ['test_settings1' => 'grapes'],
+            $settings->allSaved()->all()
+        );
+
+        $this->seeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
+            'key' => 'test_settings1',
+            'value' => json_encode('["grapes"]')
         ]);
     }
 
@@ -142,13 +205,11 @@ class UnitTest extends TestCase
      */
     public function a_user_can_set_many_settings_at_once()
     {
-        $user = $this->makeUser();
+        $this->actingAs($this->user);
 
-        $this->actingAs($user);
+        $settings = $this->user->settings();
 
-        $settings = $user->settings($this->registered);
-
-        $this->assertEmpty($settings->all());
+        $this->assertEmpty($settings->allSaved());
 
         $test = [
             'test_settings1' => 'grapes',
@@ -157,16 +218,16 @@ class UnitTest extends TestCase
 
         $settings->set($test);
 
-        $this->assertEquals($test, $settings->all());
+        $this->assertEquals($test, $settings->allSaved()->all());
 
-        $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->resourceId(),
+        $this->seeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
 
-        $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->resourceId(),
+        $this->seeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
             'key' => 'test_settings2',
             'value' => json_encode('[false]')
         ]);
@@ -177,31 +238,15 @@ class UnitTest extends TestCase
      */
     public function a_user_can_get_a_setting()
     {
-        $user = $this->makeUser();
+        $this->actingAs($this->user);
 
-        $this->actingAs($user);
+        $settings = $this->user->settings();
 
-        $user->settings($this->registered)->set(['test_settings2' => true]);
+        $settings->set(['test_settings2' => false]);
 
-        $result = $user->settings()->get('test_settings2');
+        $result = $settings->get('test_settings2');
 
-        $this->assertEquals(true, $result);
-    }
-
-    /**
-     * @test
-     */
-    public function a_user_can_get_a_setting_from_the_global_helper()
-    {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $user->settings($this->registered)->set(['test_settings2' => true]);
-
-        $result = settings()->get('test_settings2');
-
-        $this->assertEquals(true, $result);
+        $this->assertFalse($result);
     }
 
     /**
@@ -209,159 +254,127 @@ class UnitTest extends TestCase
      */
     public function if_the_setting_is_not_set_the_default_value_is_returned()
     {
-        $user = $this->makeUser();
+        $this->actingAs($this->user);
 
-        $this->actingAs($user);
-
-        $result = $user->settings($this->registered)->get('test_settings1');
+        $result = $this->user->settings()->get('test_settings1');
 
         $this->assertEquals('monkey', $result);
     }
 
-    /**
-     * @test
-     */
-    public function a_user_can_not_get_an_invalid_setting()
-    {
-        $user = $this->makeUser();
+    // /**
+    //  * @test
+    //  */
+    // public function a_user_can_not_get_an_invalid_setting()
+    // {
+    //     $user = $this->makeUser();
 
-        $this->actingAs($user);
+    //     $this->actingAs($user);
 
-        $result = $user->settings($this->registered)->get('invalid_setting');
+    //     $result = $user->settings($this->registered)->get('invalid_setting');
 
-        $this->assertNull($result);
-    }
+    //     $this->assertNull($result);
+    // }
 
-    /**
-     * @test
-     */
-    public function settings_can_be_registered_on_settings_class()
-    {
-        $group = $this->makeGroup();
+    // /**
+    //  * @test
+    //  */
+    // public function settings_can_be_registered_on_settings_class()
+    // {
+    //     $group = $this->makeGroup();
 
-        $settings = $group->settings();
+    //     $settings = $group->settings();
 
-        $this->assertTrue($settings->isRegistered('test_settings1'));
-    }
+    //     $this->assertTrue($settings->isRegistered('test_settings1'));
+    // }
 
-    /**
-     * @test
-     */
-    public function settings_intsance_is_persisted_on_resource_model()
-    {
-        $user = $this->makeUser();
+    // /**
+    //  * @test
+    //  */
+    // public function settings_intsance_is_persisted_on_resource_model()
+    // {
+    //     $user = $this->makeUser();
 
-        $this->actingAs($user);
+    //     $this->actingAs($user);
 
-        $result = $user->settings($this->registered)->get('test_settings1');
+    //     $result = $user->settings($this->registered)->get('test_settings1');
 
-        $result = $user->settings()->get('test_settings1');
+    //     $result = $user->settings()->get('test_settings1');
 
-        $this->assertEquals('monkey', $result);
-    }
+    //     $this->assertEquals('monkey', $result);
+    // }
 
-    /**
-     * @test
-     */
-    public function if_default_value_is_set_database_entry_is_deleted()
-    {
-        $user = $this->makeUser();
+    // /**
+    //  * @test
+    //  */
+    // public function if_default_value_is_set_database_entry_is_deleted()
+    // {
+    //     $user = $this->makeUser();
 
-        $this->actingAs($user);
+    //     $this->actingAs($user);
 
-        $settings = $user->settings($this->registered);
+    //     $settings = $user->settings($this->registered);
 
-        $settings->set([
-            'test_settings1' => 'grapes'
-        ]);
+    //     $settings->set([
+    //         'test_settings1' => 'grapes'
+    //     ]);
 
-        $this->seeInDatabase('user_property_bag', [
-            'user_id' => $user->resourceId(),
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
-        ]);
+    //     $this->seeInDatabase('user_property_bag', [
+    //         'user_id' => $user->resourceId(),
+    //         'key' => 'test_settings1',
+    //         'value' => json_encode('["grapes"]')
+    //     ]);
 
-        $settings->set([
-            'test_settings1' => 'monkey'
-        ]);
+    //     $settings->set([
+    //         'test_settings1' => 'monkey'
+    //     ]);
 
-        $this->dontSeeInDatabase('user_property_bag', [
-            'user_id' => $user->resourceId(),
-            'key' => 'test_settings1',
-            'value' => json_encode('["monkey"]')
-        ]);
-    }
+    //     $this->dontSeeInDatabase('user_property_bag', [
+    //         'user_id' => $user->resourceId(),
+    //         'key' => 'test_settings1',
+    //         'value' => json_encode('["monkey"]')
+    //     ]);
+    // }
 
-    /**
-     * @test
-     */
-    public function a_user_can_get_the_default_value()
-    {
-        $user = $this->makeUser();
 
-        $this->actingAs($user);
 
-        $user->settings($this->registered);
+    // /**
+    //  * @test
+    //  */
+    // public function a_user_can_get_all_the_settings_being_used()
+    // {
+    //     $user = $this->makeUser();
 
-        $default = $user->settings()->getDefault('test_settings1');
+    //     $this->actingAs($user);
 
-        $this->assertEquals('monkey', $default);
-    }
+    //     $settings = $user->settings($this->registered);
 
-    /**
-     * @test
-     */
-    public function a_user_can_get_the_allowed_values()
-    {
-        $user = $this->makeUser();
+    //     $settings->set([
+    //         'test_settings1' => 'bananas'
+    //     ]);
 
-        $this->actingAs($user);
+    //     $this->assertEquals([
+    //         'test_settings1' => 'bananas',
+    //         'test_settings2' => true,
+    //         'test_settings3' => false
+    //     ], $user->settings()->allSettings()->all());
+    // }
 
-        $user->settings($this->registered);
+    // /**
+    //  * @test
+    //  *
+    //  * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
+    //  * @expectedExceptionMessage invalid is not a registered allowed value for test_settings1.
+    //  */
+    // public function setting_an_unallowed_setting_value_throws_exception()
+    // {
+    //     $user = $this->makeUser();
 
-        $allowed = $user->settings()->getAllowed('test_settings1');
+    //     $this->actingAs($user);
 
-        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed);
-    }
+    //     $settings = $user->settings($this->registered);
 
-    /**
-     * @test
-     */
-    public function a_user_can_get_all_the_settings_being_used()
-    {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $settings = $user->settings($this->registered);
-
-        $settings->set([
-            'test_settings1' => 'bananas'
-        ]);
-
-        $this->assertEquals([
-            'test_settings1' => 'bananas',
-            'test_settings2' => true,
-            'test_settings3' => false
-        ], $user->settings()->allSettings()->all());
-    }
-
-    /**
-     * @test
-     *
-     * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
-     * @expectedExceptionMessage invalid is not a registered allowed value for test_settings1.
-     */
-    public function setting_an_unallowed_setting_value_throws_exception()
-    {
-        $user = $this->makeUser();
-
-        $this->actingAs($user);
-
-        $settings = $user->settings($this->registered);
-
-        $settings->set([
-            'test_settings1' => 'invalid'
-        ]);
-    }
+    //     $settings->set([
+    //         'test_settings1' => 'invalid'
+    //     ]);
+    // }
 }

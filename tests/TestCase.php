@@ -6,6 +6,7 @@ use Hash;
 use LaravelPropertyBag\ServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
 use LaravelPropertyBag\tests\Classes\User;
+use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
@@ -56,7 +57,7 @@ abstract class TestCase extends IlluminateTestCase
 
         $this->migrate();
 
-        $this->registered = require __DIR__.'/Stubs/registered.php';
+        $this->user = $this->makeUser();
     }
 
     /**
@@ -91,6 +92,25 @@ abstract class TestCase extends IlluminateTestCase
         $email = 'samwilson@example.com'
     ) {
         return User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make('randomstring'),
+        ]);
+    }
+
+    /**
+     * Make an admin user (should fail to get settings).
+     *
+     * @param string $name
+     * @param string $password
+     *
+     * @return Admin
+     */
+    protected function makeAdmin(
+        $name = 'Sally Makerson',
+        $email = 'sallymakerson@example.com'
+    ) {
+        return Admin::create([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make('randomstring'),

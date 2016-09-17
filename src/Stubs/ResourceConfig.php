@@ -1,8 +1,10 @@
 <?php
 
-namespace LaravelPropertyBag\Stubs;
+use LaravelPropertyBag\Settings\ResourceConfig;
 
-class ResourceConfig
+namespace {{Namespace}};
+
+class {{ClassName}} extends ResourceConfig
 {
     /**
      * Namespace of resource.

@@ -22,7 +22,7 @@ class CreateUserPropertyBagTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unique(['user_id', 'resource_type', 'resource_id']);
+            $table->unique(['user_id', 'resource_type', 'resource_id', 'key']);
         });
     }
 

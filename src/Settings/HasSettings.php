@@ -41,14 +41,12 @@ trait HasSettings
     /**
      * Get settings class for the resource.
      *
-     * @param Collection $allowed
-     *
      * @return Settings
      */
-    public function settings($allowed = null)
+    public function settings()
     {
         if (isset($this->settings)) {
-            return $settings;
+            return $this->settings;
         }
 
         $settingsConfig = $this->getSettingsConfig();
@@ -99,82 +97,6 @@ trait HasSettings
     {
         $reflection = new \ReflectionClass($this);
 
-        return $reflection;
+        return $reflection->getShortName();
     }
-
-    // /**
-    //  * Get all set settings for resource.
-    //  *
-    //  * @return Collection
-    //  */
-    // public function allSettings()
-    // {
-    //     return $this->propertyBag;
-    // }
-
-    // /**
-    //  * Get all settings as a flat collection.
-    //  *
-    //  * @return Collection
-    //  */
-    // public function allSettingsFlat()
-    // {
-    //     return $this->allSettings()->flatMap(function ($model) {
-    //         return [$model->key => json_decode($model->value)[0]];
-    //     });
-    // }
-
-    // /**
-    //  * Get the property bag class name.
-    //  *
-    //  * @return string
-    //  */
-    // public function getPropertyBagClass()
-    // {
-    //     $classNamespace = $this->makeNamespace([$this, 'getPropertyBagName']);
-
-    //     if (isset($this->propertyBagClass)) {
-    //         return $this->propertyBagClass;
-    //     } elseif (class_exists($classNamespace)) {
-    //         return $classNamespace;
-    //     }
-
-    //     return UserPropertyBag::class;
-    // }
-
-    // /**
-    //  * Get name for settings.
-    //  *
-    //  * @return string
-    //  */
-    // protected function getSettingsName()
-    // {
-    //     return $this->getShortClassName().'Settings';
-    // }
-
-    // /**
-    //  * Get name for property bag.
-    //  *
-    //  * @return string
-    //  */
-    // protected function getPropertyBagName()
-    // {
-    //     return $this->getShortClassName().'PropertyBag';
-    // }
-
-    // /**
-    //  * Make class namespace.
-    //  *
-    //  * @param callable $callback
-    //  *
-    //  * @return string
-    //  */
-    // protected function makeNamespace(callable $callback)
-    // {
-    //     $settingsName = $this->getSettingsName();
-
-    //     $appNamespace = NameResolver::getAppNamespace();
-
-    //     return $appNamespace.$settingsName.'\\'.$callback();
-    // }
 }

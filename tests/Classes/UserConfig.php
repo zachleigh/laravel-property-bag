@@ -3,8 +3,9 @@
 namespace LaravelPropertyBag\tests\Classes;
 
 use LaravelPropertyBag\Settings\Settings;
+use LaravelPropertyBag\Settings\ResourceConfig;
 
-class UserConfig
+class UserConfig extends ResourceConfig
 {
     /**
      * Namespace of resource.
@@ -21,11 +22,19 @@ class UserConfig
      * @var array
      */
     protected $registeredSettings = [
+        'test_settings1' => [
+            'allowed' => ['bananas', 'grapes', 8, 'monkey'],
+            'default' => 'monkey'
+        ],
 
-        // 'example_setting' => [
-        //     'allowed' => [true, false],
-        //     'default' => true
-        // ]
-
+        'test_settings2' => [
+            'allowed' => [true, false],
+            'default' => true
+        ],
+        
+        'test_settings3' => [
+            'allowed' => [true, false, 'true', 'false', 0, 1, '0', '1'],
+            'default' => false
+        ]
     ];
 }

@@ -9,7 +9,7 @@ class ResourceNotFound extends Exception
     /**
      * Setting config file is not found.
      *
-     * @param  string $namespace
+     * @param string $namespace
      *
      * @return static
      */
