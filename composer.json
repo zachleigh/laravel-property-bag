@@ -24,10 +24,7 @@
     "autoload": {
         "psr-4": {
             "LaravelPropertyBag\\": "src/"
-        },        
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
 
     "autoload-dev": {

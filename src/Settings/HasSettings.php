@@ -2,12 +2,8 @@
 
 namespace LaravelPropertyBag\Settings;
 
-use LaravelPropertyBag\Settings\Settings;
 use LaravelPropertyBag\Helpers\NameResolver;
-use LaravelPropertyBag\Settings\PropertyBag;
-use LaravelPropertyBag\UserSettings\UserSettings;
 use LaravelPropertyBag\Exceptions\ResourceNotFound;
-use LaravelPropertyBag\UserSettings\UserPropertyBag;
 
 trait HasSettings
 {
@@ -58,7 +54,7 @@ trait HasSettings
         }
 
         if (class_exists($fullNamespace)) {
-            return new $fullNamespace;
+            return new $fullNamespace();
         }
 
         throw ResourceNotFound::settingsConfigNotFound($fullNamespace);

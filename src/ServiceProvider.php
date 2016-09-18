@@ -15,12 +15,6 @@ class ServiceProvider extends BaseProvider
      */
     public function register()
     {
-        $namespace = NameResolver::getUserSettingsNamespace();
-
-        $this->app->singleton($namespace, function () {
-            return Auth::user()->settings();
-        });
-
         $this->registerCommands();
     }
 
@@ -31,10 +25,6 @@ class ServiceProvider extends BaseProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/config.php' => config_path('laravel-property-bag.php')
-        ], 'config');
-
         $this->publishes([
             __DIR__.'/Migrations/' => database_path('migrations')
         ], 'migrations');

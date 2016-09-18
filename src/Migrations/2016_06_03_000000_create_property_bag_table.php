@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserPropertyBagTable extends Migration
+class CreatePropertyBagTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +14,13 @@ class CreateUserPropertyBagTable extends Migration
     {
         Schema::create('property_bag', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
             $table->string('resource_type')->index();
             $table->integer('resource_id')->unsigned()->index();
-            $table->string('key');
+            $table->string('key')->index();
             $table->text('value');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unique(['user_id', 'resource_type', 'resource_id', 'key']);
+            $table->unique(['resource_type', 'resource_id', 'key']);
         });
     }
 
@@ -33,6 +31,6 @@ class CreateUserPropertyBagTable extends Migration
      */
     public function down()
     {
-        Schema::drop('user_property_bag');
+        Schema::drop('property_bag');
     }
 }

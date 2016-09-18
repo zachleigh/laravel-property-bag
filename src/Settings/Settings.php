@@ -136,7 +136,7 @@ class Settings
             return $this->getRegistered()[$key]['default'];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -182,7 +182,7 @@ class Settings
             return $this->getRegistered()[$key]['allowed'];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -236,9 +236,9 @@ class Settings
         if ($this->isValid($key, $value)) {
             if ($this->isDefault($key, $value) && $this->isSaved($key)) {
                 return $this->deleteRecord($key, $value);
-            } else if ($this->isDefault($key, $value)) {
+            } elseif ($this->isDefault($key, $value)) {
                 return;
-            } else if ($this->isSaved($key)) {
+            } elseif ($this->isSaved($key)) {
                 return $this->updateRecord($key, $value);
             }
 
@@ -261,18 +261,17 @@ class Settings
     }
 
     /**
-     * Create a new UserSettings record.
+     * Create a new PropertyBag record.
      *
      * @param string $key
      * @param mixed  $value
      *
-     * @return UserSettings
+     * @return PropertyBag
      */
     protected function createRecord($key, $value)
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'user_id' => auth()->id(),
                 'key' => $key,
                 'value' => $this->valueToJson($value),
             ])
@@ -280,12 +279,12 @@ class Settings
     }
 
     /**
-     * Update a UserSettings record.
+     * Update a PropertyBag record.
      *
      * @param string $key
      * @param mixed  $value
      *
-     * @return UserSettings
+     * @return PropertyBag
      */
     protected function updateRecord($key, $value)
     {
@@ -301,7 +300,7 @@ class Settings
     /**
      * Json encode value.
      *
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return string
      */
@@ -311,7 +310,7 @@ class Settings
     }
 
     /**
-     * Delete a UserSettings record.
+     * Delete a PropertyBag record.
      *
      * @param string $key
      * @param mixed  $value
@@ -326,14 +325,14 @@ class Settings
     /**
      * Get a property bag record by key.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return PropertyBag
      */
     protected function getByKey($key)
     {
         return $this->propertyBag()
-            ->where('user_id', auth()->id())
+            ->where('resource_id', $this->resource->id)
             ->where('key', $key)
             ->first();
     }
@@ -368,7 +367,7 @@ class Settings
     protected function getAllSettings()
     {
         return $this->propertyBag()
-            ->where('user_id', auth()->id())
+            ->where('resource_id', $this->resource->id)
             ->get();
     }
 

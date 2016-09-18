@@ -149,12 +149,11 @@ class UnitTest extends TestCase
      */
     public function adding_a_new_setting_creates_a_new_user_setting_record()
     {
-        $this->actingAs($this->user);
-
         $this->user->settings()->set(['test_settings3' => true]);
 
         $this->seeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'value' => json_encode('[true]')
         ]);
     }
@@ -193,7 +192,8 @@ class UnitTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key' => 'test_settings1',
             'value' => json_encode('["bananas"]')
         ]);
@@ -206,7 +206,8 @@ class UnitTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
@@ -233,13 +234,15 @@ class UnitTest extends TestCase
         $this->assertEquals($test, $settings->allSaved()->all());
 
         $this->seeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key' => 'test_settings2',
             'value' => json_encode('[false]')
         ]);
@@ -321,7 +324,7 @@ class UnitTest extends TestCase
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
             'key' => 'test_settings1',
             'value' => json_encode('["grapes"]')
         ]);
@@ -331,7 +334,8 @@ class UnitTest extends TestCase
         ]);
 
         $this->dontSeeInDatabase('property_bag', [
-            'user_id' => $this->user->id,
+            'resource_id' => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key' => 'test_settings1',
             'value' => json_encode('["monkey"]')
         ]);

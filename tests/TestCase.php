@@ -69,12 +69,10 @@ abstract class TestCase extends IlluminateTestCase
 
         (new CreateGroupsTable())->up();
 
-        (new CreateGroupSettingsTable())->up();
-
         require_once __DIR__.
-            '/../src/Migrations/2016_06_03_000000_create_user_property_bag_table.php';
+            '/../src/Migrations/2016_06_03_000000_create_property_bag_table.php';
 
-        $userSettingsTable = 'CreateUserPropertyBagTable';
+        $userSettingsTable = 'CreatePropertyBagTable';
 
         (new $userSettingsTable())->up();
     }
