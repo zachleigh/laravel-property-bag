@@ -4,15 +4,8 @@ namespace LaravelPropertyBag\tests\Classes;
 
 use LaravelPropertyBag\Settings\Settings;
 
-class GroupSettings extends Settings
+class GroupConfig extends Settings
 {
-    /**
-     * Primary key for the resource settings table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'group_id';
-
     /**
      * Registered settings for the user. Register settings by setting name. Each
      * setting must have an associative array set as its value that contains an

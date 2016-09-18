@@ -41,6 +41,18 @@ class UnitTest extends TestCase
     /**
      * @test
      */
+    public function settings_class_can_check_for_registered_settings()
+    {
+        $group = $this->makeGroup();
+
+        $settings = $group->settings();
+
+        $this->assertTrue($settings->isRegistered('test_settings1'));
+    }
+
+    /**
+     * @test
+     */
     public function a_valid_setting_key_value_pair_passes_validation()
     {
         $result = $this->user->settings()->isValid('test_settings1', 'bananas');
@@ -261,120 +273,82 @@ class UnitTest extends TestCase
         $this->assertEquals('monkey', $result);
     }
 
-    // /**
-    //  * @test
-    //  */
-    // public function a_user_can_not_get_an_invalid_setting()
-    // {
-    //     $user = $this->makeUser();
+    /**
+     * @test
+     */
+    public function a_user_can_get_all_the_settings_being_used()
+    {
+        $this->actingAs($this->user);
 
-    //     $this->actingAs($user);
+        $settings = $this->user->settings();
 
-    //     $result = $user->settings($this->registered)->get('invalid_setting');
+        $settings->set([
+            'test_settings1' => 'bananas'
+        ]);
 
-    //     $this->assertNull($result);
-    // }
+        $this->assertEquals([
+            'test_settings1' => 'bananas',
+            'test_settings2' => true,
+            'test_settings3' => false
+        ], $this->user->settings()->all()->all());
+    }
 
-    // /**
-    //  * @test
-    //  */
-    // public function settings_can_be_registered_on_settings_class()
-    // {
-    //     $group = $this->makeGroup();
+    /**
+     * @test
+     */
+    public function a_user_can_not_get_an_invalid_setting()
+    {
+        $this->actingAs($this->user);
 
-    //     $settings = $group->settings();
+        $settings = $this->user->settings();
 
-    //     $this->assertTrue($settings->isRegistered('test_settings1'));
-    // }
+        $result = $settings->get('invalid_setting');
 
-    // /**
-    //  * @test
-    //  */
-    // public function settings_intsance_is_persisted_on_resource_model()
-    // {
-    //     $user = $this->makeUser();
+        $this->assertNull($result);
+    }
 
-    //     $this->actingAs($user);
+    /**
+     * @test
+     */
+    public function if_default_value_is_set_database_entry_is_deleted()
+    {
+        $this->actingAs($this->user);
 
-    //     $result = $user->settings($this->registered)->get('test_settings1');
+        $settings = $this->user->settings();
 
-    //     $result = $user->settings()->get('test_settings1');
+        $settings->set([
+            'test_settings1' => 'grapes'
+        ]);
 
-    //     $this->assertEquals('monkey', $result);
-    // }
+        $this->seeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
+            'key' => 'test_settings1',
+            'value' => json_encode('["grapes"]')
+        ]);
 
-    // /**
-    //  * @test
-    //  */
-    // public function if_default_value_is_set_database_entry_is_deleted()
-    // {
-    //     $user = $this->makeUser();
+        $settings->set([
+            'test_settings1' => 'monkey'
+        ]);
 
-    //     $this->actingAs($user);
+        $this->dontSeeInDatabase('property_bag', [
+            'user_id' => $this->user->id,
+            'key' => 'test_settings1',
+            'value' => json_encode('["monkey"]')
+        ]);
+    }
 
-    //     $settings = $user->settings($this->registered);
+    /**
+     * @test
+     *
+     * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
+     * @expectedExceptionMessage invalid is not a registered allowed value for test_settings1.
+     */
+    public function setting_an_unallowed_setting_value_throws_exception()
+    {
+        $this->actingAs($this->user);
 
-    //     $settings->set([
-    //         'test_settings1' => 'grapes'
-    //     ]);
-
-    //     $this->seeInDatabase('user_property_bag', [
-    //         'user_id' => $user->resourceId(),
-    //         'key' => 'test_settings1',
-    //         'value' => json_encode('["grapes"]')
-    //     ]);
-
-    //     $settings->set([
-    //         'test_settings1' => 'monkey'
-    //     ]);
-
-    //     $this->dontSeeInDatabase('user_property_bag', [
-    //         'user_id' => $user->resourceId(),
-    //         'key' => 'test_settings1',
-    //         'value' => json_encode('["monkey"]')
-    //     ]);
-    // }
-
-
-
-    // /**
-    //  * @test
-    //  */
-    // public function a_user_can_get_all_the_settings_being_used()
-    // {
-    //     $user = $this->makeUser();
-
-    //     $this->actingAs($user);
-
-    //     $settings = $user->settings($this->registered);
-
-    //     $settings->set([
-    //         'test_settings1' => 'bananas'
-    //     ]);
-
-    //     $this->assertEquals([
-    //         'test_settings1' => 'bananas',
-    //         'test_settings2' => true,
-    //         'test_settings3' => false
-    //     ], $user->settings()->allSettings()->all());
-    // }
-
-    // /**
-    //  * @test
-    //  *
-    //  * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
-    //  * @expectedExceptionMessage invalid is not a registered allowed value for test_settings1.
-    //  */
-    // public function setting_an_unallowed_setting_value_throws_exception()
-    // {
-    //     $user = $this->makeUser();
-
-    //     $this->actingAs($user);
-
-    //     $settings = $user->settings($this->registered);
-
-    //     $settings->set([
-    //         'test_settings1' => 'invalid'
-    //     ]);
-    // }
+        $this->user->settings()->set([
+            'test_settings1' => 'invalid'
+        ]);
+    }
 }

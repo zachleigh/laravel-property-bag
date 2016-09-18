@@ -32,9 +32,9 @@ class Settings
     /**
      * Saved settings.
      *
-     * @var array
+     * @var Collection
      */
-    protected $settings = [];
+    protected $settings;
 
     /**
      * Null array for isValid method.
@@ -62,6 +62,16 @@ class Settings
     }
 
     /**
+     * Get the property bag relationshp off the resource.
+     *
+     * @return MorphMany
+     */
+    protected function propertyBag()
+    {
+        return $this->resource->propertyBag();
+    }
+
+    /**
      * Get registered settings.
      *
      * @return Collection
@@ -70,7 +80,7 @@ class Settings
     {
         return $this->registered;
     }
-    
+
     /**
      * Return true if key exists in registered settings collection.
      *
@@ -80,7 +90,7 @@ class Settings
      */
     public function isRegistered($key)
     {
-        return $this->registered->has($key);
+        return $this->getRegistered()->has($key);
     }
 
     /**
@@ -94,7 +104,7 @@ class Settings
     public function isValid($key, $value)
     {
         $settingArray = collect(
-            $this->registered->get($key, $this->nullRegistered)
+            $this->getRegistered()->get($key, $this->nullRegistered)
         );
 
         return in_array($value, $settingArray->get('allowed'), true);
@@ -123,10 +133,28 @@ class Settings
     public function getDefault($key)
     {
         if ($this->isRegistered($key)) {
-            return $this->registered[$key]['default'];
+            return $this->getRegistered()[$key]['default'];
         }
 
-        return;
+        return null;
+    }
+
+    /**
+     * Return all settings used by resource, including defaults.
+     *
+     * @return Collection
+     */
+    public function all()
+    {
+        $saved = $this->allSaved();
+
+        return $this->allDefaults()->map(function ($value, $key) use ($saved) {
+            if ($saved->has($key)) {
+                return $saved->get($key);
+            }
+
+            return $value;
+        });
     }
 
     /**
@@ -136,7 +164,7 @@ class Settings
      */
     public function allDefaults()
     {
-        return $this->registered->map(function ($value, $key) {
+        return $this->getRegistered()->map(function ($value, $key) {
             return $value['default'];
         });
     }
@@ -151,10 +179,10 @@ class Settings
     public function getAllowed($key)
     {
         if ($this->isRegistered($key)) {
-            return $this->registered[$key]['allowed'];
+            return $this->getRegistered()[$key]['allowed'];
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -164,7 +192,7 @@ class Settings
      */
     public function allAllowed()
     {
-        return $this->registered->map(function ($value, $key) {
+        return $this->getRegistered()->map(function ($value, $key) {
             return $value['allowed'];
         });
     }
@@ -206,16 +234,18 @@ class Settings
     protected function setKeyValue($key, $value)
     {
         if ($this->isValid($key, $value)) {
-            if ($this->isSaved($key)) {
-                return $this->updateRecord($key, $value);
-            } else if ($this->isDefault($key, $value)) {
+            if ($this->isDefault($key, $value) && $this->isSaved($key)) {
                 return $this->deleteRecord($key, $value);
+            } else if ($this->isDefault($key, $value)) {
+                return;
+            } else if ($this->isSaved($key)) {
+                return $this->updateRecord($key, $value);
             }
 
             return $this->createRecord($key, $value);
-        } else {
-            throw InvalidSettingsValue::settingNotAllowed($key, $value);
         }
+
+        throw InvalidSettingsValue::settingNotAllowed($key, $value);
     }
 
     /**
@@ -240,11 +270,11 @@ class Settings
      */
     protected function createRecord($key, $value)
     {
-        return $this->resource->propertyBag()->save(
+        return $this->propertyBag()->save(
             new PropertyBag([
                 'user_id' => auth()->id(),
                 'key' => $key,
-                'value' => json_encode([$value]),
+                'value' => $this->valueToJson($value),
             ])
         );
     }
@@ -261,11 +291,23 @@ class Settings
     {
         $record = $this->getByKey($key);
 
-        $record->value = json_encode([$value]);
+        $record->value = $this->valueToJson($value);
 
         $record->save();
 
         return $record;
+    }
+
+    /**
+     * Json encode value.
+     *
+     * @param  mixed $value
+     *
+     * @return string
+     */
+    protected function valueToJson($value)
+    {
+        return json_encode([$value]);
     }
 
     /**
@@ -290,7 +332,7 @@ class Settings
      */
     protected function getByKey($key)
     {
-        return $this->resource->propertyBag()
+        return $this->propertyBag()
             ->where('user_id', auth()->id())
             ->where('key', $key)
             ->first();
@@ -325,7 +367,7 @@ class Settings
      */
     protected function getAllSettings()
     {
-        return $this->resource->propertyBag()
+        return $this->propertyBag()
             ->where('user_id', auth()->id())
             ->get();
     }
@@ -343,65 +385,4 @@ class Settings
             return $this->getDefault($key);
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    // /**
-    //  * Get the type of database operation to perform for the sync.
-    //  *
-    //  * @param string $key
-    //  * @param mixed  $value
-    //  *
-    //  * @return string
-    //  */
-    // protected function getSyncType($key, $value)
-    // {
-    //     if ($this->isDefault($key, $value) && !$this->hasSetting($key)) {
-    //         return 'pass';
-    //     } elseif ($this->isDefault($key, $value)) {
-    //         return 'deleteRecord';
-    //     } elseif ($this->hasSetting($key)) {
-    //         return 'updateRecord';
-    //     }
-
-    //     return 'newRecord';
-    // }
-
-    // /**
-    //  * Return all resource settings as array.
-    //  *
-    //  * @return array
-    //  */
-    // public function all()
-    // {
-    //     return $this->settings->all();
-    // }
-
-    // /**
-    //  * Return all settings used by resource, including defaults.
-    //  *
-    //  * @return Collection
-    //  */
-    // public function allSettings()
-    // {
-    //     $set = collect($this->all());
-
-    //     return $this->allDefaults()->map(function ($value, $key) use ($set) {
-    //         if ($set->has($key)) {
-    //             return $set->get($key);
-    //         }
-
-    //         return $value;
-    //     });
-    // }
-
 }

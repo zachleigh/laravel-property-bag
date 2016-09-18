@@ -4,7 +4,6 @@ namespace LaravelPropertyBag\tests\Classes;
 
 use Illuminate\Database\Eloquent\Model;
 use LaravelPropertyBag\Settings\HasSettings;
-use LaravelPropertyBag\tests\Classes\GroupSettings;
 
 class Group extends Model
 {
@@ -18,20 +17,6 @@ class Group extends Model
     protected $table = 'groups';
 
     /**
-     * Settings class for the resource.
-     *
-     * @var string
-     */
-    protected $settingsClass = GroupSettings::class;
-
-    /**
-     * Property bag model for the resource.
-     *
-     * @var string
-     */
-    protected $propertyBagClass = GroupPropertyBag::class;
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -41,4 +26,11 @@ class Group extends Model
         'type',
         'max_members'
     ];
+    
+    /**
+     * Settings config class.
+     *
+     * @var string
+     */
+    protected $settingsConfig = 'LaravelPropertyBag\tests\Classes\UserConfig';
 }

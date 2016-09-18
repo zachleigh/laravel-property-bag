@@ -21,21 +21,11 @@ trait HasSettings
     /**
      * A resource has many settings in a property bag.
      *
-     * @return HasMany
+     * @return MorphMany
      */
     public function propertyBag()
     {
         return $this->morphMany(PropertyBag::class, 'resource');
-    }
-
-    /**
-     * Get resource id.
-     *
-     * @return int
-     */
-    public function resourceId()
-    {
-        return $this->id;
     }
 
     /**
@@ -99,4 +89,12 @@ trait HasSettings
 
         return $reflection->getShortName();
     }
+
+    // Accessors
+    // settings($key) -> if $key, return keys settings
+    // setSetting($key, $value)
+    // allSettings()
+    // defaultSetting($key) -> if $key, return that keys setting, else return all
+    // allowedSettings($key) -> same as above
+    // 
 }
