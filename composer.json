@@ -17,7 +17,7 @@
     },
 
     "require-dev": {
-        "laravel/laravel": "5.2.*",
+        "laravel/laravel": "5.3.*",
         "phpunit/phpunit": "~4.0"
     },
 

@@ -8,16 +8,14 @@ use Illuminate\Contracts\Console\Kernel;
 use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
-use LaravelPropertyBag\tests\Migrations\CreateGroupSettingsTable;
 
 abstract class TestCase extends IlluminateTestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Testing property bag register.
      *
@@ -44,7 +42,7 @@ abstract class TestCase extends IlluminateTestCase
     /**
      * Setup DB and test variables before each test.
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
