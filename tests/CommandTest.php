@@ -5,7 +5,7 @@ namespace LaravelPropertyBag\tests;
 use File;
 use Artisan;
 
-class CommandTest  extends TestCase
+class CommandTest extends TestCase
 {
     /**
      * @test
@@ -13,25 +13,17 @@ class CommandTest  extends TestCase
     public function publish_user_command_creates_settings_and_propertybag_files()
     {
         $this->assertFileNotExists(
-            __DIR__.'/../vendor/laravel/laravel/app/UserSettings/UserSettings.php'
+            __DIR__.'/../vendor/laravel/laravel/app/Settings/UserSettings.php'
         );
 
-        $this->assertFileNotExists(
-            __DIR__.'/../vendor/laravel/laravel/app/UserSettings/UserPropertyBag.php'
-        );
-
-        Artisan::call('lpb:publish-user');
+        Artisan::call('pbag:make', ['resource' => 'User']);
 
         $this->assertFileExists(
-            __DIR__.'/../vendor/laravel/laravel/app/UserSettings/UserSettings.php'
-        );
-
-        $this->assertFileExists(
-            __DIR__.'/../vendor/laravel/laravel/app/UserSettings/UserPropertyBag.php'
+            __DIR__.'/../vendor/laravel/laravel/app/Settings/UserSettings.php'
         );
 
         File::deleteDirectory(
-            __DIR__.'/../vendor/laravel/laravel/app/UserSettings'
+            __DIR__.'/../vendor/laravel/laravel/app/Settings'
         );
     }
 }

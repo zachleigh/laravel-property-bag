@@ -45,10 +45,10 @@ class ServiceProvider extends BaseProvider
      */
     protected function registerCommands()
     {
-        $this->app->singleton('command.lpb.user', function ($app) {
-            return $app['LaravelPropertyBag\Commands\PublishUserSettings'];
+        $this->app->singleton('command.pbag.make', function ($app) {
+            return $app['LaravelPropertyBag\Commands\PublishSettingsConfig'];
         });
 
-        $this->commands('command.lpb.user');
+        $this->commands('command.pbag.make');
     }
 }
