@@ -5,7 +5,7 @@ namespace LaravelPropertyBag\Settings;
 class ResourceConfig
 {
     /**
-     * Return collection of registered settings.
+     * Return a collection of registered settings.
      *
      * @return Collection
      */

@@ -3,7 +3,6 @@
 namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
 class PropertyBag extends Model
 {
@@ -13,18 +12,15 @@ class PropertyBag extends Model
      * @var string
      */
     protected $table = 'property_bag';
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'resource_type',
-        'resource_id',
         'key',
-        'value'
+        'value',
     ];
 
     /**
@@ -33,6 +29,6 @@ class PropertyBag extends Model
      * @var array
      */
     protected $casts = [
-        'value' => 'array'
+        'value' => 'array',
     ];
 }

@@ -30,20 +30,11 @@ class Settings
     protected $registered;
 
     /**
-     * Saved settings.
+     * Settings saved in database. Does not include defaults.
      *
      * @var Collection
      */
     protected $settings;
-
-    /**
-     * Null array for isValid method.
-     *
-     * @var array
-     */
-    protected $nullRegistered = [
-        'allowed' => [],
-    ];
 
     /**
      * Construct.
@@ -104,7 +95,7 @@ class Settings
     public function isValid($key, $value)
     {
         $settingArray = collect(
-            $this->getRegistered()->get($key, $this->nullRegistered)
+            $this->getRegistered()->get($key, array('allowed' => []))
         );
 
         return in_array($value, $settingArray->get('allowed'), true);
@@ -245,7 +236,7 @@ class Settings
             return $this->createRecord($key, $value);
         }
 
-        throw InvalidSettingsValue::settingNotAllowed($key, $value);
+        throw InvalidSettingsValue::settingNotAllowed($key);
     }
 
     /**
@@ -338,13 +329,13 @@ class Settings
     }
 
     /**
-     * Get settings from the resource relationship.
+     * Load settings from the resource relationship on to this.
      */
     protected function sync()
     {
         $this->resource->load('propertyBag');
 
-        $this->settings = $this->getAllSettingsFlat()->all();
+        $this->settings = $this->getAllSettingsFlat();
     }
 
     /**

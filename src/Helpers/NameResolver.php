@@ -15,4 +15,18 @@ class NameResolver
     {
         return Container::getInstance()->getNamespace();
     }
+
+    /**
+     * Make config file name for resource.
+     *
+     * @param string $resourceName
+     *
+     * @return string
+     */
+    public static function makeConfigFileName($resourceName)
+    {
+        $appNamespace = static::getAppNamespace();
+
+        return $appNamespace.'Settings\\'.$resourceName.'Settings';
+    }
 }

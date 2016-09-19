@@ -50,28 +50,16 @@ trait HasSettings
         if (isset($this->settingsConfig)) {
             $fullNamespace = $this->settingsConfig;
         } else {
-            $fullNamespace = $this->getFullNamespace();
+            $className = $this->getShortClassName();
+
+            $fullNamespace = NameResolver::makeConfigFileName($className);
         }
 
         if (class_exists($fullNamespace)) {
             return new $fullNamespace();
         }
 
-        throw ResourceNotFound::settingsConfigNotFound($fullNamespace);
-    }
-
-    /**
-     * Get the full namespace of the settings config class.
-     *
-     * @return string
-     */
-    protected function getFullNamespace()
-    {
-        $appNamespace = NameResolver::getAppNamespace();
-
-        $className = $this->getShortClassName();
-
-        return $appNamespace.'Settings\\'.$className.'Settings';
+        throw ResourceNotFound::resourceConfigNotFound($fullNamespace);
     }
 
     /**

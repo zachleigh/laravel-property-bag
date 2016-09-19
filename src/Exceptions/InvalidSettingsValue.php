@@ -7,15 +7,14 @@ use Exception;
 class InvalidSettingsValue extends Exception
 {
     /**
-     * Setting value is not definied in allowed values array.
+     * Setting value is not definied in key's allowed values array.
      *
      * @param  string $key
-     * @param  mixed  $value
      *
      * @return static
      */
-    public static function settingNotAllowed($key, $value)
+    public static function settingNotAllowed($key)
     {
-        return new static("{$value} is not a registered allowed value for {$key}.");
+        return new static("Given value is not a registered allowed value for {$key}.");
     }
 }

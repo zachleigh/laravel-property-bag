@@ -1,8 +1,8 @@
 <?php
 
-use LaravelPropertyBag\Settings\ResourceConfig;
-
 namespace {{Namespace}};
+
+use LaravelPropertyBag\Settings\ResourceConfig;
 
 class {{ClassName}} extends ResourceConfig
 {

@@ -24,8 +24,6 @@ class PublishSettingsConfig extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
@@ -33,7 +31,7 @@ class PublishSettingsConfig extends Command
             File::makeDirectory(app_path('Settings'));
         }
 
-        $namespace = NameResolver::getAppNamespace().'UserSettings';
+        $namespace = NameResolver::getAppNamespace().'Settings';
 
         $resourceName = ucfirst($this->argument('resource'));
 
@@ -70,17 +68,13 @@ class PublishSettingsConfig extends Command
      * Replace mustache with replacement in file.
      *
      * @param string $mustache
-     * @param string $namespace
+     * @param string $replacement
      * @param string $file
      *
      * @return string
      */
     protected function replace($mustache, $replacement, $file)
     {
-        return str_replace(
-            $mustache,
-            $replacement,
-            $file
-        );
+        return str_replace($mustache, $replacement, $file);
     }
 }

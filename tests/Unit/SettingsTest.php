@@ -1,11 +1,12 @@
 <?php
 
-namespace LaravelPropertyBag\tests;
+namespace LaravelPropertyBag\tests\Unit;
 
 use Illuminate\Support\Collection;
+use LaravelPropertyBag\tests\TestCase;
 use LaravelPropertyBag\Settings\Settings;
 
-class UnitTest extends TestCase
+class SettingsTest extends TestCase
 {
     /**
      * @test
@@ -299,6 +300,24 @@ class UnitTest extends TestCase
     /**
      * @test
      */
+    public function a_user_can_get_all_the_settings_saved_in_the_database()
+    {
+        $this->actingAs($this->user);
+
+        $settings = $this->user->settings();
+
+        $settings->set([
+            'test_settings1' => 'bananas'
+        ]);
+
+        $this->assertEquals([
+            'test_settings1' => 'bananas'
+        ], $this->user->settings()->allSaved()->all());
+    }
+
+    /**
+     * @test
+     */
     public function a_user_can_not_get_an_invalid_setting()
     {
         $this->actingAs($this->user);
@@ -345,7 +364,7 @@ class UnitTest extends TestCase
      * @test
      *
      * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
-     * @expectedExceptionMessage invalid is not a registered allowed value for test_settings1.
+     * @expectedExceptionMessage Given value is not a registered allowed value for test_settings1.
      */
     public function setting_an_unallowed_setting_value_throws_exception()
     {
