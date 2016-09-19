@@ -165,12 +165,12 @@ class Settings
      *
      * @param string $key
      *
-     * @return mixed
+     * @return Collection
      */
     public function getAllowed($key)
     {
         if ($this->isRegistered($key)) {
-            return $this->getRegistered()[$key]['allowed'];
+            return collect($this->getRegistered()[$key]['allowed']);
         }
 
         return;

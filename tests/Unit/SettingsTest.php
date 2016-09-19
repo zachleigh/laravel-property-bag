@@ -132,7 +132,7 @@ class SettingsTest extends TestCase
     {
         $allowed = $this->user->settings()->getAllowed('test_settings1');
 
-        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed);
+        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed->all());
     }
 
     /**
