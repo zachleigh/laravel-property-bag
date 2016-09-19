@@ -2,24 +2,25 @@
 [![Build Status](https://travis-ci.org/zachleigh/laravel-property-bag.svg?branch=master)](https://travis-ci.org/zachleigh/laravel-property-bag)
 [![Latest Stable Version](https://poser.pugx.org/zachleigh/laravel-property-bag/version.svg)](//packagist.org/packages/zachleigh/laravel-property-bag) 
 [![License](https://poser.pugx.org/zachleigh/laravel-property-bag/license.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)  
-##### Simple user settings for Laravel apps. 
-  - Easily give your users settings
+##### Simple settings for Laravel apps. 
+  - Easily give multiple resources settings
   - Simple to add additional settings as your app grows
   - Set default settings and limit setting values for security
-  - Can be adapted to give other resources setting capability (to be improved in the future)
   - Fully configurable
 
 ### Contents
+  - [Upgrade Information](#upgrade-information)
   - [About](#about)
   - [Install](#install)
   - [Usage](#usage)
   - [Advanced Configuration](#advanced-configuration)
   - [Contributing](#contributing)
 
+### Upgrade Information
+Version 1.0.0 brings major changes to the package that make it incompatible with previous versions. The package was essentially rewritten making upgrade from 0.9.7 to 1.0.0 difficult at best. 
+
 ### About
-Laravel Property Bag gives your application resources savable, secure settings by using property bag database tables. A property bag is a single table with four columns: id, key, value, and resource_id. For example, a user settings property bag table would have id, key, value, and user_id columns. If the application has a user setting called 'email_frequency' with allowed values of either 'daily', 'weekly', or 'monthly' and the user with the id of 1 set the setting to 'daily', the database row would look like this: id, 'email_frequency', 'daily', 1.    
-    
-The benefit of using this kind of settings table, as opposed to say a json blob column on the user table, is that if in the future you decide to change a setting value, a simple database query can easily take care of it. In the previous example, if weekly emails are too much trouble and you want to change to bi-weekly, a single query could simply find all instances of 'email_frequency' that have a value of 'weekly' and change the value to 'bi-weekly'. 
+Laravel Property Bag gives your application resources savable, secure settings by using a single database property bag table. The benefit of using this kind of settings table, as opposed to say a json blob column on the resource table, is that if in the future you decide to change a setting value, a simple database query can easily take care of it.
 
 ### Install
 ##### 1. Install through composer     
@@ -38,19 +39,23 @@ LaravelPropertyBag\ServiceProvider::class
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
 
-##### 4. Publish the UserSettings directory to your app/ directory       
+##### 4. Create a new settings config file for your resource.      
 ```
-php artisan lpb:publish-user
+php artisan pbag:make {resource}
+``` 
+{resource} should be the name of the model you wish to add settings to. For example:
 ```
-This will create a UserSettings directory containing a UserPropertyBag model and a UserSettings class where you can configure how the package works.
+php artisan pbag:make User
+```
+This will create a Settings directory containing a UserSettings class where you can configure your settings for the User class.
 
 ##### 5. Run the migration      
 ```
-php artisan migrate
+php artisan migrate --provider="LaravelPropertyBag\ServiceProvider"
 ```
 
 ### Usage
-##### 1. Use the trait in the User model      
+##### 1. Use the trait in the model.      
 ```php
 ...
 use LaravelPropertyBag\Settings\HasSettings;
@@ -64,7 +69,7 @@ class User extends Model
 ```
 
 ##### 2. Register your settings plus their allowed values and defaults     
-After publishing the UserSettings directory (hopefully you did this above), register settings in the UserSettings class.
+After publishing the UserSettings file (hopefully you did this above), register settings in the UserSettings class.
 ```php
 protected $registeredSettings = [
     'example_setting' => [
@@ -79,7 +84,7 @@ Each setting must contain an array of allowed values and a default value.
 ```php
 $user->settings()->set(['example_setting' => false]);
 // or
-settings()->set(['example_setting' => false]);
+$user->setSettings(['example_setting' => false]);
 ```
 
 Set multiple values at a time
@@ -94,23 +99,23 @@ $user->settings()->set([
 ```php
 $value = $user->settings()->get('example_setting');
 // or
-$value = settings('example_setting');
+$value = $user->settings('example_setting');
 ```
-If the value has not been set, the registered default value will be returned.
+If the value has not been set, the registered default value will be returned. Note that default values are not stored in the database in order to limit database size.
 
 ### Methods
 
 ##### get($key)
 Get value for given key.
 ```
-$value = settings()->get($key);
+$value = $model->settings()->get($key);
 ```
 
 ##### set($array)
 Set array keys to associated values. Values may be of any type. Returns Settings.     
 If a value is not registered in the allowed values array, a LaravelPropertyBag\Exceptions\InvalidSettingsValue will be thrown.
 ```
-settings()->set([
+$model->settings()->set([
   'key1' => 'value1',
   'key2' => 'value2'
 ]);
@@ -119,65 +124,57 @@ settings()->set([
 ##### getDefault($key)
 Get default value for given key.
 ```
-$default = settings()->getDefault($key);
+$default = $model->settings()->getDefault($key);
 ```
 
 ##### allDefaults()
-Get all the default values for registered settings.  Returns collection.
+Get all the default values for registered settings. Returns collection.
 ```
-$defaults = settings()->allDefaults();
+$defaults = $model->settings()->allDefaults();
 ```
 
 ##### getAllowed($key)
-Get allowed values for given key.
+Get allowed values for given key. Returns collection.
 ```
-$allowed = settings()->getAllowed($key);
+$allowed = $model->settings()->getAllowed($key);
 ```
 
 ##### allAllowed()
 Get all allowed values for registered settings. Returns collection.
 ```
-$allowed = settings()->allAllowed();
+$allowed = $model->settings()->allAllowed();
 ```
 
 ##### isDefault($key, $value)
 Return true if given value is the default value for given key.
 ```
-$boolean = settings()->isDefault($key, $value);
+$boolean = $model->settings()->isDefault($key, $value);
 ```
 
 ##### isValid($key, $value)
 Return true if given value is allowed for given key.
 ```
-$boolean = settings()->isValid($key, $value);
+$boolean = $model->settings()->isValid($key, $value);
 ```
 
 ##### all()
-Return all registered settings. If user uses default value, it will not be included in output. Returns array.
+Return all settings for model. Returns collection.
 ```
-$allExceptDefault = settings()->all();
-```
-
-##### allSettings()
-Returns all settings used by user, including defaults. Returns collection.
-```
-$allSettings = settings()->allSettings();
+$allExceptDefault = $model->settings()->all();
 ```
 
 ### Advanced Configuration
 Laravel Property Bag gives you several ways to configure the package to fit your needs and wants.
 
 ###### I don't want to register settings as an array
-Cool. I get it. Especially if you have dozens of settings, dealing with an array can be annoying. In UserSettings.php, add the setRegistered method.
+Cool. I get it. Especially if you have dozens of settings, dealing with an array can be annoying. In the model settings config file, add the registeredSettings method.
 ```php
 /**
- * Get the registered and default values from config or given array.
- *
- * @param array|null $registered
+ * Return a collection of registered settings.
  *
  * @return Collection
  */
-protected function setRegistered($registered)
+public function registeredSettings()
 {
     // Your code
 
@@ -193,16 +190,14 @@ In this method, do whatever you want and return a collection of items that has t
 ```
 
 ###### I want to use dynamic allowed and default values.
-No problem. Like in the above section, create your own setRegistered method in UserSettings.php and return a collection of registered settings.
+No problem. Like in the above section, create your own registeredSettings method in the settings config file and return a collection of registered settings.
 ```
 /**
- * Get the registered and default values from config or given array.
- *
- * @param array|null $registered
+ * Return a collection of registered settings.
  *
  * @return Collection
  */
-protected function setRegistered($registered)
+public function registeredSettings()
 {
     $allGroups = Auth::user()->allGroupNames();
 
@@ -225,34 +220,6 @@ public function allgroupNames()
 {
     return $this->groups->pluck('name')->all();
 }
-```
-You can then use the returned settings value to sort the items.
-```
-/**
- * Get array of all group names with default group first.
- *
- * @return array
- */
-public function sortedGroupNames()
-{
-    $defaultName = settings('default_group');
-
-    return $this->groups
-        ->sortByDesc(function ($group) use ($defaultName) {
-            return $group->name === $defaultName;
-        })->pluck('name')->all();
-}
-```
-
-###### I don't want to call my table 'user_property_bag'
-Before migrating, alter the migration and in UserPropertyBag.php, change the $table variable.
-```php
-/**
- * The table associated with the model.
- *
- * @var string
- */
-protected $table = 'my_table_name';
 ```
 
 ### Contributing
