@@ -374,4 +374,30 @@ class SettingsTest extends TestCase
             'test_settings1' => 'invalid'
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function settings_can_be_registered_in_config_file_method()
+    {
+        $post = $this->makePost();
+
+        $defaults = $post->defaultSetting();
+
+        $this->assertEquals([
+            "test_settings1" => "monkey",
+            "test_settings2" => true,
+            "test_settings3" => false
+        ], $defaults->all());
+
+        $allowed = $post->allowedSetting();
+
+        $actual = [
+            'test_settings1' => ['bananas', 'grapes', 8, 'monkey',],
+            'test_settings2' => [true, false],
+            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1']
+        ];
+
+        $this->assertEquals($actual, $allowed->all());
+    }
 }

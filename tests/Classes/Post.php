@@ -5,7 +5,7 @@ namespace LaravelPropertyBag\tests\Classes;
 use Illuminate\Database\Eloquent\Model;
 use LaravelPropertyBag\Settings\HasSettings;
 
-class Group extends Model
+class Post extends Model
 {
     use HasSettings;
 
@@ -14,7 +14,7 @@ class Group extends Model
      *
      * @var string
      */
-    protected $table = 'groups';
+    protected $table = 'posts';
 
     /**
      * The attributes that are mass assignable.
@@ -22,9 +22,9 @@ class Group extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'type',
-        'max_members'
+        'title',
+        'body',
+        'user_id'
     ];
     
     /**
@@ -32,5 +32,5 @@ class Group extends Model
      *
      * @var string
      */
-    protected $settingsConfig = 'LaravelPropertyBag\tests\Classes\GroupConfig';
+    protected $settingsConfig = 'LaravelPropertyBag\tests\Classes\PostConfig';
 }

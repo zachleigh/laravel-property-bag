@@ -2,9 +2,9 @@
 
 namespace LaravelPropertyBag\tests\Classes;
 
-use LaravelPropertyBag\Settings\Settings;
+use LaravelPropertyBag\Settings\ResourceConfig;
 
-class GroupConfig extends Settings
+class GroupConfig extends ResourceConfig
 {
     /**
      * Registered settings for the user. Register settings by setting name. Each

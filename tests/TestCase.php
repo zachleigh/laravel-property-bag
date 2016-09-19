@@ -5,11 +5,13 @@ namespace LaravelPropertyBag\tests;
 use Hash;
 use LaravelPropertyBag\ServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
+use LaravelPropertyBag\tests\Classes\Post;
 use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use LaravelPropertyBag\tests\Migrations\CreatePostsTable;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
@@ -66,6 +68,8 @@ abstract class TestCase extends IlluminateTestCase
         (new CreateUsersTable())->up();
 
         (new CreateGroupsTable())->up();
+
+        (new CreatePostsTable())->up();
 
         require_once __DIR__.
             '/../src/Migrations/2016_06_03_000000_create_property_bag_table.php';
@@ -124,6 +128,20 @@ abstract class TestCase extends IlluminateTestCase
             'name' => 'Laravel User Group',
             'type' => 'tech',
             'max_members' => 20,
+        ]);
+    }
+
+    /**
+     * Make a group.
+     *
+     * @return Group
+     */
+    protected function makePost()
+    {
+        return Post::create([
+            'title' => 'Free downloads! Click now!',
+            'body' => 'Spammy message in terrible English.',
+            'user_id' => 1,
         ]);
     }
 }

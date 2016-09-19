@@ -2,7 +2,6 @@
 
 namespace LaravelPropertyBag\tests\Classes;
 
-use LaravelPropertyBag\Settings\Settings;
 use LaravelPropertyBag\Settings\ResourceConfig;
 
 class UserConfig extends ResourceConfig

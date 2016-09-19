@@ -9,7 +9,7 @@ class ResourceConfig
      *
      * @return Collection
      */
-    public function getRegisteredSettings()
+    public function registeredSettings()
     {
         return collect($this->registeredSettings);
     }

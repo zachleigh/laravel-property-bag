@@ -47,7 +47,7 @@ class Settings
         $this->settingsConfig = $settingsConfig;
         $this->resource = $resource;
 
-        $this->registered = $settingsConfig->getRegisteredSettings();
+        $this->registered = $settingsConfig->registeredSettings();
 
         $this->sync();
     }
