@@ -119,30 +119,53 @@ $model->settings()->set([
   'key1' => 'value1',
   'key2' => 'value2'
 ]);
+
+// or
+
+$model->setSettings([
+  'key1' => 'value1',
+  'key2' => 'value2'
+]);
 ```
 
 ##### getDefault($key)
 Get default value for given key.
 ```
 $default = $model->settings()->getDefault($key);
+
+// or
+
+$default = $model->defaultSetting($key);
 ```
 
 ##### allDefaults()
 Get all the default values for registered settings. Returns collection.
 ```
 $defaults = $model->settings()->allDefaults();
+
+// or
+
+$defaults = $model->defaultSetting();
 ```
 
 ##### getAllowed($key)
 Get allowed values for given key. Returns collection.
 ```
 $allowed = $model->settings()->getAllowed($key);
+
+// or
+
+$allowed = $model->allowedSetting($key);
 ```
 
 ##### allAllowed()
 Get all allowed values for registered settings. Returns collection.
 ```
 $allowed = $model->settings()->allAllowed();
+
+// or
+
+$allowed = $model->allowedSetting();
 ```
 
 ##### isDefault($key, $value)
@@ -158,9 +181,13 @@ $boolean = $model->settings()->isValid($key, $value);
 ```
 
 ##### all()
-Return all settings for model. Returns collection.
+Return all setting value's for model. Returns collection.
 ```
-$allExceptDefault = $model->settings()->all();
+$allSettings = $model->settings()->all();
+
+// or
+
+$allSettings = $model->allSettings();
 ```
 
 ### Advanced Configuration
