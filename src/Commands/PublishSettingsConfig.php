@@ -37,7 +37,7 @@ class PublishSettingsConfig extends Command
 
         $this->writeConfig($namespace, $resourceName);
 
-        $this->info('User settings files successfully created!');
+        $this->info("{$resourceName} settings file successfully created!");
     }
 
     /**
