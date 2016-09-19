@@ -72,7 +72,7 @@ abstract class TestCase extends IlluminateTestCase
         (new CreatePostsTable())->up();
 
         require_once __DIR__.
-            '/../src/Migrations/2016_06_03_000000_create_property_bag_table.php';
+            '/../src/Migrations/2016_09_19_000000_create_property_bag_table.php';
 
         $userSettingsTable = 'CreatePropertyBagTable';
 
