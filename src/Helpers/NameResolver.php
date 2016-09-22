@@ -29,4 +29,16 @@ class NameResolver
 
         return $appNamespace.'Settings\\'.$resourceName.'Settings';
     }
+
+    /**
+     * Make rules file name.
+     *
+     * @return string
+     */
+    public static function makeRulesFileName()
+    {
+        $appNamespace = static::getAppNamespace();
+
+        return $appNamespace.'Settings\\Resources\\Rules';
+    }
 }

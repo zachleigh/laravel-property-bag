@@ -39,6 +39,12 @@ class ServiceProvider extends BaseProvider
             return $app['LaravelPropertyBag\Commands\PublishSettingsConfig'];
         });
 
+        $this->app->singleton('command.pbag.rules', function ($app) {
+            return $app['LaravelPropertyBag\Commands\PublishRulesFile'];
+        });
+
         $this->commands('command.pbag.make');
+
+        $this->commands('command.pbag.rules');
     }
 }

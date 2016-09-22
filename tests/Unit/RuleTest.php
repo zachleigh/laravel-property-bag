@@ -2,6 +2,8 @@
 
 namespace LaravelPropertyBag\tests\Unit;
 
+use File;
+use Artisan;
 use LaravelPropertyBag\tests\TestCase;
 use LaravelPropertyBag\Settings\Rules\RuleValidator;
 
@@ -203,5 +205,35 @@ class RuleTest extends TestCase
         $this->assertFalse(
             $comment->settings()->isValid('range2', -16)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function rules_can_be_user_defined()
+    {
+        File::makeDirectory(app_path('Settings'));
+
+        File::makeDirectory(app_path('Settings/Resources'));
+
+        $stub = file_get_contents(
+            __DIR__.'/../Classes/Rules.php'
+        );
+
+        file_put_contents(app_path('Settings/Resources/Rules.php'), $stub);
+
+        require_once app_path('Settings/Resources/Rules.php');
+
+        $this->assertFileExists(app_path('Settings/Resources/Rules.php'));
+
+        $this->assertTrue(
+            $this->makeComment()->settings()->isValid('user_defined', 1)
+        );
+
+        $this->assertFalse(
+            $this->makeComment()->settings()->isValid('user_defined', 2)
+        );
+
+        File::deleteDirectory(app_path('Settings'));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LaravelPropertyBag\tests;
 
+use File;
 use Hash;
 use LaravelPropertyBag\ServiceProvider;
 use Illuminate\Contracts\Console\Kernel;

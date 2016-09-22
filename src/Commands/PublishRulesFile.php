@@ -5,21 +5,21 @@ namespace LaravelPropertyBag\Commands;
 use File;
 use LaravelPropertyBag\Helpers\NameResolver;
 
-class PublishSettingsConfig extends PbagCommand
+class PublishRulesFile extends PbagCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'pbag:make {resource}';
+    protected $signature = 'pbag:rules';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make a settings config file for a resource.';
+    protected $description = 'Make user-defined rules file in Settings/Resources.';
 
     /**
      * Execute the console command.
@@ -30,35 +30,32 @@ class PublishSettingsConfig extends PbagCommand
             File::makeDirectory(app_path('Settings'));
         }
 
-        $namespace = NameResolver::getAppNamespace().'Settings';
+        if (!File::exists(app_path('Settings/Resources'))) {
+            File::makeDirectory(app_path('Settings/Resources'));
+        }
 
-        $resourceName = ucfirst($this->argument('resource'));
+        $namespace = NameResolver::getAppNamespace().'Settings\\Resources';
 
-        $this->writeConfig($namespace, $resourceName);
+        $this->writeRulesFile($namespace);
 
-        $this->info("{$resourceName} settings file successfully created!");
+        $this->info("Rules file successfully created!");
     }
 
     /**
      * Write the settings file into the settings folder.
      *
      * @param string $namespace
-     * @param string $resourceName
      */
-    protected function writeConfig($namespace, $resourceName)
+    protected function writeRulesFile($namespace)
     {
         $stub = file_get_contents(
-            __DIR__.'/../Stubs/ResourceConfig.php'
+            __DIR__.'/../Stubs/Rules.php'
         );
 
         $stub = $this->replace('{{Namespace}}', $namespace, $stub);
 
-        $name = $resourceName.'Settings';
-
-        $stub = $this->replace('{{ClassName}}', $name, $stub);
-
         file_put_contents(
-            app_path("Settings/{$name}.php"),
+            app_path('Settings/Resources/Rules.php'),
             $stub
         );
     }

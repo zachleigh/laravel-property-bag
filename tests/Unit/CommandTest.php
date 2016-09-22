@@ -13,19 +13,13 @@ class CommandTest extends TestCase
      */
     public function publish_user_command_creates_settings_file()
     {
-        $this->assertFileNotExists(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings/UserSettings.php'
-        );
+        $this->assertFileNotExists(app_path('Settings/UserSettings.php'));
 
         Artisan::call('pbag:make', ['resource' => 'User']);
 
-        $this->assertFileExists(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings/UserSettings.php'
-        );
+        $this->assertFileExists(app_path('Settings/UserSettings.php'));
 
-        File::deleteDirectory(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings'
-        );
+        File::deleteDirectory(app_path('Settings'));
     }
 
     /**
@@ -35,15 +29,11 @@ class CommandTest extends TestCase
     {
         Artisan::call('pbag:make', ['resource' => 'User']);
 
-        $file = file_get_contents(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings/UserSettings.php'
-        );
+        $file = file_get_contents(app_path('Settings/UserSettings.php'));
 
         $this->assertTrue(strrpos($file, 'namespace App\Settings;') !== false);
 
-        File::deleteDirectory(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings'
-        );
+        File::deleteDirectory(app_path('Settings'));
     }
 
     /**
@@ -53,14 +43,24 @@ class CommandTest extends TestCase
     {
         Artisan::call('pbag:make', ['resource' => 'User']);
 
-        $file = file_get_contents(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings/UserSettings.php'
-        );
+        $file = file_get_contents(app_path('Settings/UserSettings.php'));
 
         $this->assertTrue(strrpos($file, 'UserSettings') !== false);
 
-        File::deleteDirectory(
-            __DIR__.'/../../vendor/laravel/laravel/app/Settings'
-        );
+        File::deleteDirectory(app_path('Settings'));
+    }
+
+    /**
+     * @test
+     */
+    public function publish_rules_file_creates_rules_file()
+    {
+        $this->assertFileNotExists(app_path('Settings/Resources/Rules.php'));
+
+        Artisan::call('pbag:rules');
+
+        $this->assertFileExists(app_path('Settings/Resources/Rules.php'));
+
+        File::deleteDirectory(app_path('Settings'));
     }
 }

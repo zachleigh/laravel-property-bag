@@ -422,6 +422,7 @@ class SettingsTest extends TestCase
         $comment->settings()->set($settings);
 
         $settings['invalid'] = null;
+        $settings['user_defined'] = true;
 
         $this->assertEquals($settings, $comment->settings()->all()->all());
     }

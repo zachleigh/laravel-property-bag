@@ -2,6 +2,7 @@
 
 namespace LaravelPropertyBag\Settings\Rules;
 
+use LaravelPropertyBag\Helpers\NameResolver;
 use LaravelPropertyBag\Exceptions\InvalidSettingsRule;
 
 class RuleValidator
@@ -20,7 +21,11 @@ class RuleValidator
 
         $method = $this->makeRuleMethod($rule);
 
-        if (method_exists(Rules::class, $method)) {
+        if ($this->userDefinedExists($method)) {
+            $class = NameResolver::makeRulesFileName();
+
+            return call_user_func_array([$class, $method], $arguments);
+        } elseif (method_exists(Rules::class, $method)) {
             return call_user_func_array([Rules::class, $method], $arguments);
         }
 
@@ -57,6 +62,21 @@ class RuleValidator
         }
 
         return 'rule'.ucfirst($rule);
+    }
+
+    /**
+     * User defined rule method exists.
+     *
+     * @param  string $method
+     *
+     * @return boolean
+     */
+    protected function userDefinedExists($method)
+    {
+        $userDefined = NameResolver::makeRulesFileName();
+
+        return class_exists($userDefined) &&
+            method_exists($userDefined, $method);
     }
 
     /**
