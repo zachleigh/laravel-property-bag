@@ -9,11 +9,13 @@ use LaravelPropertyBag\tests\Classes\Post;
 use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
+use LaravelPropertyBag\tests\Classes\Comment;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LaravelPropertyBag\tests\Migrations\CreatePostsTable;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
+use LaravelPropertyBag\tests\Migrations\CreateCommentsTable;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
 
 abstract class TestCase extends IlluminateTestCase
@@ -70,6 +72,8 @@ abstract class TestCase extends IlluminateTestCase
         (new CreateGroupsTable())->up();
 
         (new CreatePostsTable())->up();
+
+        (new CreateCommentsTable())->up();
 
         require_once __DIR__.
             '/../src/Migrations/2016_09_19_000000_create_property_bag_table.php';
@@ -142,6 +146,18 @@ abstract class TestCase extends IlluminateTestCase
             'title' => 'Free downloads! Click now!',
             'body' => 'Spammy message in terrible English.',
             'user_id' => 1,
+        ]);
+    }
+
+    /**
+     * Make a group.
+     *
+     * @return Group
+     */
+    protected function makeComment()
+    {
+        return Comment::create([
+            'body' => 'Comment body.'
         ]);
     }
 }

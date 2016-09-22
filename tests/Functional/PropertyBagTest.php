@@ -231,5 +231,26 @@ class PropertyBagTest extends TestCase
             'key' => 'test_settings3',
             'value' => json_encode('[1]')
         ]);
+
+        $comment = $this->makeComment();
+
+        $comment->setSettings([
+            'numeric' => 10,
+            'bool' => true
+        ]);
+
+        $this->seeInDatabase('property_bag', [
+            'resource_id' => $comment->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\Comment',
+            'key' => 'numeric',
+            'value' => json_encode('[10]')
+        ]);
+
+        $this->seeInDatabase('property_bag', [
+            'resource_id' => $comment->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\Comment',
+            'key' => 'bool',
+            'value' => json_encode('[true]')
+        ]);
     }
 }

@@ -400,4 +400,42 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($actual, $allowed->all());
     }
+
+    /**
+     * @test
+     */
+    public function settings_with_allowed_rule_can_be_set()
+    {
+        $comment = $this->makeComment();
+
+        $settings = [
+            'alpha' => 'abc',
+            'alphanum' => 'abc123',
+            'any' => 45,
+            'bool' => false,
+            'integer' => 10,
+            'numeric' => '87',
+            'range' => 4,
+            'range2' => -1
+        ];
+
+        $comment->settings()->set($settings);
+
+        $settings['invalid'] = null;
+
+        $this->assertEquals($settings, $comment->settings()->all()->all());
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException LaravelPropertyBag\Exceptions\InvalidSettingsValue
+     * @expectedExceptionMessage Given value is not a registered allowed value for alpha.
+     */
+    public function settings_with_invalid_rule_values_can_not_be_set()
+    {
+        $comment = $this->makeComment();
+
+        $comment->settings()->set(['alpha' => 4]);
+    }
 }

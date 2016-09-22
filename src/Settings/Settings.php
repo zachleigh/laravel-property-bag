@@ -3,6 +3,7 @@
 namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelPropertyBag\Settings\Rules\RuleValidator;
 use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
 class Settings
@@ -37,6 +38,13 @@ class Settings
     protected $settings;
 
     /**
+     * Validator for allowed rules.
+     *
+     * @var LaravelPropertyBag\Settings\Rules\RuleValidator
+     */
+    protected $ruleValidator;
+
+    /**
      * Construct.
      *
      * @param ResourceConfig $settingsConfig
@@ -47,6 +55,7 @@ class Settings
         $this->settingsConfig = $settingsConfig;
         $this->resource = $resource;
 
+        $this->ruleValidator = new RuleValidator();
         $this->registered = $settingsConfig->registeredSettings();
 
         $this->sync();
@@ -94,11 +103,18 @@ class Settings
      */
     public function isValid($key, $value)
     {
-        $settingArray = collect(
+        $settings = collect(
             $this->getRegistered()->get($key, array('allowed' => []))
         );
 
-        return in_array($value, $settingArray->get('allowed'), true);
+        $allowed = $settings->get('allowed');
+
+        if (!is_array($allowed) &&
+            $rule = $this->ruleValidator->isRule($allowed)) {
+            return $this->ruleValidator->validate($rule, $value);
+        }
+
+        return in_array($value, $allowed, true);
     }
 
     /**
