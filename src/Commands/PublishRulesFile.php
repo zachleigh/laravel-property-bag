@@ -2,7 +2,6 @@
 
 namespace LaravelPropertyBag\Commands;
 
-use File;
 use LaravelPropertyBag\Helpers\NameResolver;
 
 class PublishRulesFile extends PbagCommand
@@ -26,19 +25,15 @@ class PublishRulesFile extends PbagCommand
      */
     public function handle()
     {
-        if (!File::exists(app_path('Settings'))) {
-            File::makeDirectory(app_path('Settings'));
-        }
+        $this->makeDir('Settings');
 
-        if (!File::exists(app_path('Settings/Resources'))) {
-            File::makeDirectory(app_path('Settings/Resources'));
-        }
+        $this->makeDir('Settings/Resources');
 
         $namespace = NameResolver::getAppNamespace().'Settings\\Resources';
 
         $this->writeRulesFile($namespace);
 
-        $this->info("Rules file successfully created!");
+        $this->info('Rules file successfully created!');
     }
 
     /**

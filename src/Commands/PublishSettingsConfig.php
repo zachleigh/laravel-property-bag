@@ -2,7 +2,6 @@
 
 namespace LaravelPropertyBag\Commands;
 
-use File;
 use LaravelPropertyBag\Helpers\NameResolver;
 
 class PublishSettingsConfig extends PbagCommand
@@ -26,9 +25,7 @@ class PublishSettingsConfig extends PbagCommand
      */
     public function handle()
     {
-        if (!File::exists(app_path('Settings'))) {
-            File::makeDirectory(app_path('Settings'));
-        }
+        $this->makeDir('Settings');
 
         $namespace = NameResolver::getAppNamespace().'Settings';
 
