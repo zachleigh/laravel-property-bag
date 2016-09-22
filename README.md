@@ -13,6 +13,8 @@
   - [About](#about)
   - [Install](#install)
   - [Usage](#usage)
+  - [Methods](#methods)
+  - [Validation Rules](#validation-rules)
   - [Advanced Configuration](#advanced-configuration)
   - [Contributing](#contributing)
 
@@ -78,7 +80,7 @@ protected $registeredSettings = [
     ]
 ];
 ```
-Each setting must contain an array of allowed values and a default value.
+Each setting must contain an array of allowed values and a default value. It is also possible to use [validation rules](#validation-rules) instead of hardcoding allowed values.
 
 ##### 3. Set the setting from the user model or from the global settings() helper     
 ```php
@@ -107,14 +109,14 @@ If the value has not been set, the registered default value will be returned. No
 
 ##### get($key)
 Get value for given key.
-```
+```php
 $value = $model->settings()->get($key);
 ```
 
 ##### set($array)
 Set array keys to associated values. Values may be of any type. Returns Settings.     
 If a value is not registered in the allowed values array, a LaravelPropertyBag\Exceptions\InvalidSettingsValue will be thrown.
-```
+```php
 $model->settings()->set([
   'key1' => 'value1',
   'key2' => 'value2'
@@ -130,7 +132,7 @@ $model->setSettings([
 
 ##### getDefault($key)
 Get default value for given key.
-```
+```php
 $default = $model->settings()->getDefault($key);
 
 // or
@@ -140,7 +142,7 @@ $default = $model->defaultSetting($key);
 
 ##### allDefaults()
 Get all the default values for registered settings. Returns collection.
-```
+```php
 $defaults = $model->settings()->allDefaults();
 
 // or
@@ -150,7 +152,7 @@ $defaults = $model->defaultSetting();
 
 ##### getAllowed($key)
 Get allowed values for given key. Returns collection.
-```
+```php
 $allowed = $model->settings()->getAllowed($key);
 
 // or
@@ -160,7 +162,7 @@ $allowed = $model->allowedSetting($key);
 
 ##### allAllowed()
 Get all allowed values for registered settings. Returns collection.
-```
+```php
 $allowed = $model->settings()->allAllowed();
 
 // or
@@ -170,24 +172,109 @@ $allowed = $model->allowedSetting();
 
 ##### isDefault($key, $value)
 Return true if given value is the default value for given key.
-```
+```php
 $boolean = $model->settings()->isDefault($key, $value);
 ```
 
 ##### isValid($key, $value)
 Return true if given value is allowed for given key.
-```
+```php
 $boolean = $model->settings()->isValid($key, $value);
 ```
 
 ##### all()
 Return all setting value's for model. Returns collection.
-```
+```php
 $allSettings = $model->settings()->all();
 
 // or
 
 $allSettings = $model->allSettings();
+```
+
+### Validation Rules
+Rather than hardcoding values in an array, it is also possible to define rules that determine whether a setting value is valid. Rules are always strings and must contain a colon at both the beginning and ending of the string.
+```php
+'integer' => [
+    'allowed' => ':int:',
+    'default' => 7
+]
+```
+In this case, the setting value saved for the 'integer' key must be an integer.    
+
+Some rules require parameters. Parameters can be passed in the rule definition by using an equal sign and a comma separated list.
+```php
+'range' => [
+    'allowed' => ':range=1,5:',
+    'default' => 1
+]
+```
+
+#### Available Rules
+##### ':any:'
+Any value will be accepted.
+
+##### ':alpha:'
+Alphabetic values will be accepted.
+
+##### ':alphanum:'
+Alphanumeric values will be accepted.
+
+##### ':bool:'
+Boolean values will be accepted.
+
+##### ':int:'
+Integer values will be accepted.
+
+##### ':num:'
+Numeric values will be accepted.
+
+##### ':range=low,high:'
+Numeric values falling between or inluding the given low and high parameters will be accpeted. Example:
+```php
+'range' => [
+    'allowed' => ':range=1,10:',
+    'default' => 5
+]
+```
+The numbers 1 to 10 will be allowed.    
+
+#### User Defined Rules
+To make user defined rules, first publish the Rules file to Settings/Resources/Rules.php:
+```
+php artisan pbag:rules
+```
+Rule validation methods should be named by prepending 'rule' to the rule name. For example, if our rule is 'example', we would define it in the settings config file like this:
+```php
+'setting_name' => [
+    'allowed' => ':example:',
+    'default' => 'default'
+]
+```
+And then our method would be called 'ruleExample':
+```php
+public static function ruleExample($value)
+{
+    // do stuff
+    //
+    // return boolean;
+}
+```
+All rule methods should be static and thus should not care about object or application state. If your rule requires parameters, accept them as arguments to the method.
+```php
+'setting_name' => [
+    'allowed' => ':example=arg1,arg2:',
+    'default' => 'default'
+]
+```   
+
+```php
+public static function ruleExample($value, $arg1, $arg2)
+{
+    // do stuff
+    //
+    // return boolean;
+}
 ```
 
 ### Advanced Configuration
@@ -218,7 +305,7 @@ In this method, do whatever you want and return a collection of items that has t
 
 ###### I want to use dynamic allowed and default values.
 No problem. Like in the above section, create your own registeredSettings method in the settings config file and return a collection of registered settings.
-```
+```php
 /**
  * Return a collection of registered settings.
  *
@@ -237,7 +324,7 @@ public function registeredSettings()
 }
 ```
 The allGroupNames function simply returns an array of group names:
-```
+```php
 /**
  * Get array of all group names.
  *
