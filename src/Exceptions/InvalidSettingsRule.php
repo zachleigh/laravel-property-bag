@@ -9,7 +9,8 @@ class InvalidSettingsRule extends Exception
     /**
      * Setting rule method can not be found.
      *
-     * @param  string $key
+     * @param string $rule
+     * @param string $method
      *
      * @return static
      */

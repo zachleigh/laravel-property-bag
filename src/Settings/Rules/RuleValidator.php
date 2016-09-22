@@ -67,9 +67,9 @@ class RuleValidator
     /**
      * User defined rule method exists.
      *
-     * @param  string $method
+     * @param string $method
      *
-     * @return boolean
+     * @return bool
      */
     protected function userDefinedExists($method)
     {

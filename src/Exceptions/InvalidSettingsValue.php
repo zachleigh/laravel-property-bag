@@ -9,7 +9,7 @@ class InvalidSettingsValue extends Exception
     /**
      * Setting value is not definied in key's allowed values array.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return static
      */
