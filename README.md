@@ -104,7 +104,7 @@ $value = $user->settings()->get('example_setting');
 // or
 $value = $user->settings('example_setting');
 ```
-If the value has not been set, the registered default value will be returned. Note that default values are not stored in the database in order to limit database size.
+If the value has not been set, the registered default value will be returned. **Note that default values are not stored in the database in order to limit database size.**
 
 ### Methods
 
@@ -115,8 +115,9 @@ $value = $model->settings()->get($key);
 ```
 
 ##### set($array)
-Set array keys to associated values. Values may be of any type. Returns Settings.     
-If a value is not registered in the allowed values array, a LaravelPropertyBag\Exceptions\InvalidSettingsValue will be thrown.
+Set array keys to associated values. Values may be of any type. Returns Settings.    
+**When a default value is passed to set(), it will not be stored in the database.** Don't be alarmed if your default values aren't showing up in the table.           
+If a value is not registered in the allowed values array, a LaravelPropertyBag\Exceptions\InvalidSettingsValue exception will be thrown.
 ```php
 $model->settings()->set([
   'key1' => 'value1',
