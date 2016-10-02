@@ -83,7 +83,7 @@ protected $registeredSettings = [
 ```
 Each setting must contain an array of allowed values and a default value. It is also possible to use [validation rules](#validation-rules) instead of hardcoding allowed values.
 
-##### 3. Set the setting from the user model or from the global settings() helper     
+##### 3. Set the setting from the user model     
 ```php
 $user->settings()->set(['example_setting' => false]);
 // or
@@ -98,7 +98,7 @@ $user->settings()->set([
 ]);
 ```
 
-##### 4. Get the set value from the user model or from the global settings() helper     
+##### 4. Get the set value from the user model     
 ```php
 $value = $user->settings()->get('example_setting');
 // or
