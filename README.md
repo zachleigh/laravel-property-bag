@@ -1,6 +1,7 @@
 # Laravel Property Bag   
 [![Build Status](https://travis-ci.org/zachleigh/laravel-property-bag.svg?branch=master)](https://travis-ci.org/zachleigh/laravel-property-bag)
-[![Latest Stable Version](https://poser.pugx.org/zachleigh/laravel-property-bag/version.svg)](//packagist.org/packages/zachleigh/laravel-property-bag) 
+[![Latest Stable Version](https://poser.pugx.org/zachleigh/laravel-property-bag/version.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
+[![Total Downloads](https://poser.pugx.org/zachleigh/laravel-property-bag/downloads)](https://packagist.org/packages/zachleigh/laravel-property-bag)
 [![License](https://poser.pugx.org/zachleigh/laravel-property-bag/license.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)  
 ##### Simple settings for Laravel apps. 
   - Easily give multiple resources settings
@@ -41,7 +42,12 @@ LaravelPropertyBag\ServiceProvider::class
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
 
-##### 4. Create a new settings config file for your resource.      
+##### 4. Run the migration      
+```
+php artisan migrate
+```
+
+##### 5. Create a new settings config file for your resource.      
 ```
 php artisan pbag:make {resource}
 ``` 
@@ -50,11 +56,6 @@ php artisan pbag:make {resource}
 php artisan pbag:make User
 ```
 This will create a Settings directory containing a UserSettings class where you can configure your settings for the User class.
-
-##### 5. Run the migration      
-```
-php artisan migrate --provider="LaravelPropertyBag\ServiceProvider"
-```
 
 ### Usage
 ##### 1. Use the trait in the model.      
