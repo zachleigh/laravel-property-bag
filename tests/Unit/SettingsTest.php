@@ -416,7 +416,8 @@ class SettingsTest extends TestCase
             'integer' => 10,
             'numeric' => '87',
             'range' => 4,
-            'range2' => -1
+            'range2' => -1,
+            'string' => 'test'
         ];
 
         $comment->settings()->set($settings);

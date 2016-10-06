@@ -50,6 +50,10 @@ class CommentConfig extends ResourceConfig
             'allowed' => ':range=-10,5:',
             'default' => 0
         ],
+        'string' => [
+            'allowed' => ':string:',
+            'default' => 'test'
+        ],
         'user_defined' => [
             'allowed' => ':example:',
             'default' => true

@@ -241,6 +241,9 @@ Numeric values falling between or inluding the given low and high parameters wil
 ```
 The numbers 1 to 10 will be allowed.    
 
+##### ':string:'
+Strings will be accepted.   
+
 #### User Defined Rules
 To make user defined rules, first publish the Rules file to Settings/Resources/Rules.php:
 ```
@@ -278,6 +281,8 @@ public static function ruleExample($value, $arg1, $arg2)
     // return boolean;
 }
 ```
+     
+Another option would be to validate input with Laravel's built in validation, which is much more complete that what this package offers, and then set all your setting allowed values to ':any:'.
 
 ### Advanced Configuration
 Laravel Property Bag gives you several ways to configure the package to fit your needs and wants.

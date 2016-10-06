@@ -89,4 +89,16 @@ class Rules
     {
         return ($low <= $value) && ($value <= $high);
     }
+
+    /**
+     * Return true if value is a string.
+     *
+     * @param  mixed $value
+     *
+     * @return bool
+     */
+    public static function ruleString($value)
+    {
+        return is_string($value);
+    }
 }

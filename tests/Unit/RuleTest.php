@@ -210,6 +210,26 @@ class RuleTest extends TestCase
     /**
      * @test
      */
+    public function string_rule_returns_true_for_string()
+    {
+        $this->assertTrue(
+            $this->makeComment()->settings()->isValid('string', 'string')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function string_rule_returns_false_for_non_string()
+    {
+        $this->assertFalse(
+            $this->makeComment()->settings()->isValid('string', false)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function rules_can_be_user_defined()
     {
         File::makeDirectory(app_path('Settings'));
