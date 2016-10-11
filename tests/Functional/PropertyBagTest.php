@@ -2,9 +2,7 @@
 
 namespace LaravelPropertyBag\tests\Functional;
 
-use Illuminate\Support\Collection;
 use LaravelPropertyBag\tests\TestCase;
-use LaravelPropertyBag\UserSettings\UserSettings;
 
 class PropertyBagTest extends TestCase
 {
@@ -29,10 +27,10 @@ class PropertyBagTest extends TestCase
         $this->assertEquals('grapes', $settings->get('test_settings1'));
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["grapes"]'),
         ]);
 
         $this->assertContains(false, $settings->all());
@@ -40,16 +38,16 @@ class PropertyBagTest extends TestCase
         $this->assertEquals(false, $settings->get('test_settings2'));
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings2',
-            'value' => json_encode('[false]')
+            'key'           => 'test_settings2',
+            'value'         => json_encode('[false]'),
         ]);
 
         $settings->set([
             'test_settings1' => 'bananas',
             'test_settings2' => true,
-            'test_settings3' => 'false'
+            'test_settings3' => 'false',
         ]);
 
         $this->assertContains('bananas', $settings->all());
@@ -57,10 +55,10 @@ class PropertyBagTest extends TestCase
         $this->assertEquals('bananas', $settings->get('test_settings1'));
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings1',
-            'value' => json_encode('["bananas"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["bananas"]'),
         ]);
 
         $this->assertContains(true, $settings->all());
@@ -68,9 +66,9 @@ class PropertyBagTest extends TestCase
         $this->assertEquals(true, $settings->get('test_settings2'));
 
         $this->dontSeeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings2'
+            'key'           => 'test_settings2',
         ]);
 
         $this->assertContains('false', $settings->all());
@@ -78,10 +76,10 @@ class PropertyBagTest extends TestCase
         $this->assertEquals('false', $settings->get('test_settings3'));
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings3',
-            'value' => json_encode('["false"]')
+            'key'           => 'test_settings3',
+            'value'         => json_encode('["false"]'),
         ]);
     }
 
@@ -97,7 +95,7 @@ class PropertyBagTest extends TestCase
         $user3 = $this->makeUser('Sally Smith', 'sally@example.com');
 
         $user1->settings()->set([
-            'test_settings1' => 'grapes'
+            'test_settings1' => 'grapes',
         ]);
 
         $this->assertEquals(
@@ -106,14 +104,14 @@ class PropertyBagTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $user1->id,
+            'resource_id'   => $user1->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["grapes"]'),
         ]);
 
         $user2->settings()->set([
-            'test_settings1' => 8
+            'test_settings1' => 8,
         ]);
 
         $this->assertEquals(
@@ -122,14 +120,14 @@ class PropertyBagTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $user2->id,
+            'resource_id'   => $user2->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('[8]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('[8]'),
         ]);
 
         $user3->settings()->set([
-            'test_settings1' => 'bananas'
+            'test_settings1' => 'bananas',
         ]);
 
         $this->assertEquals(
@@ -139,10 +137,10 @@ class PropertyBagTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $user3->id,
+            'resource_id'   => $user3->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["bananas"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["bananas"]'),
         ]);
 
         // Make sure the first one isn't being overwritten
@@ -152,10 +150,10 @@ class PropertyBagTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $user1->id,
+            'resource_id'   => $user1->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["grapes"]'),
         ]);
     }
 
@@ -169,7 +167,7 @@ class PropertyBagTest extends TestCase
         $groupSettings = [
             'test_settings1' => 8,
             'test_settings2' => true,
-            'test_settings3' => '0'
+            'test_settings3' => '0',
         ];
 
         $group->settings()->set($groupSettings);
@@ -177,7 +175,7 @@ class PropertyBagTest extends TestCase
         $userSettings = [
             'test_settings1' => 'monkey',
             'test_settings2' => false,
-            'test_settings3' => 1
+            'test_settings3' => 1,
         ];
 
         $this->user->settings()->set($userSettings);
@@ -188,23 +186,23 @@ class PropertyBagTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings1',
-            'value' => json_encode('[8]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('[8]'),
         ]);
 
         $this->dontSeeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings2'
+            'key'           => 'test_settings2',
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $group->id,
+            'resource_id'   => $group->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Group',
-            'key' => 'test_settings3',
-            'value' => json_encode('["0"]')
+            'key'           => 'test_settings3',
+            'value'         => json_encode('["0"]'),
         ]);
 
         $this->assertEquals(
@@ -213,44 +211,44 @@ class PropertyBagTest extends TestCase
         );
 
         $this->dontSeeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1'
+            'key'           => 'test_settings1',
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings2',
-            'value' => json_encode('[false]')
+            'key'           => 'test_settings2',
+            'value'         => json_encode('[false]'),
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings3',
-            'value' => json_encode('[1]')
+            'key'           => 'test_settings3',
+            'value'         => json_encode('[1]'),
         ]);
 
         $comment = $this->makeComment();
 
         $comment->setSettings([
             'numeric' => 10,
-            'bool' => true
+            'bool'    => true,
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $comment->id,
+            'resource_id'   => $comment->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Comment',
-            'key' => 'numeric',
-            'value' => json_encode('[10]')
+            'key'           => 'numeric',
+            'value'         => json_encode('[10]'),
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $comment->id,
+            'resource_id'   => $comment->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\Comment',
-            'key' => 'bool',
-            'value' => json_encode('[true]')
+            'key'           => 'bool',
+            'value'         => json_encode('[true]'),
         ]);
     }
 }

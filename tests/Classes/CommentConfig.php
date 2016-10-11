@@ -16,47 +16,47 @@ class CommentConfig extends ResourceConfig
     protected $registeredSettings = [
         'invalid' => [
             'allowed' => ':nope:',
-            'default' => null
+            'default' => null,
         ],
         'any' => [
             'allowed' => ':any:',
-            'default' => 'something'
+            'default' => 'something',
         ],
         'alpha' => [
             'allowed' => ':alpha:',
-            'default' => 'something'
+            'default' => 'something',
         ],
         'alphanum' => [
             'allowed' => ':alphanum:',
-            'default' => 'something'
+            'default' => 'something',
         ],
         'bool' => [
             'allowed' => ':bool:',
-            'default' => false
+            'default' => false,
         ],
         'integer' => [
             'allowed' => ':int:',
-            'default' => 7
+            'default' => 7,
         ],
         'numeric' => [
             'allowed' => ':num:',
-            'default' => 5
+            'default' => 5,
         ],
         'range' => [
             'allowed' => ':range=1,5:',
-            'default' => 1
+            'default' => 1,
         ],
         'range2' => [
             'allowed' => ':range=-10,5:',
-            'default' => 0
+            'default' => 0,
         ],
         'string' => [
             'allowed' => ':string:',
-            'default' => 'test'
+            'default' => 'test',
         ],
         'user_defined' => [
             'allowed' => ':example:',
-            'default' => true
-        ]
+            'default' => true,
+        ],
     ];
 }

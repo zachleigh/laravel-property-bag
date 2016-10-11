@@ -2,7 +2,6 @@
 
 namespace LaravelPropertyBag\tests;
 
-use File;
 use Hash;
 use LaravelPropertyBag\ServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
@@ -11,8 +10,6 @@ use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
 use LaravelPropertyBag\tests\Classes\Comment;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use LaravelPropertyBag\tests\Migrations\CreatePostsTable;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
@@ -97,8 +94,8 @@ abstract class TestCase extends IlluminateTestCase
         $email = 'samwilson@example.com'
     ) {
         return User::create([
-            'name' => $name,
-            'email' => $email,
+            'name'     => $name,
+            'email'    => $email,
             'password' => Hash::make('randomstring'),
         ]);
     }
@@ -116,8 +113,8 @@ abstract class TestCase extends IlluminateTestCase
         $email = 'sallymakerson@example.com'
     ) {
         return Admin::create([
-            'name' => $name,
-            'email' => $email,
+            'name'     => $name,
+            'email'    => $email,
             'password' => Hash::make('randomstring'),
         ]);
     }
@@ -130,8 +127,8 @@ abstract class TestCase extends IlluminateTestCase
     protected function makeGroup()
     {
         return Group::create([
-            'name' => 'Laravel User Group',
-            'type' => 'tech',
+            'name'        => 'Laravel User Group',
+            'type'        => 'tech',
             'max_members' => 20,
         ]);
     }
@@ -144,8 +141,8 @@ abstract class TestCase extends IlluminateTestCase
     protected function makePost()
     {
         return Post::create([
-            'title' => 'Free downloads! Click now!',
-            'body' => 'Spammy message in terrible English.',
+            'title'   => 'Free downloads! Click now!',
+            'body'    => 'Spammy message in terrible English.',
             'user_id' => 1,
         ]);
     }
@@ -158,7 +155,7 @@ abstract class TestCase extends IlluminateTestCase
     protected function makeComment()
     {
         return Comment::create([
-            'body' => 'Comment body.'
+            'body' => 'Comment body.',
         ]);
     }
 }

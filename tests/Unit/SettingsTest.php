@@ -119,9 +119,9 @@ class SettingsTest extends TestCase
         $defaults = $this->user->settings()->allDefaults();
 
         $this->assertEquals([
-            "test_settings1" => "monkey",
-            "test_settings2" => true,
-            "test_settings3" => false
+            'test_settings1' => 'monkey',
+            'test_settings2' => true,
+            'test_settings3' => false,
         ], $defaults->all());
     }
 
@@ -153,9 +153,9 @@ class SettingsTest extends TestCase
         $this->user->settings()->set(['test_settings3' => true]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'value' => json_encode('[true]')
+            'value'         => json_encode('[true]'),
         ]);
     }
 
@@ -169,7 +169,7 @@ class SettingsTest extends TestCase
         $this->actingAs($this->user);
 
         $this->user->settings()->set(['test_settings3' => true]);
-        
+
         $this->assertEquals(
             ['test_settings3' => true],
             $this->user->settings()->allSaved()->all()
@@ -193,10 +193,10 @@ class SettingsTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["bananas"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["bananas"]'),
         ]);
 
         $settings->set(['test_settings1' => 'grapes']);
@@ -207,10 +207,10 @@ class SettingsTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["grapes"]'),
         ]);
     }
 
@@ -235,17 +235,17 @@ class SettingsTest extends TestCase
         $this->assertEquals($test, $settings->allSaved()->all());
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["grapes"]'),
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings2',
-            'value' => json_encode('[false]')
+            'key'           => 'test_settings2',
+            'value'         => json_encode('[false]'),
         ]);
     }
 
@@ -287,13 +287,13 @@ class SettingsTest extends TestCase
         $settings = $this->user->settings();
 
         $settings->set([
-            'test_settings1' => 'bananas'
+            'test_settings1' => 'bananas',
         ]);
 
         $this->assertEquals([
             'test_settings1' => 'bananas',
             'test_settings2' => true,
-            'test_settings3' => false
+            'test_settings3' => false,
         ], $this->user->settings()->all()->all());
     }
 
@@ -307,11 +307,11 @@ class SettingsTest extends TestCase
         $settings = $this->user->settings();
 
         $settings->set([
-            'test_settings1' => 'bananas'
+            'test_settings1' => 'bananas',
         ]);
 
         $this->assertEquals([
-            'test_settings1' => 'bananas'
+            'test_settings1' => 'bananas',
         ], $this->user->settings()->allSaved()->all());
     }
 
@@ -339,24 +339,24 @@ class SettingsTest extends TestCase
         $settings = $this->user->settings();
 
         $settings->set([
-            'test_settings1' => 'grapes'
+            'test_settings1' => 'grapes',
         ]);
 
         $this->seeInDatabase('property_bag', [
             'resource_id' => $this->user->id,
-            'key' => 'test_settings1',
-            'value' => json_encode('["grapes"]')
+            'key'         => 'test_settings1',
+            'value'       => json_encode('["grapes"]'),
         ]);
 
         $settings->set([
-            'test_settings1' => 'monkey'
+            'test_settings1' => 'monkey',
         ]);
 
         $this->dontSeeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["monkey"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["monkey"]'),
         ]);
     }
 
@@ -371,7 +371,7 @@ class SettingsTest extends TestCase
         $this->actingAs($this->user);
 
         $this->user->settings()->set([
-            'test_settings1' => 'invalid'
+            'test_settings1' => 'invalid',
         ]);
     }
 
@@ -385,17 +385,17 @@ class SettingsTest extends TestCase
         $defaults = $post->defaultSetting();
 
         $this->assertEquals([
-            "test_settings1" => "monkey",
-            "test_settings2" => true,
-            "test_settings3" => false
+            'test_settings1' => 'monkey',
+            'test_settings2' => true,
+            'test_settings3' => false,
         ], $defaults->all());
 
         $allowed = $post->allowedSetting();
 
         $actual = [
-            'test_settings1' => ['bananas', 'grapes', 8, 'monkey',],
+            'test_settings1' => ['bananas', 'grapes', 8, 'monkey'],
             'test_settings2' => [true, false],
-            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1']
+            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1'],
         ];
 
         $this->assertEquals($actual, $allowed->all());
@@ -409,15 +409,15 @@ class SettingsTest extends TestCase
         $comment = $this->makeComment();
 
         $settings = [
-            'alpha' => 'abc',
+            'alpha'    => 'abc',
             'alphanum' => 'abc123',
-            'any' => 45,
-            'bool' => false,
-            'integer' => 10,
-            'numeric' => '87',
-            'range' => 4,
-            'range2' => -1,
-            'string' => 'test'
+            'any'      => 45,
+            'bool'     => false,
+            'integer'  => 10,
+            'numeric'  => '87',
+            'range'    => 4,
+            'range2'   => -1,
+            'string'   => 'test',
         ];
 
         $comment->settings()->set($settings);

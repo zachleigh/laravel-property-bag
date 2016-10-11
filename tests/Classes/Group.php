@@ -24,9 +24,9 @@ class Group extends Model
     protected $fillable = [
         'name',
         'type',
-        'max_members'
+        'max_members',
     ];
-    
+
     /**
      * Settings config class.
      *

@@ -104,7 +104,7 @@ class Settings
     public function isValid($key, $value)
     {
         $settings = collect(
-            $this->getRegistered()->get($key, array('allowed' => []))
+            $this->getRegistered()->get($key, ['allowed' => []])
         );
 
         $allowed = $settings->get('allowed');
@@ -142,8 +142,6 @@ class Settings
         if ($this->isRegistered($key)) {
             return $this->getRegistered()[$key]['default'];
         }
-
-        return;
     }
 
     /**
@@ -188,8 +186,6 @@ class Settings
         if ($this->isRegistered($key)) {
             return collect($this->getRegistered()[$key]['allowed']);
         }
-
-        return;
     }
 
     /**
@@ -279,7 +275,7 @@ class Settings
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'key' => $key,
+                'key'   => $key,
                 'value' => $this->valueToJson($value),
             ])
         );
