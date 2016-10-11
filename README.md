@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/zachleigh/laravel-property-bag.svg?branch=master)](https://travis-ci.org/zachleigh/laravel-property-bag)
 [![Latest Stable Version](https://poser.pugx.org/zachleigh/laravel-property-bag/version.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
 [![Total Downloads](https://poser.pugx.org/zachleigh/laravel-property-bag/downloads)](https://packagist.org/packages/zachleigh/laravel-property-bag)
+[![StyleCI](https://styleci.io/repos/60463173)](https://styleci.io/repos/60463173/shield?style=flat)
 [![License](https://poser.pugx.org/zachleigh/laravel-property-bag/license.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)  
 ##### Simple settings for Laravel apps. 
   - Easily give multiple resources settings
