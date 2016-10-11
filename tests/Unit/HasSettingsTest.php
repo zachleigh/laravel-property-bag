@@ -23,7 +23,7 @@ class HasSettingsTest extends TestCase
     {
         $settings = [
             'test_settings1' => 'bananas',
-            'test_settings3' => true
+            'test_settings3' => true,
         ];
 
         $this->user->setSettings($settings);
@@ -34,17 +34,17 @@ class HasSettingsTest extends TestCase
         );
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings1',
-            'value' => json_encode('["bananas"]')
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["bananas"]'),
         ]);
 
         $this->seeInDatabase('property_bag', [
-            'resource_id' => $this->user->id,
+            'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
-            'key' => 'test_settings3',
-            'value' => json_encode('[true]')
+            'key'           => 'test_settings3',
+            'value'         => json_encode('[true]'),
         ]);
     }
 
@@ -55,7 +55,7 @@ class HasSettingsTest extends TestCase
     {
         $settings = [
             'test_settings1' => 'bananas',
-            'test_settings3' => true
+            'test_settings3' => true,
         ];
 
         $this->user->setSettings($settings);
@@ -86,9 +86,9 @@ class HasSettingsTest extends TestCase
         $defaults = $this->user->defaultSetting();
 
         $this->assertEquals([
-            "test_settings1" => "monkey",
-            "test_settings2" => true,
-            "test_settings3" => false
+            'test_settings1' => 'monkey',
+            'test_settings2' => true,
+            'test_settings3' => false,
         ], $defaults->all());
     }
 
@@ -110,9 +110,9 @@ class HasSettingsTest extends TestCase
         $allowed = $this->user->allowedSetting();
 
         $actual = [
-            'test_settings1' => ['bananas', 'grapes', 8, 'monkey',],
+            'test_settings1' => ['bananas', 'grapes', 8, 'monkey'],
             'test_settings2' => [true, false],
-            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1']
+            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1'],
         ];
 
         $this->assertEquals($actual, $allowed->all());

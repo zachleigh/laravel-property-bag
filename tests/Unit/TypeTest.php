@@ -2,9 +2,7 @@
 
 namespace LaravelPropertyBag\tests\Unit;
 
-use Illuminate\Support\Collection;
 use LaravelPropertyBag\tests\TestCase;
-use LaravelPropertyBag\UserSettings\UserSettings;
 
 class TypeTest extends TestCase
 {

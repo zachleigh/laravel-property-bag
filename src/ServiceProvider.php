@@ -2,8 +2,6 @@
 
 namespace LaravelPropertyBag;
 
-use Auth;
-use LaravelPropertyBag\Helpers\NameResolver;
 use Illuminate\Support\ServiceProvider as BaseProvider;
 
 class ServiceProvider extends BaseProvider
@@ -26,7 +24,7 @@ class ServiceProvider extends BaseProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/Migrations/' => database_path('migrations')
+            __DIR__.'/Migrations/' => database_path('migrations'),
         ], 'migrations');
     }
 

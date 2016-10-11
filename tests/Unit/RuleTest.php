@@ -3,7 +3,6 @@
 namespace LaravelPropertyBag\tests\Unit;
 
 use File;
-use Artisan;
 use LaravelPropertyBag\tests\TestCase;
 use LaravelPropertyBag\Settings\Rules\RuleValidator;
 

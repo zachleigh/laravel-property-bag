@@ -93,7 +93,7 @@ class Rules
     /**
      * Return true if value is a string.
      *
-     * @param  mixed $value
+     * @param mixed $value
      *
      * @return bool
      */
