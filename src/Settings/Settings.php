@@ -229,10 +229,10 @@ class Settings
     /**
      * Return true if key is set to value.
      *
-     * @param  string  $key
-     * @param  string  $value
+     * @param string $key
+     * @param string $value
      *
-     * @return boolean
+     * @return bool
      */
     public function isSet($key, $value)
     {
@@ -242,7 +242,7 @@ class Settings
     /**
      * Reset key to default value. Return default value.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return mixed
      */
