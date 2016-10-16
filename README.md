@@ -195,6 +195,18 @@ $allSettings = $model->settings()->all();
 $allSettings = $model->allSettings();
 ```
 
+##### keyIs($key, $value)
+Return true if setting for given key equals given value.
+```
+$boolean = $model->settings()->keyIs($key, $value);
+```
+
+##### reset($key)
+Reset key to default value.
+```
+$default = $model->settings()->reset($key);
+```
+
 ### Validation Rules
 Rather than hardcoding values in an array, it is also possible to define rules that determine whether a setting value is valid. Rules are always strings and must contain a colon at both the beginning and ending of the string.
 ```php
