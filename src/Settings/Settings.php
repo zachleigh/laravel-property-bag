@@ -229,12 +229,12 @@ class Settings
     /**
      * Return true if key is set to value.
      *
-     * @param  string  $key
-     * @param  string  $value
+     * @param string $key
+     * @param string $value
      *
-     * @return boolean
+     * @return bool
      */
-    public function isSet($key, $value)
+    public function keyIs($key, $value)
     {
         return $this->get($key) === $value;
     }
@@ -242,7 +242,7 @@ class Settings
     /**
      * Reset key to default value. Return default value.
      *
-     * @param  string $key
+     * @param string $key
      *
      * @return mixed
      */
@@ -304,7 +304,7 @@ class Settings
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'key'   => $key,
+                'key' => $key,
                 'value' => $this->valueToJson($value),
             ])
         );

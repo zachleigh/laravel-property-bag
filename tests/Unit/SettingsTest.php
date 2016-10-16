@@ -444,7 +444,7 @@ class SettingsTest extends TestCase
     /**
      * @test
      */
-    public function isSet_returns_true_if_key_value_is_set()
+    public function keyIs_returns_true_if_key_value_is_set()
     {
         $this->actingAs($this->user);
 
@@ -456,14 +456,14 @@ class SettingsTest extends TestCase
         );
 
         $this->assertTrue(
-            $this->user->settings()->isSet('test_settings1', 'bananas')
+            $this->user->settings()->keyIs('test_settings1', 'bananas')
         );
     }
 
     /**
      * @test
      */
-    public function isSet_returns_false_if_key_value_is_not_set()
+    public function keyIs_returns_false_if_key_value_is_not_set()
     {
         $this->actingAs($this->user);
 
@@ -475,7 +475,7 @@ class SettingsTest extends TestCase
         );
 
         $this->assertFalse(
-            $this->user->settings()->isSet('test_settings1', 'grapes')
+            $this->user->settings()->keyIs('test_settings1', 'grapes')
         );
     }
 
