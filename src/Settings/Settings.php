@@ -304,7 +304,7 @@ class Settings
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'key' => $key,
+                'key'   => $key,
                 'value' => $this->valueToJson($value),
             ])
         );
