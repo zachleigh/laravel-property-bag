@@ -227,6 +227,35 @@ class Settings
     }
 
     /**
+     * Return true if key is set to value.
+     *
+     * @param  string  $key
+     * @param  string  $value
+     *
+     * @return boolean
+     */
+    public function isSet($key, $value)
+    {
+        return $this->get($key) === $value;
+    }
+
+    /**
+     * Reset key to default value. Return default value.
+     *
+     * @param  string $key
+     *
+     * @return mixed
+     */
+    public function reset($key)
+    {
+        $default = $this->getDefault($key);
+
+        $this->set([$key => $default]);
+
+        return $default;
+    }
+
+    /**
      * Set a value to a key in local and database settings.
      *
      * @param string $key

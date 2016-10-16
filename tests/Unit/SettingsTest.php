@@ -440,4 +440,61 @@ class SettingsTest extends TestCase
 
         $comment->settings()->set(['alpha' => 4]);
     }
+
+    /**
+     * @test
+     */
+    public function isSet_returns_true_if_key_value_is_set()
+    {
+        $this->actingAs($this->user);
+
+        $this->user->settings()->set(['test_settings1' => 'bananas']);
+
+        $this->assertEquals(
+            ['test_settings1' => 'bananas'],
+            $this->user->settings()->allSaved()->all()
+        );
+
+        $this->assertTrue(
+            $this->user->settings()->isSet('test_settings1', 'bananas')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isSet_returns_false_if_key_value_is_not_set()
+    {
+        $this->actingAs($this->user);
+
+        $this->user->settings()->set(['test_settings1' => 'bananas']);
+
+        $this->assertEquals(
+            ['test_settings1' => 'bananas'],
+            $this->user->settings()->allSaved()->all()
+        );
+
+        $this->assertFalse(
+            $this->user->settings()->isSet('test_settings1', 'grapes')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function reset_resets_setting_to_default_value()
+    {
+        $this->actingAs($this->user);
+
+        $this->user->settings()->set(['test_settings1' => 'bananas']);
+
+        $this->assertEquals(
+            ['test_settings1' => 'bananas'],
+            $this->user->settings()->allSaved()->all()
+        );
+
+        $this->user->settings()->reset('test_settings1');
+
+        $this->assertEquals('monkey', $this->user->settings('test_settings1'));
+    }
 }
