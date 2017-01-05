@@ -25,18 +25,21 @@ trait HasSettings
     }
 
     /**
-     * Get settings class for the resource or return value for given key.
+     * If passed is string, get settings class for the resource or return value
+     * for given key. If passed is array, set the key value pair.
      *
-     * @param string $key
+     * @param string|array $passed
      *
      * @return Settings|mixed
      */
-    public function settings($key = null)
+    public function settings($passed = null)
     {
-        if (!is_null($key)) {
+        if (is_array($passed)) {
+            return $this->setSettings($passed);
+        } elseif (!is_null($passed)) {
             $settings = $this->getSettingsInstance();
 
-            return $settings->get($key);
+            return $settings->get($passed);
         }
 
         return $this->getSettingsInstance();

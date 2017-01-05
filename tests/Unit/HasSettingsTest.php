@@ -19,6 +19,30 @@ class HasSettingsTest extends TestCase
     /**
      * @test
      */
+    public function if_array_is_given_to_settings_method_value_is_set()
+    {
+        $settings = [
+            'test_settings1' => 'bananas',
+        ];
+
+        $this->user->settings($settings);
+
+        $this->assertEquals(
+            $settings,
+            $this->user->settings()->allSaved()->all()
+        );
+
+        $this->seeInDatabase('property_bag', [
+            'resource_id'   => $this->user->id,
+            'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
+            'key'           => 'test_settings1',
+            'value'         => json_encode('["bananas"]'),
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function settings_can_be_set_with_from_hassettings()
     {
         $settings = [
