@@ -86,6 +86,8 @@ Each setting must contain an array of allowed values and a default value. It is 
 
 ##### 3. Set the setting from the user model     
 ```php
+$user->settings(['example_setting' => false]);
+// or
 $user->settings()->set(['example_setting' => false]);
 // or
 $user->setSettings(['example_setting' => false]);
@@ -93,7 +95,7 @@ $user->setSettings(['example_setting' => false]);
 
 Set multiple values at a time
 ```php
-$user->settings()->set([
+$user->settings([
     'example_setting' => false,
     'another_setting' => 'grey'
 ]);
@@ -101,9 +103,9 @@ $user->settings()->set([
 
 ##### 4. Get the set value from the user model     
 ```php
-$value = $user->settings()->get('example_setting');
-// or
 $value = $user->settings('example_setting');
+// or
+$value = $user->settings()->get('example_setting');
 ```
 If the value has not been set, the registered default value will be returned. **Note that default values are not stored in the database in order to limit database size.**
 
