@@ -297,7 +297,7 @@ public static function ruleExample($value, $arg1, $arg2)
 }
 ```
      
-Another option would be to validate input with Laravel's built in validation, which is much more complete that what this package offers, and then set all your setting allowed values to ':any:'.
+Another option would be to validate input with Laravel's built in validation, which is much more complete than what this package offers, and then set all your setting allowed values to ':any:'.
 
 ### Advanced Configuration
 Laravel Property Bag gives you several ways to configure the package to fit your needs and wants.
