@@ -57,6 +57,7 @@ trait HasSettings
         }
 
         $settingsConfig = $this->getSettingsConfig();
+        $settingsConfig->setResource($this);
 
         return $this->settings = new Settings($settingsConfig, $this);
     }
