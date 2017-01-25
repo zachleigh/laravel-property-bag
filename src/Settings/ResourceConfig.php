@@ -18,7 +18,7 @@ class ResourceConfig
      *
      * @param Model $resource
      */
-    function __construct(Model $resource)
+    public function __construct(Model $resource)
     {
         $this->resource = $resource;
     }
