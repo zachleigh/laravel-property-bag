@@ -32,23 +32,39 @@ Laravel Property Bag gives your application resources savable, secure settings b
 composer require zachleigh/laravel-property-bag
 ```
 
-##### 2. Register the service provider        
+#### Laravel Installation
+
+##### a. Register the service provider        
 In Laravel's config/app.php file, add the service provider to the array with the 'providers' key.
 ```
 LaravelPropertyBag\ServiceProvider::class
 ```
 
-##### 3. Publish the migration      
+##### b. Publish the migration      
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
 
-##### 4. Run the migration      
+#### Lumen Installation
+
+##### a. Enable Eloquent
+If you haven't already done so, find and uncomment `$app->withEloquent()` in `app/boostrap.php`.
+
+##### b. Register the service provider
+In Lumen's app/bootstrap.php file, add the service provider:
+```php
+$app->register(LaravelPropertyBag\ServiceProvider::class);
+```
+
+##### c. Copy migration file
+Since Lumen doesn't offer the `php artisan vendor:publish` command, you have to copy the migration file manually from the `vendor/zachleigh/laravel-property-bag/src/Migrations` directory to the `database/migrations` directory.
+
+##### 2. Run the migration      
 ```
 php artisan migrate
 ```
 
-##### 5. Create a new settings config file for your resource.      
+##### 3. Create a new settings config file for your resource.      
 ```
 php artisan pbag:make {resource}
 ``` 

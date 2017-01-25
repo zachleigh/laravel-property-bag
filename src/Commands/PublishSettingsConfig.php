@@ -55,7 +55,7 @@ class PublishSettingsConfig extends PbagCommand
         $stub = $this->replace('{{ClassName}}', $name, $stub);
 
         file_put_contents(
-            app_path("Settings/{$name}.php"),
+            base_path("app/Settings/{$name}.php"),
             $stub
         );
     }

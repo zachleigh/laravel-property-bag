@@ -50,7 +50,7 @@ class PublishRulesFile extends PbagCommand
         $stub = $this->replace('{{Namespace}}', $namespace, $stub);
 
         file_put_contents(
-            app_path('Settings/Resources/Rules.php'),
+            base_path('app/Settings/Resources/Rules.php'),
             $stub
         );
     }
