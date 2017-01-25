@@ -57,7 +57,6 @@ trait HasSettings
         }
 
         $settingsConfig = $this->getSettingsConfig();
-        $settingsConfig->setResource($this);
 
         return $this->settings = new Settings($settingsConfig, $this);
     }
@@ -78,7 +77,7 @@ trait HasSettings
         }
 
         if (class_exists($fullNamespace)) {
-            return new $fullNamespace();
+            return new $fullNamespace($this);
         }
 
         throw ResourceNotFound::resourceConfigNotFound($fullNamespace);

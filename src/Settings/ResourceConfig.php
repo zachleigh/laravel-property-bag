@@ -11,20 +11,16 @@ class ResourceConfig
      *
      * @var Model
      */
-    protected $resource;
+    private $resource;
 
     /**
-     * Sets resource.
+     * Construct.
      *
-     * @param Model $resource.
-     *
-     * @return this
+     * @param Model $resource
      */
-    public function setResource(Model $resource)
+    function __construct(Model $resource)
     {
         $this->resource = $resource;
-
-        return $this;
     }
 
     /**
