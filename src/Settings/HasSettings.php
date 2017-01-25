@@ -77,7 +77,7 @@ trait HasSettings
         }
 
         if (class_exists($fullNamespace)) {
-            return new $fullNamespace();
+            return new $fullNamespace($this);
         }
 
         throw ResourceNotFound::resourceConfigNotFound($fullNamespace);

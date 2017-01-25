@@ -3,8 +3,10 @@
 namespace LaravelPropertyBag\tests\Unit;
 
 use Illuminate\Support\Collection;
-use LaravelPropertyBag\tests\TestCase;
+use LaravelPropertyBag\Settings\ResourceConfig;
 use LaravelPropertyBag\Settings\Settings;
+use LaravelPropertyBag\tests\Classes\User;
+use LaravelPropertyBag\tests\TestCase;
 
 class SettingsTest extends TestCase
 {
@@ -37,6 +39,22 @@ class SettingsTest extends TestCase
         $this->assertInstanceOf(Collection::class, $registered);
 
         $this->assertCount(17, $registered->flatten());
+    }
+
+    /**
+     * @test
+     */
+    public function resource_config_can_access_orignal_model()
+    {
+        $resourceConfig = $this->user->settings()->getResourceConfig();
+
+        $this->assertInstanceOf(ResourceConfig::class, $resourceConfig);
+
+        $resource = $resourceConfig->getResource();
+
+        $this->assertInstanceOf(User::class, $resource);
+
+        $this->assertEquals($this->user->id, $resource->id);
     }
 
     /**
