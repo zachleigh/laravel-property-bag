@@ -381,5 +381,25 @@ public function allgroupNames()
 }
 ```
 
+You can also access the model the settings are attached to with the `getResource()` method.
+```php
+/**
+ * Return a collection of registered settings.
+ *
+ * @return Collection
+ */
+public function registeredSettings()
+{
+    $allGroups = getResource()->allGroupNames();
+
+    return collect([
+        'default_group' => [
+            'allowed' => $allGroups,
+            'default' => $allGroups[0]
+        ]
+    ]);
+}
+```
+
 ### Contributing
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/laravel-property-bag/issues).
