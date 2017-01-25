@@ -72,6 +72,16 @@ class Settings
     }
 
     /**
+     * Get resource config.
+     *
+     * @return ResourceConfig
+     */
+    public function getResourceConfig()
+    {
+        return $this->settingsConfig;
+    }
+
+    /**
      * Get registered settings.
      *
      * @return Collection
