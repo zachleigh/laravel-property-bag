@@ -21,6 +21,13 @@
   - [Contributing](#contributing)
 
 ### Upgrade Information
+##### From 1.0.* to 1.1.0
+1.1.0 adds Lumen support and support for Laravel 5.4 (thanks tzurbaev). There should be no breaking changes. If using Laravel 5.3, please use [Version 1.0.5](https://github.com/zachleigh/laravel-property-bag/tree/v1.0.5):
+```
+composer require zachleigh/laravel-property-bag:1.0.*
+```
+
+##### From 0.9.* to 1.0.0
 Version 1.0.0 brings major changes to the package that make it incompatible with previous versions. The package was essentially rewritten making upgrade from 0.9.7 to 1.0.0 difficult at best. 
 
 ### About
