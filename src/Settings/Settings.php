@@ -277,7 +277,7 @@ class Settings
     {
         if ($this->isValid($key, $value)) {
             if ($this->isDefault($key, $value) && $this->isSaved($key)) {
-                return $this->deleteRecord($key, $value);
+                return $this->deleteRecord($key);
             } elseif ($this->isDefault($key, $value)) {
                 return;
             } elseif ($this->isSaved($key)) {
@@ -355,13 +355,12 @@ class Settings
      * Delete a PropertyBag record.
      *
      * @param string $key
-     * @param mixed  $value
      *
      * @return bool
      */
-    protected function deleteRecord($key, $value)
+    protected function deleteRecord($key)
     {
-        $record = $this->getByKey($key)->delete();
+        $this->getByKey($key)->delete();
     }
 
     /**
@@ -396,7 +395,7 @@ class Settings
      */
     protected function getAllSettingsFlat()
     {
-        return $this->getAllSettings()->flatMap(function ($model) {
+        return $this->getAllSettings()->flatMap(function (Model $model) {
             return [$model->key => json_decode($model->value)[0]];
         });
     }
