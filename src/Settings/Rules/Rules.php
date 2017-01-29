@@ -19,11 +19,9 @@ class Rules
     /**
      * Return true for everything.
      *
-     * @param mixed $value
-     *
      * @return bool
      */
-    public static function ruleAny($value)
+    public static function ruleAny()
     {
         return true;
     }

@@ -179,7 +179,7 @@ class Settings
      */
     public function allDefaults()
     {
-        return $this->getRegistered()->map(function ($value, $key) {
+        return $this->getRegistered()->map(function ($value) {
             return $value['default'];
         });
     }
@@ -205,7 +205,7 @@ class Settings
      */
     public function allAllowed()
     {
-        return $this->getRegistered()->map(function ($value, $key) {
+        return $this->getRegistered()->map(function ($value) {
             return $value['allowed'];
         });
     }
@@ -230,7 +230,7 @@ class Settings
     public function set(array $attributes)
     {
         collect($attributes)->each(function ($value, $key) {
-            $this->setKeyValue($key, $value, false);
+            $this->setKeyValue($key, $value);
         });
 
         return $this->sync();
