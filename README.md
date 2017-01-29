@@ -1,9 +1,12 @@
 # Laravel Property Bag   
-[![Build Status](https://travis-ci.org/zachleigh/laravel-property-bag.svg?branch=master)](https://travis-ci.org/zachleigh/laravel-property-bag)
-[![Latest Stable Version](https://poser.pugx.org/zachleigh/laravel-property-bag/version.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
-[![Total Downloads](https://poser.pugx.org/zachleigh/laravel-property-bag/downloads)](https://packagist.org/packages/zachleigh/laravel-property-bag)
+[![Latest Stable Version](https://img.shields.io/packagist/v/zachleigh/laravel-property-bag.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
+[![Build Status](https://img.shields.io/travis/zachleigh/laravel-property-bag/master.svg)](https://travis-ci.org/zachleigh/laravel-property-bag)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/ef16332f-f7e9-4e25-be37-2a1348df2807.svg)](https://insight.sensiolabs.com/projects/ef16332f-f7e9-4e25-be37-2a1348df2807)
+[![Quality Score](https://img.shields.io/scrutinizer/g/zachleigh/laravel-property-bag.svg)](https://scrutinizer-ci.com/g/zachleigh/laravel-property-bag/)
+[![Total Downloads](https://img.shields.io/packagist/dt/zachleigh/laravel-property-bag.svg)](https://packagist.org/packages/zachleigh/laravel-property-bag)
 [![StyleCI](https://styleci.io/repos/60463173/shield?style=flat)](https://styleci.io/repos/60463173)
-[![License](https://poser.pugx.org/zachleigh/laravel-property-bag/license.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)  
+  
 ##### Simple settings for Laravel apps. 
   - Easily give multiple resources settings
   - Simple to add additional settings as your app grows
