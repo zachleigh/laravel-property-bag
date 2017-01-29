@@ -4,8 +4,8 @@
 [![Build Status](https://img.shields.io/travis/zachleigh/laravel-property-bag/master.svg)](https://travis-ci.org/zachleigh/laravel-property-bag)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/ef16332f-f7e9-4e25-be37-2a1348df2807.svg)](https://insight.sensiolabs.com/projects/ef16332f-f7e9-4e25-be37-2a1348df2807)
 [![Quality Score](https://img.shields.io/scrutinizer/g/zachleigh/laravel-property-bag.svg)](https://scrutinizer-ci.com/g/zachleigh/laravel-property-bag/)
-[![Total Downloads](https://img.shields.io/packagist/dt/zachleigh/laravel-property-bag.svg)](https://packagist.org/packages/zachleigh/laravel-property-bag)
 [![StyleCI](https://styleci.io/repos/60463173/shield?style=flat)](https://styleci.io/repos/60463173)
+[![Total Downloads](https://img.shields.io/packagist/dt/zachleigh/laravel-property-bag.svg)](https://packagist.org/packages/zachleigh/laravel-property-bag)
   
 ##### Simple settings for Laravel apps. 
   - Easily give multiple resources settings
