@@ -5,4 +5,3 @@ build:
 
 filter:
     excluded_paths: [tests/*, src/Stubs/*]
-    
