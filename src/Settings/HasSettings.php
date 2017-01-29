@@ -64,7 +64,7 @@ trait HasSettings
     /**
      * Get the settings class name.
      *
-     * @return string
+     * @return LaravelPropertyBag\Settings\ResourceConfig
      */
     protected function getSettingsConfig()
     {

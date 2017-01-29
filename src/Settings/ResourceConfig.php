@@ -14,6 +14,13 @@ class ResourceConfig
     private $resource;
 
     /**
+     * Registered settings for model.
+     *
+     * @var array
+     */
+    protected $registeredSettings = [];
+
+    /**
      * Construct.
      *
      * @param Model $resource
