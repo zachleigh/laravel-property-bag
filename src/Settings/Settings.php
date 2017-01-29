@@ -275,19 +275,19 @@ class Settings
      */
     protected function setKeyValue($key, $value)
     {
-        if ($this->isValid($key, $value)) {
-            if ($this->isDefault($key, $value) && $this->isSaved($key)) {
-                return $this->deleteRecord($key);
-            } elseif ($this->isDefault($key, $value)) {
-                return;
-            } elseif ($this->isSaved($key)) {
-                return $this->updateRecord($key, $value);
-            }
-
-            return $this->createRecord($key, $value);
+        if (!$this->isValid($key, $value)) {
+            throw InvalidSettingsValue::settingNotAllowed($key);
         }
 
-        throw InvalidSettingsValue::settingNotAllowed($key);
+        if ($this->isDefault($key, $value) && $this->isSaved($key)) {
+            return $this->deleteRecord($key);
+        } elseif ($this->isDefault($key, $value)) {
+            return;
+        } elseif ($this->isSaved($key)) {
+            return $this->updateRecord($key, $value);
+        }
+
+        return $this->createRecord($key, $value);
     }
 
     /**
