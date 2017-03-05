@@ -3,10 +3,11 @@
 namespace LaravelPropertyBag\tests\Unit;
 
 use Illuminate\Support\Collection;
-use LaravelPropertyBag\Settings\ResourceConfig;
+use LaravelPropertyBag\tests\TestCase;
 use LaravelPropertyBag\Settings\Settings;
 use LaravelPropertyBag\tests\Classes\User;
-use LaravelPropertyBag\tests\TestCase;
+use LaravelPropertyBag\Settings\ResourceConfig;
+use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
 class SettingsTest extends TestCase
 {
@@ -391,6 +392,22 @@ class SettingsTest extends TestCase
         $this->user->settings()->set([
             'test_settings1' => 'invalid',
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function invalid_setting_value_exception_should_contain_failed_key_name()
+    {
+        $this->actingAs($this->user);
+
+        try {
+            $this->user->settings()->set([
+                'test_settings1' => 'invalid',
+            ]);
+        } catch (InvalidSettingsValue $e) {
+            $this->assertEquals('test_settings1', $e->getFailedKey());
+        }
     }
 
     /**

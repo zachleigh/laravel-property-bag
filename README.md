@@ -146,7 +146,7 @@ $value = $model->settings()->get($key);
 ##### set($array)
 Set array keys to associated values. Values may be of any type. Returns Settings.    
 **When a default value is passed to set(), it will not be stored in the database.** Don't be alarmed if your default values aren't showing up in the table.           
-If a value is not registered in the allowed values array, a LaravelPropertyBag\Exceptions\InvalidSettingsValue exception will be thrown.
+If a value is not registered in the allowed values array, a `LaravelPropertyBag\Exceptions\InvalidSettingsValue` exception will be thrown. You can use `$e->getFailedKey()` method to retrieve failed setting name.
 ```php
 $model->settings()->set([
   'key1' => 'value1',
