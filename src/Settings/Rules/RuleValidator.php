@@ -13,7 +13,9 @@ class RuleValidator
      * @param string $rule
      * @param mixed  $value
      *
-     * @return bool|InvalidSettingsRule
+     * @throws InvalidSettingsRule
+     *
+     * @return bool
      */
     public function validate($rule, $value)
     {

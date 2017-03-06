@@ -271,7 +271,9 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @return PropertyBag|InvalidSettingsValue
+     * @throws InvalidSettingsValue
+     * 
+     * @return PropertyBag|
      */
     protected function setKeyValue($key, $value)
     {
