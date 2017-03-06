@@ -11,7 +11,7 @@ class Settings
     /**
      * Settings for resource.
      *
-     * @var ResourceConfig
+     * @var LaravelPropertyBag\Settings\ResourceConfig
      */
     protected $settingsConfig;
 
@@ -26,14 +26,14 @@ class Settings
      * Registered keys, values, and defaults.
      * 'key' => ['allowed' => $value, 'default' => $value].
      *
-     * @var Collection
+     * @var \Illuminate\Support\Collection
      */
     protected $registered;
 
     /**
      * Settings saved in database. Does not include defaults.
      *
-     * @var Collection
+     * @var \Illuminate\Support\Collection
      */
     protected $settings;
 
@@ -47,8 +47,8 @@ class Settings
     /**
      * Construct.
      *
-     * @param ResourceConfig $settingsConfig
-     * @param Model          $resource
+     * @param LaravelPropertyBag\Settings\ResourceConfig $settingsConfig
+     * @param Model                                      $resource
      */
     public function __construct(ResourceConfig $settingsConfig, Model $resource)
     {
@@ -64,7 +64,7 @@ class Settings
     /**
      * Get the property bag relationshp off the resource.
      *
-     * @return MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     protected function propertyBag()
     {
@@ -74,7 +74,7 @@ class Settings
     /**
      * Get resource config.
      *
-     * @return ResourceConfig
+     * @return LaravelPropertyBag\Settings\ResourceConfig
      */
     public function getResourceConfig()
     {
@@ -84,7 +84,7 @@ class Settings
     /**
      * Get registered settings.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getRegistered()
     {
@@ -157,7 +157,7 @@ class Settings
     /**
      * Return all settings used by resource, including defaults.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function all()
     {
@@ -175,7 +175,7 @@ class Settings
     /**
      * Get all defaults for settings.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function allDefaults()
     {
@@ -189,7 +189,7 @@ class Settings
      *
      * @param string $key
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllowed($key)
     {
@@ -201,7 +201,7 @@ class Settings
     /**
      * Get all allowed values for settings.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function allAllowed()
     {
@@ -213,7 +213,7 @@ class Settings
     /**
      * Get all saved settings. Default values are not included in this output.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function allSaved()
     {
@@ -273,7 +273,7 @@ class Settings
      *
      * @throws InvalidSettingsValue
      * 
-     * @return PropertyBag|
+     * @return LaravelPropertyBag\Settings\PropertyBag
      */
     protected function setKeyValue($key, $value)
     {
@@ -310,13 +310,13 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @return PropertyBag
+     * @return LaravelPropertyBag\Settings\PropertyBag
      */
     protected function createRecord($key, $value)
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'key'   => $key,
+                'key' => $key,
                 'value' => $this->valueToJson($value),
             ])
         );
@@ -328,7 +328,7 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @return PropertyBag
+     * @return LaravelPropertyBag\Settings\PropertyBag
      */
     protected function updateRecord($key, $value)
     {
@@ -370,7 +370,7 @@ class Settings
      *
      * @param string $key
      *
-     * @return PropertyBag
+     * @return LaravelPropertyBag\Settings\PropertyBag
      */
     protected function getByKey($key)
     {
@@ -393,7 +393,7 @@ class Settings
     /**
      * Get all settings as a flat collection.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     protected function getAllSettingsFlat()
     {
@@ -405,7 +405,7 @@ class Settings
     /**
      * Retrieve all settings from database.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     protected function getAllSettings()
     {

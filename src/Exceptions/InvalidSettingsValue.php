@@ -22,13 +22,15 @@ class InvalidSettingsValue extends Exception
      */
     public static function settingNotAllowed($key)
     {
-        $exception = new static("Given value is not a registered allowed value for {$key}.");
+        $exception = new static(
+            "Given value is not a registered allowed value for {$key}."
+        );
 
         return $exception->setFailedKey($key);
     }
 
     /**
-     * Sets failed key name.
+     * Set failed key name.
      *
      * @param string $key
      *
@@ -42,7 +44,7 @@ class InvalidSettingsValue extends Exception
     }
 
     /**
-     * Returns failed key name.
+     * Return failed key name.
      *
      * @return string
      */

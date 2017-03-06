@@ -17,7 +17,7 @@ trait HasSettings
     /**
      * A resource has many settings in a property bag.
      *
-     * @return MorphMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function propertyBag()
     {
@@ -30,7 +30,7 @@ trait HasSettings
      *
      * @param string|array $passed
      *
-     * @return Settings|mixed
+     * @return LaravelPropertyBag\Settings\Settings|mixed
      */
     public function settings($passed = null)
     {
@@ -48,7 +48,7 @@ trait HasSettings
     /**
      * Get settings off this or create new instance.
      *
-     * @return Settings
+     * @return LaravelPropertyBag\Settings\Settings
      */
     protected function getSettingsInstance()
     {
@@ -102,7 +102,7 @@ trait HasSettings
      *
      * @param array $attributes
      *
-     * @return Settings
+     * @return LaravelPropertyBag\Settings\Settings
      */
     public function setSettings(array $attributes)
     {
@@ -112,7 +112,7 @@ trait HasSettings
     /**
      * Get all settings.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function allSettings()
     {
@@ -124,7 +124,7 @@ trait HasSettings
      *
      * @param string $key
      *
-     * @return Collection|mixed
+     * @return \Illuminate\Support\Collection|mixed
      */
     public function defaultSetting($key = null)
     {
@@ -140,7 +140,7 @@ trait HasSettings
      *
      * @param string $key
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function allowedSetting($key = null)
     {

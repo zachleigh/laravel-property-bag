@@ -43,7 +43,7 @@ class ResourceConfig
     /**
      * Return a collection of registered settings.
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function registeredSettings()
     {
