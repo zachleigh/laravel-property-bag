@@ -290,9 +290,9 @@ class Settings
 
     /**
      * Throw exception if key/value invalid.
-     * 
-     * @param  string $key
-     * @param  mixed $value
+     *
+     * @param string $key
+     * @param mixed  $value
      *
      * @throws InvaildSettingsValue
      */
@@ -327,7 +327,7 @@ class Settings
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'key' => $key,
+                'key'   => $key,
                 'value' => $this->valueToJson($value),
             ])
         );
