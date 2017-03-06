@@ -47,8 +47,8 @@ class Settings
     /**
      * Construct.
      *
-     * @param LaravelPropertyBag\Settings\ResourceConfig $settingsConfig
-     * @param Model                                      $resource
+     * @param ResourceConfig $settingsConfig
+     * @param Model          $resource
      */
     public function __construct(ResourceConfig $settingsConfig, Model $resource)
     {
@@ -271,15 +271,11 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @throws InvalidSettingsValue
-     * 
-     * @return LaravelPropertyBag\Settings\PropertyBag
+     * @return mixed
      */
     protected function setKeyValue($key, $value)
     {
-        if (!$this->isValid($key, $value)) {
-            throw InvalidSettingsValue::settingNotAllowed($key);
-        }
+        $this->validateKeyValue($key, $value);
 
         if ($this->isDefault($key, $value) && $this->isSaved($key)) {
             return $this->deleteRecord($key);
@@ -290,6 +286,21 @@ class Settings
         }
 
         return $this->createRecord($key, $value);
+    }
+
+    /**
+     * Throw exception if key/value invalid.
+     * 
+     * @param  string $key
+     * @param  mixed $value
+     *
+     * @throws InvaildSettingsValue
+     */
+    protected function validateKeyValue($key, $value)
+    {
+        if (!$this->isValid($key, $value)) {
+            throw InvalidSettingsValue::settingNotAllowed($key);
+        }
     }
 
     /**
