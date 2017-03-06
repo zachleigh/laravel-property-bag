@@ -272,7 +272,7 @@ class Settings
      * @param mixed  $value
      *
      * @throws InvalidSettingsValue
-     * 
+     *
      * @return LaravelPropertyBag\Settings\PropertyBag
      */
     protected function setKeyValue($key, $value)
@@ -316,7 +316,7 @@ class Settings
     {
         return $this->propertyBag()->save(
             new PropertyBag([
-                'key' => $key,
+                'key'   => $key,
                 'value' => $this->valueToJson($value),
             ])
         );
