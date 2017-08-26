@@ -24,6 +24,9 @@
   - [Contributing](#contributing)
 
 ### Upgrade Information
+##### From 1.1.* to 1.2.0
+1.2.0 drops support for PHP 5.6. It will likely still work in older PHP versions, but bugs or issues that focus specifically on 5.6 or lower will no longer be dealt with. Support for PHP 7.2 added.
+
 ##### From 1.0.* to 1.1.0
 1.1.0 adds Lumen support and support for Laravel 5.4 (thanks tzurbaev). There should be no breaking changes. If using Laravel 5.3, please use [Version 1.0.5](https://github.com/zachleigh/laravel-property-bag/tree/v1.0.5):
 ```
