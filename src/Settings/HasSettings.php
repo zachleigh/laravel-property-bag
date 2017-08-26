@@ -109,7 +109,7 @@ trait HasSettings
         return $this->settings()->set($attributes);
     }
 
-        /**
+    /**
      * Set all allowed settings by Request.
      *
      * @return LaravelPropertyBag\Settings\Settings
@@ -117,6 +117,7 @@ trait HasSettings
     public function setSettingsByRequest()
     {
         $allAllowedSettings = array_keys($this->allSettings()->toArray());
+
         return $this->settings()->set(request()->only($allAllowedSettings));
     }
 
