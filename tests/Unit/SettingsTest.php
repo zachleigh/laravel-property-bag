@@ -532,4 +532,93 @@ class SettingsTest extends TestCase
 
         $this->assertEquals('monkey', $this->user->settings('test_settings1'));
     }
+
+    /**
+     * @test
+     */
+    public function created_setting_is_immediately_available_for_reading()
+    {
+        $settings = $this->user->settings();
+
+        $this->assertEquals(false, $settings->get('test_settings3'));
+
+        $settings->set(['test_settings3' => true]);
+        $this->assertEquals(true, $settings->get('test_settings3'));
+    }
+
+    /**
+     * @test
+     */
+    public function updated_setting_is_immediately_available_for_reading()
+    {
+        $settings = $this->user->settings();
+
+        $settings->set(['test_settings1' => 'bananas']);
+        $this->assertEquals('bananas', $settings->get('test_settings1'));
+
+        $settings->set(['test_settings1' => 'grapes']);
+        $this->assertEquals('grapes', $settings->get('test_settings1'));
+    }
+
+    /**
+     * @test
+     */
+    public function deleted_setting_is_immediately_available_for_reading()
+    {
+        $settings = $this->user->settings();
+
+        $this->assertEquals('monkey', $settings->get('test_settings1'));
+
+        $settings->set(['test_settings1' => 'grapes']);
+        $this->assertEquals('grapes', $settings->get('test_settings1'));
+
+        $settings->set(['test_settings1' => 'monkey']);
+        $this->assertEquals('monkey', $settings->get('test_settings1'));
+    }
+
+    /**
+     * @test
+     */
+    public function created_setting_is_immediately_available_for_reading_with_preloaded_relation()
+    {
+        $this->user->load('propertyBag');
+        $settings = $this->user->settings();
+
+        $this->assertEquals(false, $settings->get('test_settings3'));
+
+        $settings->set(['test_settings3' => true]);
+        $this->assertEquals(true, $settings->get('test_settings3'));
+    }
+
+    /**
+     * @test
+     */
+    public function updated_setting_is_immediately_available_for_reading_with_preloaded_relation()
+    {
+        $this->user->load('propertyBag');
+        $settings = $this->user->settings();
+
+        $settings->set(['test_settings1' => 'bananas']);
+        $this->assertEquals('bananas', $settings->get('test_settings1'));
+
+        $settings->set(['test_settings1' => 'grapes']);
+        $this->assertEquals('grapes', $settings->get('test_settings1'));
+    }
+
+    /**
+     * @test
+     */
+    public function deleted_setting_is_immediately_available_for_reading_with_preloaded_relation()
+    {
+        $this->user->load('propertyBag');
+        $settings = $this->user->settings();
+
+        $this->assertEquals('monkey', $settings->get('test_settings1'));
+
+        $settings->set(['test_settings1' => 'grapes']);
+        $this->assertEquals('grapes', $settings->get('test_settings1'));
+
+        $settings->set(['test_settings1' => 'monkey']);
+        $this->assertEquals('monkey', $settings->get('test_settings1'));
+    }
 }
