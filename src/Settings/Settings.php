@@ -233,6 +233,14 @@ class Settings
             $this->setKeyValue($key, $value);
         });
 
+        // If we were working with eagerly-loaded relation,
+        // we need to reload its data to be sure that we
+        // are working only with the actual settings.
+
+        if ($this->resource->relationLoaded('propertyBag')) {
+            $this->resource->load('propertyBag');
+        }
+
         return $this->sync();
     }
 
@@ -396,8 +404,6 @@ class Settings
      */
     protected function sync()
     {
-        $this->resource->load('propertyBag');
-
         $this->settings = $this->getAllSettingsFlat();
     }
 
@@ -420,6 +426,10 @@ class Settings
      */
     protected function getAllSettings()
     {
+        if ($this->resource->relationLoaded('propertyBag')) {
+            return $this->resource->propertyBag;
+        }
+
         return $this->propertyBag()
             ->where('resource_id', $this->resource->id)
             ->get();
