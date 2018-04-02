@@ -3,7 +3,7 @@
     "description": "Easy Laravel user settings using a property bag",
     "type": "project",
     "keywords": ["laravel", "user", "settings", "property", "user settings", "propety bag"],
-    "homepage": "https://github.com/zachlegih/laravel-property-bag",
+    "homepage": "https://github.com/zachleigh/laravel-property-bag",
     "license": "MIT",
     "authors": [
         {
