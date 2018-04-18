@@ -394,7 +394,7 @@ class Settings
     protected function getByKey($key)
     {
         return $this->propertyBag()
-            ->where('resource_id', $this->resource->id)
+            ->where('resource_id', $this->resource->getKey())
             ->where('key', $key)
             ->first();
     }
@@ -431,7 +431,7 @@ class Settings
         }
 
         return $this->propertyBag()
-            ->where('resource_id', $this->resource->id)
+            ->where('resource_id', $this->resource->getKey())
             ->get();
     }
 
