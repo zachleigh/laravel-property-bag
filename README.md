@@ -24,6 +24,9 @@
   - [Contributing](#contributing)
 
 ### Upgrade Information
+##### From 1.2.* to 1.3.0
+1.3.0 drops support for PHP 7.0.
+
 ##### From 1.1.* to 1.2.0
 1.2.0 drops support for PHP 5.6. It will likely still work in older PHP versions, but bugs or issues that focus specifically on 5.6 or lower will no longer be dealt with. Support for PHP 7.2 added.
 
