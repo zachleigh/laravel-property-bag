@@ -241,6 +241,14 @@ Reset key to default value.
 $default = $model->settings()->reset($key);
 ```
 
+##### withSetting($key, $value = null)
+Get an array with all stored rows with a given setting and/or value.
+```
+$collection = $model::withSetting($key);
+// or
+$collection = $model::withSetting($key, $value);
+```
+
 ### Validation Rules
 Rather than hardcoding values in an array, it is also possible to define rules that determine whether a setting value is valid. Rules are always strings and must contain a colon at both the beginning and ending of the string.
 ```php
