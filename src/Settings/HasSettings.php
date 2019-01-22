@@ -178,7 +178,7 @@ trait HasSettings
             if (!is_null($value)) {
                 return !is_null($setting) && $setting === $value;
             }
-            
+
             return !is_null($setting);
         });
     }
