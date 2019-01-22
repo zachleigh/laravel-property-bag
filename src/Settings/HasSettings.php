@@ -173,11 +173,12 @@ trait HasSettings
      */
     public static function withSetting($key, $value = null)
     {
-        return static::all()->filter(function($row) use ($key, $value) {
+        return static::all()->filter(function ($row) use ($key, $value) {
             $setting = $row->settings($key);
             if (!is_null($value)) {
                 return !is_null($setting) && $setting === $value;
             }
+            
             return !is_null($setting);
         });
     }
