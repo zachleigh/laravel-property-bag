@@ -141,4 +141,24 @@ class HasSettingsTest extends TestCase
 
         $this->assertEquals($actual, $allowed->all());
     }
+
+    /**
+     * @test
+     */
+    public function all_resources_with_setting_can_be_retrieved_from_hassettings()
+    {
+        $collection = $this->user::withSetting('test_settings1');
+
+        $this->assertCount(1, $collection);
+    }
+
+    /**
+     * @test
+     */
+    public function all_resources_with_setting_and_value_can_be_retrieved_from_hassettings()
+    {
+        $collection = $this->user::withSetting('test_settings1', 'monkey');
+
+        $this->assertCount(1, $collection);
+    }
 }
