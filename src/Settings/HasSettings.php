@@ -164,10 +164,10 @@ trait HasSettings
     }
 
     /**
-     * Get an array with all stored rows with a given setting and/or value.
+     * Get a collection with all users with the given setting and/or value.
      *
-     * @param $key
-     * @param null $value
+     * @param string $key
+     * @param mixed $value
      *
      * @return \Illuminate\Support\Collection
      */
@@ -175,6 +175,7 @@ trait HasSettings
     {
         return static::all()->filter(function ($row) use ($key, $value) {
             $setting = $row->settings($key);
+
             if (!is_null($value)) {
                 return !is_null($setting) && $setting === $value;
             }

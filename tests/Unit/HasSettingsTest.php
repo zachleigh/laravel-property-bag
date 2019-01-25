@@ -147,9 +147,9 @@ class HasSettingsTest extends TestCase
      */
     public function all_resources_with_setting_can_be_retrieved_from_hassettings()
     {
-        $collection = $this->user::withSetting('test_settings1');
+        $this->assertCount(1, $this->user::withSetting('test_settings1'));
 
-        $this->assertCount(1, $collection);
+        $this->assertCount(0, $this->user::withSetting('test_settings_invalid'));
     }
 
     /**
@@ -157,8 +157,8 @@ class HasSettingsTest extends TestCase
      */
     public function all_resources_with_setting_and_value_can_be_retrieved_from_hassettings()
     {
-        $collection = $this->user::withSetting('test_settings1', 'monkey');
+        $this->assertCount(1, $this->user::withSetting('test_settings1', 'monkey'));
 
-        $this->assertCount(1, $collection);
+        $this->assertCount(0, $this->user::withSetting('test_settings1', 'gorilla'));
     }
 }
