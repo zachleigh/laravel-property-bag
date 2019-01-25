@@ -1,13 +1,12 @@
-# Laravel Property Bag   
+# Laravel Property Bag
 [![Latest Stable Version](https://img.shields.io/packagist/v/zachleigh/laravel-property-bag.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
 [![Build Status](https://img.shields.io/travis/zachleigh/laravel-property-bag/master.svg)](https://travis-ci.org/zachleigh/laravel-property-bag)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/ef16332f-f7e9-4e25-be37-2a1348df2807.svg)](https://insight.sensiolabs.com/projects/ef16332f-f7e9-4e25-be37-2a1348df2807)
 [![Quality Score](https://img.shields.io/scrutinizer/g/zachleigh/laravel-property-bag.svg)](https://scrutinizer-ci.com/g/zachleigh/laravel-property-bag/)
 [![StyleCI](https://styleci.io/repos/60463173/shield?style=flat)](https://styleci.io/repos/60463173)
 [![Total Downloads](https://img.shields.io/packagist/dt/zachleigh/laravel-property-bag.svg)](https://packagist.org/packages/zachleigh/laravel-property-bag)
-  
-##### Simple settings for Laravel apps. 
+
+##### Simple settings for Laravel apps.
   - Easily give multiple resources settings
   - Simple to add additional settings as your app grows
   - Set default settings and limit setting values for security
@@ -37,26 +36,26 @@ composer require zachleigh/laravel-property-bag:1.0.*
 ```
 
 ##### From 0.9.* to 1.0.0
-Version 1.0.0 brings major changes to the package that make it incompatible with previous versions. The package was essentially rewritten making upgrade from 0.9.7 to 1.0.0 difficult at best. 
+Version 1.0.0 brings major changes to the package that make it incompatible with previous versions. The package was essentially rewritten making upgrade from 0.9.7 to 1.0.0 difficult at best.
 
 ### About
 Laravel Property Bag gives your application resources savable, secure settings by using a single database property bag table. The benefit of using this kind of settings table, as opposed to say a json blob column on the resource table, is that if in the future you decide to change a setting value, a simple database query can easily take care of it.
 
 ### Install
-##### 1. Install through composer     
+##### 1. Install through composer
 ```
 composer require zachleigh/laravel-property-bag
 ```
 
 #### Laravel Installation
 
-##### a. Register the service provider        
+##### a. Register the service provider
 In Laravel's config/app.php file, add the service provider to the array with the 'providers' key.
 ```
 LaravelPropertyBag\ServiceProvider::class
 ```
 
-##### b. Publish the migration      
+##### b. Publish the migration
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
@@ -75,15 +74,15 @@ $app->register(LaravelPropertyBag\ServiceProvider::class);
 ##### c. Copy migration file
 Since Lumen doesn't offer the `php artisan vendor:publish` command, you have to copy the migration file manually from the `vendor/zachleigh/laravel-property-bag/src/Migrations` directory to the `database/migrations` directory.
 
-##### 2. Run the migration      
+##### 2. Run the migration
 ```
 php artisan migrate
 ```
 
-##### 3. Create a new settings config file for your resource.      
+##### 3. Create a new settings config file for your resource.
 ```
 php artisan pbag:make {resource}
-``` 
+```
 {resource} should be the name of the model you wish to add settings to. For example:
 ```
 php artisan pbag:make User
@@ -91,7 +90,7 @@ php artisan pbag:make User
 This will create a Settings directory containing a UserSettings class where you can configure your settings for the User class.
 
 ### Usage
-##### 1. Use the trait in the model.      
+##### 1. Use the trait in the model.
 ```php
 ...
 use LaravelPropertyBag\Settings\HasSettings;
@@ -104,7 +103,7 @@ class User extends Model
 }
 ```
 
-##### 2. Register your settings plus their allowed values and defaults     
+##### 2. Register your settings plus their allowed values and defaults
 After publishing the UserSettings file (hopefully you did this above), register settings in the UserSettings class.
 ```php
 protected $registeredSettings = [
@@ -116,7 +115,7 @@ protected $registeredSettings = [
 ```
 Each setting must contain an array of allowed values and a default value. It is also possible to use [validation rules](#validation-rules) instead of hardcoding allowed values.
 
-##### 3. Set the setting from the user model     
+##### 3. Set the setting from the user model
 ```php
 $user->settings(['example_setting' => false]);
 // or
@@ -133,7 +132,7 @@ $user->settings([
 ]);
 ```
 
-##### 4. Get the set value from the user model     
+##### 4. Get the set value from the user model
 ```php
 $value = $user->settings('example_setting');
 // or
@@ -150,8 +149,8 @@ $value = $model->settings()->get($key);
 ```
 
 ##### set($array)
-Set array keys to associated values. Values may be of any type. Returns Settings.    
-**When a default value is passed to set(), it will not be stored in the database.** Don't be alarmed if your default values aren't showing up in the table.           
+Set array keys to associated values. Values may be of any type. Returns Settings.
+**When a default value is passed to set(), it will not be stored in the database.** Don't be alarmed if your default values aren't showing up in the table.
 If a value is not registered in the allowed values array, a `LaravelPropertyBag\Exceptions\InvalidSettingsValue` exception will be thrown. You can use the `$e->getFailedKey()` method to retrieve the failed setting name.
 ```php
 $model->settings()->set([
@@ -257,7 +256,7 @@ Rather than hardcoding values in an array, it is also possible to define rules t
     'default' => 7
 ]
 ```
-In this case, the setting value saved for the 'integer' key must be an integer.    
+In this case, the setting value saved for the 'integer' key must be an integer.
 
 Some rules require parameters. Parameters can be passed in the rule definition by using an equal sign and a comma separated list.
 ```php
@@ -294,10 +293,10 @@ Numeric values falling between or inluding the given low and high parameters wil
     'default' => 5
 ]
 ```
-The numbers 1 to 10 will be allowed.    
+The numbers 1 to 10 will be allowed.
 
 ##### ':string:'
-Strings will be accepted.   
+Strings will be accepted.
 
 #### User Defined Rules
 To make user defined rules, first publish the Rules file to Settings/Resources/Rules.php:
@@ -326,7 +325,7 @@ All rule methods should be static and thus should not care about object or appli
     'allowed' => ':example=arg1,arg2:',
     'default' => 'default'
 ]
-```   
+```
 
 ```php
 public static function ruleExample($value, $arg1, $arg2)
@@ -336,7 +335,7 @@ public static function ruleExample($value, $arg1, $arg2)
     // return boolean;
 }
 ```
-     
+
 Another option would be to validate input with Laravel's built in validation, which is much more complete than what this package offers, and then set all your setting allowed values to ':any:'.
 
 ### Advanced Configuration
