@@ -162,4 +162,24 @@ trait HasSettings
 
         return $this->settings()->allAllowed();
     }
+
+    /**
+     * Get an array with all stored rows with a given setting and/or value.
+     *
+     * @param $key
+     * @param null $value
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function withSetting($key, $value = null)
+    {
+        return static::all()->filter(function ($row) use ($key, $value) {
+            $setting = $row->settings($key);
+            if (!is_null($value)) {
+                return !is_null($setting) && $setting === $value;
+            }
+
+            return !is_null($setting);
+        });
+    }
 }
