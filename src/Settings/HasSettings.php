@@ -167,7 +167,7 @@ trait HasSettings
      * Get a collection with all users with the given setting and/or value.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return \Illuminate\Support\Collection
      */
