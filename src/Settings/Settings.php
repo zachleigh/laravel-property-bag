@@ -11,7 +11,7 @@ class Settings
     /**
      * Settings for resource.
      *
-     * @var LaravelPropertyBag\Settings\ResourceConfig
+     * @var \LaravelPropertyBag\Settings\ResourceConfig
      */
     protected $settingsConfig;
 
@@ -40,7 +40,7 @@ class Settings
     /**
      * Validator for allowed rules.
      *
-     * @var LaravelPropertyBag\Settings\Rules\RuleValidator
+     * @var \LaravelPropertyBag\Settings\Rules\RuleValidator
      */
     protected $ruleValidator;
 
@@ -74,7 +74,7 @@ class Settings
     /**
      * Get resource config.
      *
-     * @return LaravelPropertyBag\Settings\ResourceConfig
+     * @return \LaravelPropertyBag\Settings\ResourceConfig
      */
     public function getResourceConfig()
     {
@@ -225,7 +225,7 @@ class Settings
      *
      * @param array $attributes
      *
-     * @return this
+     * @return static
      */
     public function set(array $attributes)
     {
@@ -302,7 +302,7 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @throws InvaildSettingsValue
+     * @throws InvalidSettingsValue
      */
     protected function validateKeyValue($key, $value)
     {
@@ -329,7 +329,7 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @return LaravelPropertyBag\Settings\PropertyBag
+     * @return \LaravelPropertyBag\Settings\PropertyBag
      */
     protected function createRecord($key, $value)
     {
@@ -347,7 +347,7 @@ class Settings
      * @param string $key
      * @param mixed  $value
      *
-     * @return LaravelPropertyBag\Settings\PropertyBag
+     * @return \LaravelPropertyBag\Settings\PropertyBag
      */
     protected function updateRecord($key, $value)
     {
@@ -389,7 +389,7 @@ class Settings
      *
      * @param string $key
      *
-     * @return LaravelPropertyBag\Settings\PropertyBag
+     * @return \LaravelPropertyBag\Settings\PropertyBag
      */
     protected function getByKey($key)
     {

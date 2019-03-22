@@ -10,7 +10,7 @@ trait HasSettings
     /**
      * Instance of Settings.
      *
-     * @var LaravelPropertyBag\Settings\Settings
+     * @var \LaravelPropertyBag\Settings\Settings
      */
     protected $settings = null;
 
@@ -30,7 +30,7 @@ trait HasSettings
      *
      * @param string|array $passed
      *
-     * @return LaravelPropertyBag\Settings\Settings|mixed
+     * @return \LaravelPropertyBag\Settings\Settings|mixed
      */
     public function settings($passed = null)
     {
@@ -48,7 +48,7 @@ trait HasSettings
     /**
      * Get settings off this or create new instance.
      *
-     * @return LaravelPropertyBag\Settings\Settings
+     * @return \LaravelPropertyBag\Settings\Settings
      */
     protected function getSettingsInstance()
     {
@@ -66,7 +66,7 @@ trait HasSettings
      *
      * @throws ResourceNotFound
      *
-     * @return LaravelPropertyBag\Settings\ResourceConfig
+     * @return \LaravelPropertyBag\Settings\ResourceConfig
      */
     protected function getSettingsConfig()
     {
@@ -102,7 +102,7 @@ trait HasSettings
      *
      * @param array $attributes
      *
-     * @return LaravelPropertyBag\Settings\Settings
+     * @return \LaravelPropertyBag\Settings\Settings
      */
     public function setSettings(array $attributes)
     {
@@ -112,7 +112,7 @@ trait HasSettings
     /**
      * Set all allowed settings by Request.
      *
-     * @return LaravelPropertyBag\Settings\Settings
+     * @return \LaravelPropertyBag\Settings\Settings
      */
     public function setSettingsByRequest()
     {
