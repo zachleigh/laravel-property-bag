@@ -17,7 +17,7 @@
     },
 
     "require-dev": {
-        "laravel/laravel": "~5.7",
+        "laravel/laravel": "~5.8",
         "laravel/browser-kit-testing": "~1.0",
         "phpunit/phpunit": "~4.0"
     },
