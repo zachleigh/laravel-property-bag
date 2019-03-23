@@ -1,7 +1,12 @@
 build:
     environment:
         php:
-            version: 7.1
+            version: 7.2.13
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 
 filter:
     excluded_paths: [tests/*, src/Stubs/*]
