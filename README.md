@@ -23,6 +23,9 @@
   - [Contributing](#contributing)
 
 ### Upgrade Information
+##### From 1.3.* to 1.4.0
+1.4.0 drops support for PHP 7.1 and adds support for Laravel 6.
+
 ##### From 1.2.* to 1.3.0
 1.3.0 drops support for PHP 7.0.
 
