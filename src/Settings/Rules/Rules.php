@@ -78,8 +78,8 @@ class Rules
      * Return true if value is numeric.
      *
      * @param mixed $value
-     * @param integer $low
-     * @param integer $high
+     * @param int   $low
+     * @param int   $high
      *
      * @return bool
      */
