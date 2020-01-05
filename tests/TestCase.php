@@ -10,11 +10,11 @@ use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
 use LaravelPropertyBag\tests\Classes\Comment;
+use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 use LaravelPropertyBag\tests\Migrations\CreatePostsTable;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
 use LaravelPropertyBag\tests\Migrations\CreateCommentsTable;
-use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
