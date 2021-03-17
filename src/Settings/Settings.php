@@ -3,8 +3,10 @@
 namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelPropertyBag\Settings\Rules\RuleValidator;
 use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
+use LaravelPropertyBag\Exceptions\ResourceNotFound;
+use LaravelPropertyBag\Settings\PropertyBag;
+use LaravelPropertyBag\Settings\Rules\RuleValidator;
 
 class Settings
 {
@@ -59,6 +61,24 @@ class Settings
         $this->registered = $settingsConfig->registeredSettings();
 
         $this->sync();
+    }
+
+    public static function determinePropertyBagModel(): string
+    {
+        $propertyBagModel = config('property-bag.property_bag_model') ?? PropertyBag::class;
+
+        if (! is_a($propertyBagModel, Model::class, true)) {
+            throw ResourceNotFound($propertyBagModel);
+        }
+
+        return $propertyBagModel;
+    }
+
+    public static function getPropertyBagModelInstance(): Model
+    {
+        $propertyBagModelClassName = self::determinePropertyBagModel();
+
+        return new $propertyBagModelClassName();
     }
 
     /**
