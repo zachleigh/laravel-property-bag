@@ -3,6 +3,7 @@
 namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelPropertyBag\PropertyBagServiceProvider;
 use LaravelPropertyBag\Settings\Rules\RuleValidator;
 use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
@@ -333,8 +334,10 @@ class Settings
      */
     protected function createRecord($key, $value)
     {
+        $propertyBagModel = PropertyBagServiceProvider::determinePropertyBagModel();
+
         return $this->propertyBag()->save(
-            new PropertyBag([
+            new $propertyBagModel([
                 'key'   => $key,
                 'value' => $this->valueToJson($value),
             ])

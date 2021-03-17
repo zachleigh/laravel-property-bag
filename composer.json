@@ -39,7 +39,7 @@
     "extra":{
         "laravel":{
             "providers":[
-                "LaravelPropertyBag\\ServiceProvider"
+                "LaravelPropertyBag\\PropertyBagServiceProvider"
             ]
         }
     }

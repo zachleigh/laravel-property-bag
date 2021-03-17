@@ -3,13 +3,13 @@
 namespace LaravelPropertyBag\tests;
 
 use Hash;
-use LaravelPropertyBag\ServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
 use LaravelPropertyBag\tests\Classes\Post;
 use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
 use LaravelPropertyBag\tests\Classes\Comment;
+use LaravelPropertyBag\PropertyBagServiceProvider;
 use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 use LaravelPropertyBag\tests\Migrations\CreatePostsTable;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
@@ -34,7 +34,7 @@ abstract class TestCase extends BaseTestCase
     {
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
 
-        $app->register(ServiceProvider::class);
+        $app->register(PropertyBagServiceProvider::class);
 
         $app->make(Kernel::class)->bootstrap();
 
