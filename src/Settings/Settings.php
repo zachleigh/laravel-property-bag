@@ -335,6 +335,7 @@ class Settings
     protected function createRecord($key, $value)
     {
         $propertyBagModel = PropertyBagServiceProvider::determinePropertyBagModel();
+        
         return $this->propertyBag()->save(
             new $propertyBagModel([
                 'key'   => $key,
