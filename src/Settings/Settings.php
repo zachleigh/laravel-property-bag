@@ -5,6 +5,7 @@ namespace LaravelPropertyBag\Settings;
 use Illuminate\Database\Eloquent\Model;
 use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 use LaravelPropertyBag\Exceptions\ResourceNotFound;
+use LaravelPropertyBag\PropertyBagServiceProvider;
 use LaravelPropertyBag\Settings\PropertyBag;
 use LaravelPropertyBag\Settings\Rules\RuleValidator;
 
@@ -335,8 +336,9 @@ class Settings
      */
     protected function createRecord($key, $value)
     {
+        $propertyBagModel = PropertyBagServiceProvider::determinePropertyBagModel();
         return $this->propertyBag()->save(
-            new PropertyBag([
+            new $propertyBagModel([
                 'key'   => $key,
                 'value' => $this->valueToJson($value),
             ])
