@@ -63,24 +63,6 @@ class Settings
         $this->sync();
     }
 
-    public static function determinePropertyBagModel(): string
-    {
-        $propertyBagModel = config('property-bag.property_bag_model') ?? PropertyBag::class;
-
-        if (! is_a($propertyBagModel, Model::class, true)) {
-            throw ResourceNotFound($propertyBagModel);
-        }
-
-        return $propertyBagModel;
-    }
-
-    public static function getPropertyBagModelInstance(): Model
-    {
-        $propertyBagModelClassName = self::determinePropertyBagModel();
-
-        return new $propertyBagModelClassName();
-    }
-
     /**
      * Get the property bag relationshp off the resource.
      *

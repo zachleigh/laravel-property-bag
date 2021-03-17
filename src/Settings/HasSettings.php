@@ -4,6 +4,7 @@ namespace LaravelPropertyBag\Settings;
 
 use LaravelPropertyBag\Helpers\NameResolver;
 use LaravelPropertyBag\Exceptions\ResourceNotFound;
+use LaravelPropertyBag\PropertyBagServiceProvider;
 
 trait HasSettings
 {
@@ -21,7 +22,7 @@ trait HasSettings
      */
     public function propertyBag()
     {
-        return $this->morphMany(PropertyBag::class, 'resource');
+        return $this->morphMany(PropertyBagServiceProvider::determinePropertyBagModel(), 'resource');
     }
 
     /**

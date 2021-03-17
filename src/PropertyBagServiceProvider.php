@@ -2,9 +2,12 @@
 
 namespace LaravelPropertyBag;
 
-use Illuminate\Support\ServiceProvider as BaseProvider;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\ServiceProvider;
+use LaravelPropertyBag\Settings\PropertyBag;
 
-class ServiceProvider extends BaseProvider
+class PropertyBagServiceProvider extends ServiceProvider
 {
     /**
      * Register bindings in the container.
@@ -50,5 +53,23 @@ class ServiceProvider extends BaseProvider
         $this->commands('command.pbag.make');
 
         $this->commands('command.pbag.rules');
+    }
+
+    public static function determinePropertyBagModel(): string
+    {
+        $propertyBagModel = config('property-bag.property_bag_model') ?? PropertyBag::class;
+
+        if (! is_a($propertyBagModel, Model::class, true)) {
+            throw ModelNotFoundException($propertyBagModel);
+        }
+
+        return $propertyBagModel;
+    }
+
+    public static function getPropertyBagModelInstance(): Model
+    {
+        $propertyBagModelClassName = self::determinePropertyBagModel();
+
+        return new $propertyBagModelClassName();
     }
 }
