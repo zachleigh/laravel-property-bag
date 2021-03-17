@@ -3,7 +3,7 @@
 namespace LaravelPropertyBag\tests;
 
 use Hash;
-use LaravelPropertyBag\ServiceProvider;
+use LaravelPropertyBag\PropertyBagServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
 use LaravelPropertyBag\tests\Classes\Post;
 use LaravelPropertyBag\tests\Classes\User;
@@ -34,7 +34,7 @@ abstract class TestCase extends BaseTestCase
     {
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
 
-        $app->register(ServiceProvider::class);
+        $app->register(PropertyBagServiceProvider::class);
 
         $app->make(Kernel::class)->bootstrap();
 
