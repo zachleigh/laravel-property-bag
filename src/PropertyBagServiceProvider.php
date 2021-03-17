@@ -3,9 +3,9 @@
 namespace LaravelPropertyBag;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\ServiceProvider;
 use LaravelPropertyBag\Settings\PropertyBag;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PropertyBagServiceProvider extends ServiceProvider
 {
@@ -59,7 +59,7 @@ class PropertyBagServiceProvider extends ServiceProvider
     {
         $propertyBagModel = config('property-bag.property_bag_model') ?? PropertyBag::class;
 
-        if (! is_a($propertyBagModel, Model::class, true)) {
+        if (!is_a($propertyBagModel, Model::class, true)) {
             throw new ModelNotFoundException($propertyBagModel);
         }
 

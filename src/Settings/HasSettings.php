@@ -3,8 +3,8 @@
 namespace LaravelPropertyBag\Settings;
 
 use LaravelPropertyBag\Helpers\NameResolver;
-use LaravelPropertyBag\Exceptions\ResourceNotFound;
 use LaravelPropertyBag\PropertyBagServiceProvider;
+use LaravelPropertyBag\Exceptions\ResourceNotFound;
 
 trait HasSettings
 {

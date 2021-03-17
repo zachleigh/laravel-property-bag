@@ -3,11 +3,9 @@
 namespace LaravelPropertyBag\Settings;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
-use LaravelPropertyBag\Exceptions\ResourceNotFound;
 use LaravelPropertyBag\PropertyBagServiceProvider;
-use LaravelPropertyBag\Settings\PropertyBag;
 use LaravelPropertyBag\Settings\Rules\RuleValidator;
+use LaravelPropertyBag\Exceptions\InvalidSettingsValue;
 
 class Settings
 {
