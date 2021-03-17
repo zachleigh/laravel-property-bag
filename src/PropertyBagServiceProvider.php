@@ -60,7 +60,7 @@ class PropertyBagServiceProvider extends ServiceProvider
         $propertyBagModel = config('property-bag.property_bag_model') ?? PropertyBag::class;
 
         if (! is_a($propertyBagModel, Model::class, true)) {
-            throw ModelNotFoundException($propertyBagModel);
+            throw new ModelNotFoundException($propertyBagModel);
         }
 
         return $propertyBagModel;
